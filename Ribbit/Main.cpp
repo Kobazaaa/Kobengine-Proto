@@ -10,13 +10,14 @@
 #include "Ribbit.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
-#include "TextRendererComponent.h"
 #include "Scene.h"
 
 #include <filesystem>
-
-#include "ImageRendererComponent.h"
 namespace fs = std::filesystem;
+
+#include "FPSComponent.h"
+#include "ImageRendererComponent.h"
+#include "TextRendererComponent.h"
 
 void load()
 {
@@ -35,6 +36,12 @@ void load()
 	go = std::make_shared<rib::GameObject>();
 	go->AddComponent<rib::TextRendererComponent>("Programming 4 Assignment", font);
 	go->SetPosition(80, 20);
+	scene.Add(go);
+
+	go = std::make_shared<rib::GameObject>();
+	go->AddComponent<rib::TextRendererComponent>("FPS", font);
+	go->SetPosition(0, 450);
+	go->AddComponent<rib::FPSComponent>();
 	scene.Add(go);
 }
 

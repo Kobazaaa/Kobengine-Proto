@@ -38,7 +38,7 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Ribbit/Texture2D.h"
   "Ribbit/Transform.cpp"
   "Ribbit/Transform.h"
- "Ribbit/Timer.h" "Ribbit/Timer.cpp" "Ribbit/Component.h" "Ribbit/Component.cpp" "Ribbit/ImageRendererComponent.h" "Ribbit/ImageRendererComponent.cpp")
+ "Ribbit/Timer.h" "Ribbit/Timer.cpp" "Ribbit/Component.h" "Ribbit/Component.cpp" "Ribbit/ImageRendererComponent.h" "Ribbit/ImageRendererComponent.cpp" "Ribbit/FPSComponent.h" "Ribbit/FPSComponent.cpp")
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
