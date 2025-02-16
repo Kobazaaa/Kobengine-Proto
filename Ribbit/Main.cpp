@@ -10,7 +10,7 @@
 #include "Ribbit.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
-#include "TextObject.h"
+#include "TextRendererComponent.h"
 #include "Scene.h"
 
 #include <filesystem>
@@ -20,17 +20,18 @@ void load()
 {
 	auto& scene = rib::SceneManager::GetInstance().CreateScene("Demo");
 
-	auto go = std::make_shared<rib::GameObject>();
-	go->SetTexture("background.tga");
-	scene.Add(go);
-
-	go = std::make_shared<rib::GameObject>();
-	go->SetTexture("logo.tga");
-	go->SetPosition(216, 180);
-	scene.Add(go);
+	//auto go = std::make_shared<rib::GameObject>();
+	//go->SetTexture("background.tga");
+	//scene.Add(go);
+	//
+	//go = std::make_shared<rib::GameObject>();
+	//go->SetTexture("logo.tga");
+	//go->SetPosition(216, 180);
+	//scene.Add(go);
 
 	auto font = rib::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto to = std::make_shared<rib::TextObject>("Programming 4 Assignment", font);
+	auto to = std::make_shared<rib::GameObject>();
+	to->AddComponent<rib::TextRendererComponent>("Programming 4 Assignment", font);
 	to->SetPosition(80, 20);
 	scene.Add(to);
 }
