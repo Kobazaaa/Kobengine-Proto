@@ -15,30 +15,45 @@ endif()
 
 # list source files here
 add_executable(${TARGET_NAME} ${TARGET_PARAM}
-  "Ribbit/Font.cpp"
-  "Ribbit/Font.h"
-  "Ribbit/GameObject.cpp"
-  "Ribbit/GameObject.h"
-  "Ribbit/InputManager.cpp"
-  "Ribbit/InputManager.h"
-  "Ribbit/Main.cpp"
-  "Ribbit/Ribbit.cpp"
-  "Ribbit/Ribbit.h"
-  "Ribbit/Renderer.cpp"
-  "Ribbit/Renderer.h"
-  "Ribbit/ResourceManager.cpp"
-  "Ribbit/ResourceManager.h"
-  "Ribbit/Scene.cpp"
-  "Ribbit/Scene.h"
-  "Ribbit/SceneManager.cpp"
-  "Ribbit/SceneManager.h"
-  "Ribbit/TextRendererComponent.cpp"
-  "Ribbit/TextRendererComponent.h"
-  "Ribbit/Texture2D.cpp"
-  "Ribbit/Texture2D.h"
-  "Ribbit/Transform.cpp"
-  "Ribbit/Transform.h"
- "Ribbit/Timer.h" "Ribbit/Timer.cpp" "Ribbit/Component.h" "Ribbit/Component.cpp" "Ribbit/ImageRendererComponent.h" "Ribbit/ImageRendererComponent.cpp" "Ribbit/FPSComponent.h" "Ribbit/FPSComponent.cpp")
+  # Main/
+  "Ribbit/Main/Main.cpp"
+  "Ribbit/Main/Ribbit.cpp"
+  "Ribbit/Main/Ribbit.h"
+
+  # Engine/
+  "Ribbit/Engine/Font.cpp"
+  "Ribbit/Engine/Font.h"
+  "Ribbit/Engine/Renderer.cpp"
+  "Ribbit/Engine/Renderer.h"
+  "Ribbit/Engine/Scene.cpp"
+  "Ribbit/Engine/Scene.h"
+  "Ribbit/Engine/Texture2D.cpp"
+  "Ribbit/Engine/Texture2D.h"
+  "Ribbit/Engine/Timer.h"
+  "Ribbit/Engine/Timer.cpp"
+    # Engine/Managers/
+  "Ribbit/Engine/Managers/InputManager.cpp"
+  "Ribbit/Engine/Managers/InputManager.h"
+  "Ribbit/Engine/Managers/ResourceManager.cpp"
+  "Ribbit/Engine/Managers/ResourceManager.h"
+  "Ribbit/Engine/Managers/SceneManager.cpp"
+  "Ribbit/Engine/Managers/SceneManager.h"
+
+  # Object/
+  "Ribbit/Object/GameObject.cpp"
+  "Ribbit/Object/GameObject.h"
+  "Ribbit/Object/Transform.cpp"
+  "Ribbit/Object/Transform.h"
+  "Ribbit/Object/Component.h"
+  "Ribbit/Object/Component.cpp"
+
+  # Components/
+  "Ribbit/Components/TextRendererComponent.cpp"
+  "Ribbit/Components/TextRendererComponent.h"
+  "Ribbit/Components/ImageRendererComponent.h"
+  "Ribbit/Components/ImageRendererComponent.cpp"
+  "Ribbit/Components/FPSComponent.h"
+  "Ribbit/Components/FPSComponent.cpp")
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
