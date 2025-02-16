@@ -11,10 +11,14 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include "Ribbit.h"
+
+#include <thread>
+
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "Timer.h"
 
 SDL_Window* g_window{};
 
@@ -100,6 +104,7 @@ rib::Ribbit::~Ribbit()
 void rib::Ribbit::Run(const std::function<void()>& load)
 {
 	load();
+	Timer::Start();
 #ifndef __EMSCRIPTEN__
 	while (!m_quit)
 		RunOneFrame();
@@ -110,7 +115,17 @@ void rib::Ribbit::Run(const std::function<void()>& load)
 
 void rib::Ribbit::RunOneFrame()
 {
+	Timer::Update();
+
 	m_quit = !InputManager::GetInstance().ProcessInput();
+
+	while (Timer::DoFixedTimeStep())
+	{
+		SceneManager::GetInstance().FixedUpdate();
+	}
+
 	SceneManager::GetInstance().Update();
 	Renderer::GetInstance().Render();
+
+	std::this_thread::sleep_for(Timer::SleepDurationNanoSeconds());
 }

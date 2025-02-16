@@ -9,6 +9,14 @@ void rib::SceneManager::Update()
 	}
 }
 
+void rib::SceneManager::FixedUpdate()
+{
+	for(auto& scene : m_scenes)
+	{
+		scene->FixedUpdate();
+	}
+}
+
 void rib::SceneManager::Render()
 {
 	for (const auto& scene : m_scenes)

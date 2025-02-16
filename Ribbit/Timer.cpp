@@ -50,3 +50,14 @@ float rib::Timer::GetFixedDeltaSeconds()
 {
 	return FIXED_TIME_STEP_SECONDS;
 }
+float rib::Timer::TargetFPS()
+{
+	return TARGET_FPS;
+}
+std::chrono::nanoseconds rib::Timer::SleepDurationNanoSeconds()
+{
+	constexpr auto msPerFrame = std::chrono::milliseconds(static_cast<int>(1'000.f / TARGET_FPS));
+	const std::chrono::nanoseconds sleep = (m_CurrentTimePoint + msPerFrame - std::chrono::high_resolution_clock::now());
+
+	return sleep;
+}

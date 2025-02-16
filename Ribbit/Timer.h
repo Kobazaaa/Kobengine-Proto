@@ -33,6 +33,8 @@ namespace rib
 		[[nodiscard]] static float GetDeltaSeconds();
 		[[nodiscard]] static float GetTotalTimeSeconds();
 		[[nodiscard]] static float GetFixedDeltaSeconds();
+		[[nodiscard]] static float TargetFPS();
+		[[nodiscard]] static std::chrono::nanoseconds SleepDurationNanoSeconds();
 
 	private:
 		//--------------------------------------------------

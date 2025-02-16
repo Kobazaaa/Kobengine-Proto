@@ -13,6 +13,7 @@ namespace rib
 		void RemoveAll();
 
 		void Update();
+		void FixedUpdate();
 		void Render() const;
 
 		~Scene();

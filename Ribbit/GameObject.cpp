@@ -7,6 +7,10 @@ rib::GameObject::~GameObject() = default;
 
 void rib::GameObject::Update(){}
 
+void rib::GameObject::FixedUpdate()
+{
+}
+
 void rib::GameObject::Render() const
 {
 	const auto& pos = m_transform.GetPosition();
