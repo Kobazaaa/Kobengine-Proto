@@ -195,6 +195,11 @@ endif()
 
 target_include_directories(${TARGET_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/Ribbit/
+  ${CMAKE_SOURCE_DIR}/Ribbit/Components
+  ${CMAKE_SOURCE_DIR}/Ribbit/Engine
+  ${CMAKE_SOURCE_DIR}/Ribbit/Engine/Managers
+  ${CMAKE_SOURCE_DIR}/Ribbit/Main
+  ${CMAKE_SOURCE_DIR}/Ribbit/Object
   ${glm_SOURCE_DIR}
 )
 
