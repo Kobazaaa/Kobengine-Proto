@@ -9,6 +9,17 @@ unsigned int Scene::m_idCounter = 0;
 
 Scene::Scene(const std::string& name) : m_name(name) {}
 
+void Scene::CleanupDeletedObjects()
+{
+	m_objects.erase(
+		std::remove_if(m_objects.begin(), m_objects.end(),
+			[](const std::shared_ptr<GameObject>& object)
+			{
+				return object->IsFlaggedForDeletion();
+			}),
+		m_objects.end());
+}
+
 Scene::~Scene() = default;
 
 void Scene::Add(std::shared_ptr<GameObject> object)
@@ -32,6 +43,7 @@ void Scene::Update()
 	{
 		object->Update();
 	}
+	CleanupDeletedObjects();
 }
 
 void Scene::FixedUpdate()

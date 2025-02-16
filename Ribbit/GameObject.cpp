@@ -3,26 +3,70 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 
-rib::GameObject::~GameObject() = default;
 
-void rib::GameObject::Update(){}
+//--------------------------------------------------
+//    Loop
+//--------------------------------------------------
+void rib::GameObject::Update()
+{
+	for (auto& component : m_vComponents)
+	{
+		component->Update();
+	}
 
+	CleanupDeletedComponents();
+}
 void rib::GameObject::FixedUpdate()
 {
+	for (auto& component : m_vComponents)
+	{
+		component->FixedUpdate();
+	}
 }
-
 void rib::GameObject::Render() const
 {
-	const auto& pos = m_transform.GetPosition();
-	Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
+	for (auto& component : m_vComponents)
+	{
+		component->Render();
+	}
 }
 
-void rib::GameObject::SetTexture(const std::string& filename)
+
+
+//--------------------------------------------------
+//    Transform
+//--------------------------------------------------
+rib::Transform rib::GameObject::GetTransform() const
 {
-	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
+	return m_transform;
 }
-
 void rib::GameObject::SetPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
+}
+
+
+//--------------------------------------------------
+//    Deletion
+//--------------------------------------------------
+bool rib::GameObject::IsFlaggedForDeletion() const
+{
+	return m_DeletionFlag;
+}
+void rib::GameObject::FlagForDeletion()
+{
+	m_DeletionFlag = true;
+}
+
+
+
+void rib::GameObject::CleanupDeletedComponents()
+{
+	m_vComponents.erase(
+		std::remove_if(m_vComponents.begin(), m_vComponents.end(),
+			[](const std::shared_ptr<Component>& component)
+			{
+				return component->IsFlaggedForDeletion();
+			}),
+		m_vComponents.end());
 }
