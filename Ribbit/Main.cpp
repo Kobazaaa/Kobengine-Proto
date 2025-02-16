@@ -14,26 +14,28 @@
 #include "Scene.h"
 
 #include <filesystem>
+
+#include "ImageRendererComponent.h"
 namespace fs = std::filesystem;
 
 void load()
 {
 	auto& scene = rib::SceneManager::GetInstance().CreateScene("Demo");
 
-	//auto go = std::make_shared<rib::GameObject>();
-	//go->SetTexture("background.tga");
-	//scene.Add(go);
-	//
-	//go = std::make_shared<rib::GameObject>();
-	//go->SetTexture("logo.tga");
-	//go->SetPosition(216, 180);
-	//scene.Add(go);
+	auto go = std::make_shared<rib::GameObject>();
+	go->AddComponent<rib::ImageRendererComponent>("background.tga");
+	scene.Add(go);
+	
+	go = std::make_shared<rib::GameObject>();
+	go->AddComponent<rib::ImageRendererComponent>("logo.tga");
+	go->SetPosition(216, 180);
+	scene.Add(go);
 
 	auto font = rib::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto to = std::make_shared<rib::GameObject>();
-	to->AddComponent<rib::TextRendererComponent>("Programming 4 Assignment", font);
-	to->SetPosition(80, 20);
-	scene.Add(to);
+	go = std::make_shared<rib::GameObject>();
+	go->AddComponent<rib::TextRendererComponent>("Programming 4 Assignment", font);
+	go->SetPosition(80, 20);
+	scene.Add(go);
 }
 
 int main(int, char*[]) {
