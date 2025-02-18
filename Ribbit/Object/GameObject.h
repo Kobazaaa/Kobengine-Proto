@@ -87,23 +87,42 @@ namespace rib
 		}
 
 		//--------------------------------------------------
-		//    Transform
+		//    Parent-Child
 		//--------------------------------------------------
-		Transform GetTransform() const;
-		void SetPosition(float x, float y);
+		GameObject* GetParent()							const;
+		void		SetParent(GameObject* parent, bool keepWorldPosition);
+		bool		IsChild(const GameObject* child)	const;
+		int			GetChildCount()						const;
+		GameObject* GetChildAt(int index)				const;
 
 		//--------------------------------------------------
-		//    Deletion
+		//    Transform
+		//--------------------------------------------------
+		Transform	GetLocalTransform() const;
+		Transform	GetWorldTransform();
+		void		SetLocalPosition(const glm::vec3& pos);
+		void		UpdateWorldPosition();
+
+		//--------------------------------------------------
+		//    Flags
 		//--------------------------------------------------
 		bool IsFlaggedForDeletion() const;
 		void FlagForDeletion();
+		void SetPositionDirty();
 
 	private:
 		void CleanupDeletedComponents();
-
 		std::vector<std::unique_ptr<Component>> m_vComponents;
-		Transform m_transform{};
+
+		void AddChild(GameObject* child);
+		void RemoveChild(GameObject* child);
+		GameObject* m_pParent{};
+		std::vector<GameObject*> m_vChildren{};
+
+		Transform m_LocalTransform{};
+		Transform m_WorldTransform{};
 
 		bool m_DeletionFlag{ false };
+		bool m_DirtyPositionFlag{ false };
 	};
 }

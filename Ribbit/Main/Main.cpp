@@ -29,18 +29,18 @@ void load()
 	
 	go = std::make_shared<rib::GameObject>();
 	go->AddComponent<rib::ImageRendererComponent>("logo.tga");
-	go->SetPosition(216, 180);
+	go->SetLocalPosition(glm::vec3(216, 180, 0));
 	scene.Add(go);
 
 	auto font = rib::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	go = std::make_shared<rib::GameObject>();
 	go->AddComponent<rib::TextRendererComponent>("Programming 4 Assignment", font);
-	go->SetPosition(80, 20);
+	go->SetLocalPosition(glm::vec3(80, 20, 0));
 	scene.Add(go);
 
 	go = std::make_shared<rib::GameObject>();
 	go->AddComponent<rib::TextRendererComponent>("FPS", font);
-	go->SetPosition(0, 450);
+	go->SetLocalPosition(glm::vec3(0, 450, 0));
 	go->AddComponent<rib::FPSComponent>();
 	scene.Add(go);
 }

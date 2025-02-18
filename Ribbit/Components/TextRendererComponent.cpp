@@ -41,7 +41,7 @@ void rib::TextRendererComponent::Render() const
 {
 	if (m_textTexture != nullptr)
 	{
-		const auto& pos = GetParent()->GetTransform().GetPosition();
+		const auto& pos = GetParent()->GetLocalTransform().GetPosition();
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
 }

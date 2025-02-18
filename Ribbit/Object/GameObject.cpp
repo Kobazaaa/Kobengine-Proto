@@ -50,17 +50,76 @@ void rib::GameObject::Render() const
 }
 
 
+//--------------------------------------------------
+//    Parent-Child
+//--------------------------------------------------
+rib::GameObject* rib::GameObject::GetParent() const
+{
+	return m_pParent;
+}
+void rib::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
+{
+	if (IsChild(parent) || parent == this || m_pParent == parent)
+		return;
+	if (parent == nullptr)
+		SetLocalPosition(GetWorldTransform().GetPosition());
+	else
+	{
+		if (keepWorldPosition)
+			SetLocalPosition(GetWorldTransform().GetPosition() - parent->GetWorldTransform().GetPosition());
+		SetPositionDirty();
+	}
+	if (m_pParent) m_pParent->RemoveChild(this);
+	m_pParent = parent;
+	if (m_pParent) m_pParent->AddChild(this);
+}
+bool rib::GameObject::IsChild(const GameObject* child) const
+{
+	return std::find(m_vChildren.begin(), m_vChildren.end(), child) != m_vChildren.end();
+}
+int rib::GameObject::GetChildCount() const
+{
+	return static_cast<int>(m_vChildren.size());
+}
+rib::GameObject* rib::GameObject::GetChildAt(int index) const
+{
+	if (index < 0 || index >= GetChildCount()) return nullptr;
+	return m_vChildren[index];
+}
 
 //--------------------------------------------------
 //    Transform
 //--------------------------------------------------
-rib::Transform rib::GameObject::GetTransform() const
+rib::Transform rib::GameObject::GetLocalTransform() const
 {
-	return m_transform;
+	return m_LocalTransform;
 }
-void rib::GameObject::SetPosition(float x, float y)
+rib::Transform rib::GameObject::GetWorldTransform()
 {
-	m_transform.SetPosition(x, y, 0.0f);
+	if (m_DirtyPositionFlag)
+		UpdateWorldPosition();
+	return m_WorldTransform;
+}
+
+void rib::GameObject::SetLocalPosition(const glm::vec3& pos)
+{
+	m_LocalTransform.SetPosition(pos.x, pos.y, pos.z);
+	SetPositionDirty();
+}
+void rib::GameObject::UpdateWorldPosition()
+{
+	//TODO fix transform to work properly so I can work with more then just pos
+	if (m_DirtyPositionFlag)
+	{
+		if (m_pParent == nullptr)
+			m_WorldTransform = m_LocalTransform;
+		else
+		{
+			auto newPos = m_pParent->GetWorldTransform().GetPosition() + m_LocalTransform.GetPosition();
+			m_WorldTransform.SetPosition(newPos.x, newPos.y, newPos.z);
+		}
+	}
+	m_DirtyPositionFlag = false;
 }
 
 
@@ -75,7 +134,10 @@ void rib::GameObject::FlagForDeletion()
 {
 	m_DeletionFlag = true;
 }
-
+void rib::GameObject::SetPositionDirty()
+{
+	m_DirtyPositionFlag = true;
+}
 
 
 void rib::GameObject::CleanupDeletedComponents()
@@ -87,4 +149,17 @@ void rib::GameObject::CleanupDeletedComponents()
 				return component->IsFlaggedForDeletion();
 			}),
 		m_vComponents.end());
+}
+
+
+void rib::GameObject::AddChild(GameObject* child)
+{
+	m_vChildren.push_back(child);
+}
+void rib::GameObject::RemoveChild(GameObject* child)
+{
+	std::erase_if(m_vChildren, [&](const GameObject* pChild)
+								    {
+								        return pChild == child;
+								    });
 }

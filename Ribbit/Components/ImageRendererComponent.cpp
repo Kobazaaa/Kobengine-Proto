@@ -21,6 +21,6 @@ rib::ImageRendererComponent::ImageRendererComponent(GameObject& parent, const st
 void rib::ImageRendererComponent::Update() {}
 void rib::ImageRendererComponent::Render() const
 {
-	const auto& pos = GetParent()->GetTransform().GetPosition();
+	const auto& pos = GetParent()->GetLocalTransform().GetPosition();
 	Renderer::GetInstance().RenderTexture(*m_imageTexture, pos.x, pos.y);
 }
