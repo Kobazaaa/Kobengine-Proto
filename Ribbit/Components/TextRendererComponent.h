@@ -15,7 +15,7 @@ namespace rib
 		//--------------------------------------------------
 		//    Constructors and Destructors
 		//--------------------------------------------------
-		explicit TextRendererComponent(GameObject* parent, const std::string& text, std::shared_ptr<Font> font);
+		explicit TextRendererComponent(GameObject& parent, const std::string& text, std::shared_ptr<Font> font);
 		~TextRendererComponent() override = default;
 
 		TextRendererComponent(const TextRendererComponent& other) = delete;

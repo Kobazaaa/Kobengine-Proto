@@ -4,18 +4,36 @@
 #include "Renderer.h"
 
 
+
 //--------------------------------------------------
 //    Loop
 //--------------------------------------------------
+void rib::GameObject::Start()
+{
+	for (auto& component : m_vComponents)
+	{
+		component->Start();
+	}
+}
+
 void rib::GameObject::Update()
 {
 	for (auto& component : m_vComponents)
 	{
 		component->Update();
 	}
+}
+
+void rib::GameObject::LateUpdate()
+{
+	for (auto& component : m_vComponents)
+	{
+		component->LateUpdate();
+	}
 
 	CleanupDeletedComponents();
 }
+
 void rib::GameObject::FixedUpdate()
 {
 	for (auto& component : m_vComponents)
@@ -64,7 +82,7 @@ void rib::GameObject::CleanupDeletedComponents()
 {
 	m_vComponents.erase(
 		std::remove_if(m_vComponents.begin(), m_vComponents.end(),
-			[](const std::shared_ptr<Component>& component)
+			[](const std::unique_ptr<Component>& component)
 			{
 				return component->IsFlaggedForDeletion();
 			}),

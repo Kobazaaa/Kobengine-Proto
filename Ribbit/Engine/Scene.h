@@ -12,7 +12,9 @@ namespace rib
 		void Remove(std::shared_ptr<GameObject> object);
 		void RemoveAll();
 
+		void Start();
 		void Update();
+		void LateUpdate();
 		void FixedUpdate();
 		void Render() const;
 

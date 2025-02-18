@@ -9,7 +9,7 @@
 //--------------------------------------------------
 //    Constructors and Destructors
 //--------------------------------------------------
-rib::TextRendererComponent::TextRendererComponent(GameObject* parent, const std::string& text, std::shared_ptr<Font> font)
+rib::TextRendererComponent::TextRendererComponent(GameObject& parent, const std::string& text, std::shared_ptr<Font> font)
 	: Component(parent), m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
 { }
 
@@ -41,7 +41,7 @@ void rib::TextRendererComponent::Render() const
 {
 	if (m_textTexture != nullptr)
 	{
-		const auto& pos = m_pParent->GetTransform().GetPosition();
+		const auto& pos = GetParent()->GetTransform().GetPosition();
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
 }

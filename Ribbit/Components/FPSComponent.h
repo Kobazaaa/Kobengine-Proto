@@ -3,20 +3,22 @@
 
 namespace rib
 {
+	class TextRendererComponent;
+
 	class FPSComponent : public Component
 	{
 	public:
 		//--------------------------------------------------
 		//    Constructor
 		//--------------------------------------------------
-		explicit FPSComponent(GameObject* parent);
+		explicit FPSComponent(GameObject& parent);
 
 
 		//--------------------------------------------------
 		//    Loop
 		//--------------------------------------------------
+		void Start() override;
 		void Update() override;
-		void Render() const override;
 
 
 		//--------------------------------------------------
@@ -27,5 +29,6 @@ namespace rib
 
 	private:
 		float m_FPS{};
+		TextRendererComponent* m_TextRenderer{};
 	};
 }

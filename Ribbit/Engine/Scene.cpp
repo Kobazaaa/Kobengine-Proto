@@ -37,11 +37,27 @@ void Scene::RemoveAll()
 	m_objects.clear();
 }
 
+void Scene::Start()
+{
+	for(auto& object : m_objects)
+	{
+		object->Start();
+	}
+}
+
 void Scene::Update()
 {
 	for(auto& object : m_objects)
 	{
 		object->Update();
+	}
+}
+
+void Scene::LateUpdate()
+{
+	for(auto& object : m_objects)
+	{
+		object->LateUpdate();
 	}
 	CleanupDeletedObjects();
 }

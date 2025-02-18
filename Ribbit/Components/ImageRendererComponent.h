@@ -14,7 +14,7 @@ namespace rib
 		//--------------------------------------------------
 		//    Constructors and Destructors
 		//--------------------------------------------------
-		explicit ImageRendererComponent(GameObject* parent, const std::string& fileName);
+		explicit ImageRendererComponent(GameObject& parent, const std::string& fileName);
 		~ImageRendererComponent() override = default;
 
 		ImageRendererComponent(const ImageRendererComponent& other) = delete;
@@ -26,6 +26,7 @@ namespace rib
 		//--------------------------------------------------
 		//    Loop
 		//--------------------------------------------------
+		void Update() override;
 		void Render() const override;
 
 	private:

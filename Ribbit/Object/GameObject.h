@@ -27,7 +27,9 @@ namespace rib
 		//--------------------------------------------------
 		//    Loop
 		//--------------------------------------------------
+		void Start();
 		void Update();
+		void LateUpdate();
 		void FixedUpdate();
 		void Render() const;
 
@@ -41,19 +43,19 @@ namespace rib
 		{
 			for (const auto& component : m_vComponents)
 			{
-				auto castedComponent = std::dynamic_pointer_cast<ComponentType>(component);
+				auto castedComponent = dynamic_cast<ComponentType>(component.get());
 				if (castedComponent) return true;
 			}
 			return false;
 		}
 		template <typename ComponentType>
 			requires std::derived_from<ComponentType, Component>
-		[[nodiscard]] std::shared_ptr<ComponentType> GetComponent(int index = 0)
+		[[nodiscard]] ComponentType* GetComponent(int index = 0)
 		{
 			int componentCount = 0;
 			for (const auto& component : m_vComponents)
 			{
-				auto castedComponent = std::dynamic_pointer_cast<ComponentType>(component);
+				auto castedComponent = dynamic_cast<ComponentType*>(component.get());
 				if (castedComponent)
 				{
 					if (componentCount == index) return castedComponent;
@@ -66,7 +68,7 @@ namespace rib
 			requires std::derived_from<ComponentType, Component>
 		void AddComponent(Args&&... args)
 		{
-			m_vComponents.push_back(std::make_shared<ComponentType>(this, std::forward<Args>(args)...));
+			m_vComponents.push_back(std::make_unique<ComponentType>(*this, std::forward<Args>(args)...));
 		}
 		template <typename ComponentType>
 			requires std::derived_from<ComponentType, Component>
@@ -99,7 +101,7 @@ namespace rib
 	private:
 		void CleanupDeletedComponents();
 
-		std::vector<std::shared_ptr<Component>> m_vComponents;
+		std::vector<std::unique_ptr<Component>> m_vComponents;
 		Transform m_transform{};
 
 		bool m_DeletionFlag{ false };

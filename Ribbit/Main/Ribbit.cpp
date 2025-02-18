@@ -104,6 +104,7 @@ rib::Ribbit::~Ribbit()
 void rib::Ribbit::Run(const std::function<void()>& load)
 {
 	load();
+	SceneManager::GetInstance().Start();
 	Timer::Start();
 #ifndef __EMSCRIPTEN__
 	while (!m_quit)
@@ -125,6 +126,7 @@ void rib::Ribbit::RunOneFrame()
 	}
 
 	SceneManager::GetInstance().Update();
+	SceneManager::GetInstance().LateUpdate();
 	Renderer::GetInstance().Render();
 
 	std::this_thread::sleep_for(Timer::SleepDurationNanoSeconds());

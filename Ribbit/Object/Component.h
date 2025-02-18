@@ -10,7 +10,7 @@ namespace rib
 		//--------------------------------------------------
 		//    Constructor and Destructor
 		//--------------------------------------------------
-		explicit Component(GameObject* parent);
+		explicit Component(GameObject& parent);
 		virtual ~Component() = default;
 		Component(const Component& other) = delete;
 		Component(Component&& other) = delete;
@@ -21,7 +21,9 @@ namespace rib
 		//--------------------------------------------------
 		//    Loop
 		//--------------------------------------------------
-		virtual void Update();
+		virtual void Start();
+		virtual void Update() = 0;
+		virtual void LateUpdate();
 		virtual void FixedUpdate();
 		virtual void Render()				const;
 
@@ -32,11 +34,11 @@ namespace rib
 		void FlagForDeletion();
 		bool IsFlaggedForDeletion()			const;
 
-	protected:
-		GameObject* m_pParent{};
+		GameObject* GetParent() const;
 
 	private:
-		bool m_DeletionFlag{ false };
+		GameObject* m_pParent{};
 
+		bool m_DeletionFlag{ false };
 	};
 }

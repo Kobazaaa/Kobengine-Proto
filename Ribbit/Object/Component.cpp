@@ -4,15 +4,17 @@
 //--------------------------------------------------
 //    Constructor
 //--------------------------------------------------
-rib::Component::Component(GameObject* parent)
-	: m_pParent{ parent }
+rib::Component::Component(GameObject& parent)
+	: m_pParent{ &parent }
 { }
+
 
 
 //--------------------------------------------------
 //    Loop
 //--------------------------------------------------
-void rib::Component::Update() {}
+void rib::Component::Start() {}
+void rib::Component::LateUpdate() {}
 void rib::Component::FixedUpdate() {}
 void rib::Component::Render() const {}
 
@@ -27,4 +29,9 @@ void rib::Component::FlagForDeletion()
 bool rib::Component::IsFlaggedForDeletion() const
 {
 	return m_DeletionFlag;
+}
+
+rib::GameObject* rib::Component::GetParent() const
+{
+	return m_pParent;
 }

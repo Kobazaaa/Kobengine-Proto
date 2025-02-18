@@ -1,11 +1,27 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
+void rib::SceneManager::Start()
+{
+	for(auto& scene : m_scenes)
+	{
+		scene->Start();
+	}
+}
+
 void rib::SceneManager::Update()
 {
 	for(auto& scene : m_scenes)
 	{
 		scene->Update();
+	}
+}
+
+void rib::SceneManager::LateUpdate()
+{
+	for(auto& scene : m_scenes)
+	{
+		scene->LateUpdate();
 	}
 }
 

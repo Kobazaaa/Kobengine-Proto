@@ -12,7 +12,9 @@ namespace rib
 	public:
 		Scene& CreateScene(const std::string& name);
 
+		void Start();
 		void Update();
+		void LateUpdate();
 		void FixedUpdate();
 		void Render();
 	private:
