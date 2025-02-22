@@ -108,7 +108,7 @@ void rib::GameObject::SetLocalPosition(const glm::vec3& pos)
 }
 void rib::GameObject::UpdateWorldPosition()
 {
-	//TODO fix transform to work properly so I can work with more then just pos
+	//TODO fix transform to work properly so I can work with more than just position (scale/rotation)
 	if (m_DirtyPositionFlag)
 	{
 		if (m_pParent == nullptr)
@@ -137,6 +137,8 @@ void rib::GameObject::FlagForDeletion()
 void rib::GameObject::SetPositionDirty()
 {
 	m_DirtyPositionFlag = true;
+	for (auto& child : m_vChildren)
+		child->SetPositionDirty();
 }
 
 
@@ -154,6 +156,10 @@ void rib::GameObject::CleanupDeletedComponents()
 
 void rib::GameObject::AddChild(GameObject* child)
 {
+	// If the child already exists in the container, don't add it again!
+	if (std::find(m_vChildren.begin(), m_vChildren.end(), child) == m_vChildren.end())
+		return;
+
 	m_vChildren.push_back(child);
 }
 void rib::GameObject::RemoveChild(GameObject* child)

@@ -53,7 +53,9 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Ribbit/Components/ImageRendererComponent.h"
   "Ribbit/Components/ImageRendererComponent.cpp"
   "Ribbit/Components/FPSComponent.h"
-  "Ribbit/Components/FPSComponent.cpp")
+  "Ribbit/Components/FPSComponent.cpp"
+  "Ribbit/Components/RotateComponent.h"
+  "Ribbit/Components/RotateComponent.cpp")
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)

@@ -32,13 +32,11 @@ namespace rib
 		//    Accessors & Mutators
 		//--------------------------------------------------
 		void FlagForDeletion();
-		bool IsFlaggedForDeletion()			const;
-
-		GameObject* GetParent() const;
+		[[nodiscard]] bool IsFlaggedForDeletion()			const;
+		[[nodiscard]] GameObject* GetParent() const;
 
 	private:
 		GameObject* m_pParent{};
-
 		bool m_DeletionFlag{ false };
 	};
 }

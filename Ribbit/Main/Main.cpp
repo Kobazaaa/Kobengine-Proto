@@ -18,6 +18,7 @@ namespace fs = std::filesystem;
 #include "FPSComponent.h"
 #include "ImageRendererComponent.h"
 #include "TextRendererComponent.h"
+#include "RotateComponent.h"
 
 void load()
 {
@@ -42,6 +43,20 @@ void load()
 	go->AddComponent<rib::TextRendererComponent>("FPS", font);
 	go->SetLocalPosition(glm::vec3(0, 450, 0));
 	go->AddComponent<rib::FPSComponent>();
+	scene.Add(go);
+
+
+	auto chefGo = std::make_shared<rib::GameObject>();
+	chefGo->AddComponent<rib::ImageRendererComponent>("Chef.png");
+	chefGo->SetLocalPosition(glm::vec3(300, 250, 0));
+	chefGo->AddComponent<rib::RotateComponent>(0.5f, 150.f);
+	scene.Add(chefGo);
+
+	go = std::make_shared<rib::GameObject>();
+	go->AddComponent<rib::ImageRendererComponent>("Bean.png");
+	go->SetLocalPosition(glm::vec3(0, 0, 0));
+	go->SetParent(chefGo.get(), false);
+	go->AddComponent<rib::RotateComponent>(20.f, 50.f);
 	scene.Add(go);
 }
 
