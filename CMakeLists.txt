@@ -1,65 +1,65 @@
 cmake_minimum_required(VERSION 3.26)
-project(Ribbit)
+project(Kobengine)
 
 if(EMSCRIPTEN)
   message("Using Emscripten!")
 endif()
 
 if(EMSCRIPTEN)
-  set(TARGET_NAME ribbit_web)
+  set(TARGET_NAME kobengine_web)
   set(TARGET_PARAM )
 else()
-  set(TARGET_NAME ribbit)
+  set(TARGET_NAME kobengine)
   set(TARGET_PARAM WIN32)
 endif()
 
 # list source files here
 add_executable(${TARGET_NAME} ${TARGET_PARAM}
   # Main/
-  "Ribbit/Main/Main.cpp"
-  "Ribbit/Main/Ribbit.cpp"
-  "Ribbit/Main/Ribbit.h"
+  "Kobengine/Main/Main.cpp"
+  "Kobengine/Main/Kobengine.cpp"
+  "Kobengine/Main/Kobengine.h"
 
   # Engine/
-  "Ribbit/Engine/Font.cpp"
-  "Ribbit/Engine/Font.h"
-  "Ribbit/Engine/Renderer.cpp"
-  "Ribbit/Engine/Renderer.h"
-  "Ribbit/Engine/Scene.cpp"
-  "Ribbit/Engine/Scene.h"
-  "Ribbit/Engine/Texture2D.cpp"
-  "Ribbit/Engine/Texture2D.h"
-  "Ribbit/Engine/Timer.h"
-  "Ribbit/Engine/Timer.cpp"
+  "Kobengine/Engine/Font.cpp"
+  "Kobengine/Engine/Font.h"
+  "Kobengine/Engine/Renderer.cpp"
+  "Kobengine/Engine/Renderer.h"
+  "Kobengine/Engine/Scene.cpp"
+  "Kobengine/Engine/Scene.h"
+  "Kobengine/Engine/Texture2D.cpp"
+  "Kobengine/Engine/Texture2D.h"
+  "Kobengine/Engine/Timer.h"
+  "Kobengine/Engine/Timer.cpp"
     # Engine/Managers/
-  "Ribbit/Engine/Managers/InputManager.cpp"
-  "Ribbit/Engine/Managers/InputManager.h"
-  "Ribbit/Engine/Managers/ResourceManager.cpp"
-  "Ribbit/Engine/Managers/ResourceManager.h"
-  "Ribbit/Engine/Managers/SceneManager.cpp"
-  "Ribbit/Engine/Managers/SceneManager.h"
+  "Kobengine/Engine/Managers/InputManager.cpp"
+  "Kobengine/Engine/Managers/InputManager.h"
+  "Kobengine/Engine/Managers/ResourceManager.cpp"
+  "Kobengine/Engine/Managers/ResourceManager.h"
+  "Kobengine/Engine/Managers/SceneManager.cpp"
+  "Kobengine/Engine/Managers/SceneManager.h"
 
   # Object/
-  "Ribbit/Object/GameObject.cpp"
-  "Ribbit/Object/GameObject.h"
-  "Ribbit/Object/Transform.cpp"
-  "Ribbit/Object/Transform.h"
-  "Ribbit/Object/Component.h"
-  "Ribbit/Object/Component.cpp"
+  "Kobengine/Object/GameObject.cpp"
+  "Kobengine/Object/GameObject.h"
+  "Kobengine/Object/Transform.cpp"
+  "Kobengine/Object/Transform.h"
+  "Kobengine/Object/Component.h"
+  "Kobengine/Object/Component.cpp"
 
   # Components/
-  "Ribbit/Components/TextRendererComponent.cpp"
-  "Ribbit/Components/TextRendererComponent.h"
-  "Ribbit/Components/ImageRendererComponent.h"
-  "Ribbit/Components/ImageRendererComponent.cpp"
-  "Ribbit/Components/FPSComponent.h"
-  "Ribbit/Components/FPSComponent.cpp"
-  "Ribbit/Components/RotateComponent.h"
-  "Ribbit/Components/RotateComponent.cpp")
+  "Kobengine/Components/TextRendererComponent.cpp"
+  "Kobengine/Components/TextRendererComponent.h"
+  "Kobengine/Components/ImageRendererComponent.h"
+  "Kobengine/Components/ImageRendererComponent.cpp"
+  "Kobengine/Components/FPSComponent.h"
+  "Kobengine/Components/FPSComponent.cpp"
+  "Kobengine/Components/RotateComponent.h"
+  "Kobengine/Components/RotateComponent.cpp")
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
-# set ribbit as the default startup project
+# set Kobengine as the default startup project
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${TARGET_NAME})
 
 include(FetchContent)
@@ -196,12 +196,12 @@ elseif(NOT EMSCRIPTEN)
 endif()
 
 target_include_directories(${TARGET_NAME} PRIVATE
-  ${CMAKE_SOURCE_DIR}/Ribbit/
-  ${CMAKE_SOURCE_DIR}/Ribbit/Components
-  ${CMAKE_SOURCE_DIR}/Ribbit/Engine
-  ${CMAKE_SOURCE_DIR}/Ribbit/Engine/Managers
-  ${CMAKE_SOURCE_DIR}/Ribbit/Main
-  ${CMAKE_SOURCE_DIR}/Ribbit/Object
+  ${CMAKE_SOURCE_DIR}/Kobengine/
+  ${CMAKE_SOURCE_DIR}/Kobengine/Components
+  ${CMAKE_SOURCE_DIR}/Kobengine/Engine
+  ${CMAKE_SOURCE_DIR}/Kobengine/Engine/Managers
+  ${CMAKE_SOURCE_DIR}/Kobengine/Main
+  ${CMAKE_SOURCE_DIR}/Kobengine/Object
   ${glm_SOURCE_DIR}
 )
 
