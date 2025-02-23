@@ -94,11 +94,11 @@ const std::vector<kob::GameObject*>& kob::GameObject::GetAllChildren() const
 //--------------------------------------------------
 //    Transform
 //--------------------------------------------------
-kob::Transform kob::GameObject::GetLocalTransform() const
+const kob::Transform& kob::GameObject::GetLocalTransform() const
 {
 	return m_LocalTransform;
 }
-kob::Transform kob::GameObject::GetWorldTransform()
+const kob::Transform& kob::GameObject::GetWorldTransform()
 {
 	if (m_DirtyPositionFlag)
 		UpdateWorldPosition();
@@ -119,8 +119,8 @@ void kob::GameObject::UpdateWorldPosition()
 			m_WorldTransform = m_LocalTransform;
 		else
 		{
-			auto newPos = m_pParent->GetWorldTransform().GetPosition() + m_LocalTransform.GetPosition();
-			m_WorldTransform.SetPosition(newPos.x, newPos.y, newPos.z);
+			const auto newPos = m_pParent->GetWorldTransform().GetPosition() + m_LocalTransform.GetPosition();
+			m_WorldTransform.SetPosition(newPos);
 		}
 	}
 	m_DirtyPositionFlag = false;

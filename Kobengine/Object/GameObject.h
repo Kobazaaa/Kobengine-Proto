@@ -100,10 +100,10 @@ namespace kob
 		//--------------------------------------------------
 		//    Transform
 		//--------------------------------------------------
-		Transform	GetLocalTransform() const;
-		Transform	GetWorldTransform();
-		void		SetLocalPosition(const glm::vec3& pos);
-		void		UpdateWorldPosition();
+		const Transform& GetLocalTransform() const;
+		const Transform& GetWorldTransform();
+		void			 SetLocalPosition(const glm::vec3& pos);
+		void			 UpdateWorldPosition();
 
 		//--------------------------------------------------
 		//    Flags
