@@ -86,6 +86,10 @@ kob::GameObject* kob::GameObject::GetChildAt(int index) const
 	if (index < 0 || index >= GetChildCount()) return nullptr;
 	return m_vChildren[index];
 }
+const std::vector<kob::GameObject*>& kob::GameObject::GetAllChildren() const
+{
+	return m_vChildren;
+}
 
 //--------------------------------------------------
 //    Transform

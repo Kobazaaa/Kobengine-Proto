@@ -9,6 +9,7 @@
 namespace kob
 {
 	class Texture2D;
+
 	class GameObject final
 	{
 	public:
@@ -89,11 +90,12 @@ namespace kob
 		//--------------------------------------------------
 		//    Parent-Child
 		//--------------------------------------------------
-		GameObject* GetParent()							const;
+		GameObject* GetParent()								const;
 		void		SetParent(GameObject* parent, bool keepWorldPosition);
-		bool		IsChild(const GameObject* child)	const;
-		int			GetChildCount()						const;
-		GameObject* GetChildAt(int index)				const;
+		bool		IsChild(const GameObject* child)		const;
+		int			GetChildCount()							const;
+		GameObject* GetChildAt(int index)					const;
+		const std::vector<GameObject*>& GetAllChildren()	const;
 
 		//--------------------------------------------------
 		//    Transform
