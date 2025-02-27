@@ -46,9 +46,14 @@ void load()
 	scene.Add(go);
 
 
+	auto emptyGo = std::make_shared<kob::GameObject>();
+	emptyGo->SetLocalPosition(glm::vec3(300, 250, 0));
+	scene.Add(emptyGo);
+
 	auto chefGo = std::make_shared<kob::GameObject>();
 	chefGo->AddComponent<kob::ImageRendererComponent>("Chef.png");
-	chefGo->SetLocalPosition(glm::vec3(300, 250, 0));
+	chefGo->SetLocalPosition(glm::vec3(0, 0, 0));
+	chefGo->SetParent(emptyGo.get(), false);
 	chefGo->AddComponent<kob::RotateComponent>(0.5f, 150.f);
 	scene.Add(chefGo);
 

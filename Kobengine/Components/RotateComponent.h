@@ -19,7 +19,6 @@ namespace kob
 		void Update() override;
 
 	private:
-		glm::vec2 m_CenterPoint	{};
 		float m_Speed			{};
 		float m_Radius			{};
 	};

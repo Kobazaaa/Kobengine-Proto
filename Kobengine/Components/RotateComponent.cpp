@@ -8,7 +8,6 @@
 //--------------------------------------------------
 kob::RotateComponent::RotateComponent(GameObject& parent, float speed, float radius)
 	: Component(parent)
-	, m_CenterPoint	{ parent.GetLocalTransform().GetPosition() }
 	, m_Speed		{ speed }
 	, m_Radius		{ radius }
 {}
@@ -20,7 +19,7 @@ kob::RotateComponent::RotateComponent(GameObject& parent, float speed, float rad
 //--------------------------------------------------
 void kob::RotateComponent::Update()
 {
-	float x = m_CenterPoint.x + m_Radius * cos(m_Speed * Timer::GetTotalTimeSeconds());
-	float y = m_CenterPoint.y + m_Radius * sin(m_Speed * Timer::GetTotalTimeSeconds());
+	float x = m_Radius * cos(m_Speed * Timer::GetTotalTimeSeconds());
+	float y = m_Radius * sin(m_Speed * Timer::GetTotalTimeSeconds());
 	GetParent()->SetLocalPosition(glm::vec3(x, y, 0));
 }

@@ -112,7 +112,7 @@ void kob::GameObject::SetLocalPosition(const glm::vec3& pos)
 }
 void kob::GameObject::UpdateWorldPosition()
 {
-	//TODO fix transform to work properly so I can work with more than just position (scale/rotation)
+	//TODO fix transform to work with scale/rotation
 	if (m_DirtyPositionFlag)
 	{
 		if (m_pParent == nullptr)
@@ -137,6 +137,9 @@ bool kob::GameObject::IsFlaggedForDeletion() const
 void kob::GameObject::FlagForDeletion()
 {
 	m_DeletionFlag = true;
+	for (auto& child : m_vChildren)
+		child->FlagForDeletion();
+
 }
 void kob::GameObject::SetPositionDirty()
 {
