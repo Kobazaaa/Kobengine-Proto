@@ -26,6 +26,7 @@ namespace kob
 		virtual void LateUpdate();
 		virtual void FixedUpdate();
 		virtual void Render()				const;
+		virtual void ImGuiRender();
 
 
 		//--------------------------------------------------
