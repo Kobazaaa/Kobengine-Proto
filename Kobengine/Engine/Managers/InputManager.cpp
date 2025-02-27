@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include "InputManager.h"
+#include "backends/imgui_impl_sdl2.h"
 
 bool kob::InputManager::ProcessInput()
 {
@@ -14,7 +15,9 @@ bool kob::InputManager::ProcessInput()
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
 			
 		}
-		// etc...
+
+		// Process Events for ImGui
+		ImGui_ImplSDL2_ProcessEvent(&e);
 	}
 
 	return true;

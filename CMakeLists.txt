@@ -195,6 +195,26 @@ elseif(NOT EMSCRIPTEN)
   )
 endif()
 
+# add ImGui
+FetchContent_Declare(
+  imgui
+  URL https://github.com/ocornut/imgui/archive/refs/tags/v1.91.8.zip
+  DOWNLOAD_NO_PROGRESS ON
+  DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
+)
+FetchContent_MakeAvailable(imgui)
+
+# Add the ImGui sources to project
+target_sources(${TARGET_NAME} PRIVATE
+  ${imgui_SOURCE_DIR}/imgui.cpp
+  ${imgui_SOURCE_DIR}/imgui_draw.cpp
+  ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+  ${imgui_SOURCE_DIR}/imgui_tables.cpp
+  ${imgui_SOURCE_DIR}/imgui_demo.cpp
+  ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl2.cpp
+  ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+)
+
 target_include_directories(${TARGET_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/Kobengine/
   ${CMAKE_SOURCE_DIR}/Kobengine/Components
@@ -203,6 +223,8 @@ target_include_directories(${TARGET_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/Kobengine/Main
   ${CMAKE_SOURCE_DIR}/Kobengine/Object
   ${glm_SOURCE_DIR}
+  ${imgui_SOURCE_DIR}
+  ${imgui_SOURCE_DIR}/backends
 )
 
 # compile at max warning level + treat warnings as errors
