@@ -33,11 +33,19 @@ void kob::SceneManager::FixedUpdate()
 	}
 }
 
-void kob::SceneManager::Render()
+void kob::SceneManager::Render() const
 {
 	for (const auto& scene : m_scenes)
 	{
 		scene->Render();
+	}
+}
+
+void kob::SceneManager::ImGuiRenderUpdate()
+{
+	for (const auto& scene : m_scenes)
+	{
+		scene->ImGuiRenderUpdate();
 	}
 }
 

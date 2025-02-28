@@ -16,7 +16,8 @@ namespace kob
 		void Update();
 		void LateUpdate();
 		void FixedUpdate();
-		void Render();
+		void Render() const;
+		void ImGuiRenderUpdate();
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;

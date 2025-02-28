@@ -19,6 +19,7 @@ namespace fs = std::filesystem;
 #include "ImageRendererComponent.h"
 #include "TextRendererComponent.h"
 #include "RotateComponent.h"
+#include "TrashTheCacheComponent.h"
 
 void load()
 {
@@ -62,6 +63,10 @@ void load()
 	go->SetLocalPosition(glm::vec3(0, 0, 0));
 	go->SetParent(chefGo.get(), false);
 	go->AddComponent<kob::RotateComponent>(20.f, 50.f);
+	scene.Add(go);
+
+	go = std::make_shared<kob::GameObject>();
+	go->AddComponent<kob::TrashTheCacheComponent>();
 	scene.Add(go);
 }
 

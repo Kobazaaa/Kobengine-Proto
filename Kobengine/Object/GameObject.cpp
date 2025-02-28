@@ -48,6 +48,13 @@ void kob::GameObject::Render() const
 		component->Render();
 	}
 }
+void kob::GameObject::ImGuiRenderUpdate()
+{
+	for (auto& component : m_vComponents)
+	{
+		component->ImGuiRenderUpdate();
+	}
+}
 
 
 //--------------------------------------------------

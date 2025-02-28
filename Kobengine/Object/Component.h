@@ -1,5 +1,7 @@
 #pragma once
 
+#include "imgui.h"
+
 namespace kob
 {
 	class GameObject;
@@ -26,7 +28,7 @@ namespace kob
 		virtual void LateUpdate();
 		virtual void FixedUpdate();
 		virtual void Render()				const;
-		virtual void ImGuiRender();
+		virtual void ImGuiRenderUpdate();
 
 
 		//--------------------------------------------------

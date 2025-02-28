@@ -38,20 +38,31 @@ void kob::Renderer::Init(SDL_Window* window)
 
 void kob::Renderer::Render() const
 {
+	// Clear screen
 	const auto& color = GetBackgroundColor();
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(m_renderer);
 
+	// Render
 	SceneManager::GetInstance().Render();
+	// Render UI
+	ImGuiRenderUpdate();
 
+	// Present
+	SDL_RenderPresent(m_renderer);
+}
+
+void kob::Renderer::ImGuiRenderUpdate() const
+{
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
+
 	ImGui::ShowDemoWindow();
+	SceneManager::GetInstance().ImGuiRenderUpdate();
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-	SDL_RenderPresent(m_renderer);
 }
 
 void kob::Renderer::Destroy()

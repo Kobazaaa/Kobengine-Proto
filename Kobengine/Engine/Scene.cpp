@@ -78,3 +78,11 @@ void Scene::Render() const
 	}
 }
 
+void Scene::ImGuiRenderUpdate()
+{
+	for (const auto& object : m_objects)
+	{
+		object->ImGuiRenderUpdate();
+	}
+}
+

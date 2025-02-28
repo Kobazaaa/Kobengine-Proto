@@ -17,7 +17,7 @@ void kob::Component::Start() {}
 void kob::Component::LateUpdate() {}
 void kob::Component::FixedUpdate() {}
 void kob::Component::Render() const {}
-void kob::Component::ImGuiRender() {}
+void kob::Component::ImGuiRenderUpdate() {}
 
 
 //--------------------------------------------------

@@ -12,7 +12,10 @@ namespace kob
 	{
 		SDL_Renderer* m_renderer{};
 		SDL_Window* m_window{};
-		SDL_Color m_clearColor{};	
+		SDL_Color m_clearColor{};
+
+		void ImGuiRenderUpdate() const;
+
 	public:
 		void Init(SDL_Window* window);
 		void Render() const;

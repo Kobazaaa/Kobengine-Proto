@@ -33,6 +33,7 @@ namespace kob
 		void LateUpdate();
 		void FixedUpdate();
 		void Render() const;
+		void ImGuiRenderUpdate();
 
 
 		//--------------------------------------------------
