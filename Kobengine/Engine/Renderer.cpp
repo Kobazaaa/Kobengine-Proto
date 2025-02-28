@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "Texture2D.h"
 #include "imgui.h"
+#include "implot.h"
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl3.h"
 
@@ -32,6 +33,7 @@ void kob::Renderer::Init(SDL_Window* window)
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
+	ImPlot::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
 	ImGui_ImplOpenGL3_Init();
 }
@@ -69,6 +71,7 @@ void kob::Renderer::Destroy()
 {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
+	ImPlot::DestroyContext();
 	ImGui::DestroyContext();
 
 	if (m_renderer != nullptr)

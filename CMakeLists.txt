@@ -206,6 +206,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui)
 
+# add ImPlot
+FetchContent_Declare(
+  implot
+  URL https://github.com/epezent/implot/archive/refs/tags/v0.16.zip
+  DOWNLOAD_NO_PROGRESS ON
+  DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
+)
+FetchContent_MakeAvailable(implot)
+
 # Add the ImGui sources to project
 target_sources(${TARGET_NAME} PRIVATE
   ${imgui_SOURCE_DIR}/imgui.cpp
@@ -217,6 +226,12 @@ target_sources(${TARGET_NAME} PRIVATE
   ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
 )
 
+# Add the ImPlot sources to project
+target_sources(${TARGET_NAME} PRIVATE
+  ${implot_SOURCE_DIR}/implot.cpp
+  ${implot_SOURCE_DIR}/implot_items.cpp
+)
+
 target_include_directories(${TARGET_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/Kobengine/
   ${CMAKE_SOURCE_DIR}/Kobengine/Components
@@ -224,9 +239,13 @@ target_include_directories(${TARGET_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/Kobengine/Engine/Managers
   ${CMAKE_SOURCE_DIR}/Kobengine/Main
   ${CMAKE_SOURCE_DIR}/Kobengine/Object
+
   ${glm_SOURCE_DIR}
+
   ${imgui_SOURCE_DIR}
   ${imgui_SOURCE_DIR}/backends
+
+  ${implot_SOURCE_DIR}
 )
 
 # compile at max warning level + treat warnings as errors
