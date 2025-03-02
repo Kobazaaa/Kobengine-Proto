@@ -60,7 +60,7 @@ void kob::Renderer::ImGuiRenderUpdate() const
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 	SceneManager::GetInstance().ImGuiRenderUpdate();
 
 	ImGui::Render();
