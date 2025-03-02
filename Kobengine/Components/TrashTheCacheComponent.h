@@ -55,8 +55,8 @@ namespace kob
 		void ImGuiExercise02();
 
 		// Timings
-		template <typename T>
-		void TrashTheCache(const int sampleCount, std::vector<float>& results, const std::function<void(std::vector<T>&, int)>& func)
+		template <typename T, typename Func>
+		void TrashTheCache(const int sampleCount, std::vector<float>& results, Func func)
 		{
 			// Create a vector to store the measurements per step size
 			std::vector<float> measurements(sampleCount);
