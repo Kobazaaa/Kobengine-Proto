@@ -1,9 +1,9 @@
-#include "TrashTheCacheComponent.h"
+#include "ThrashTheCacheComponent.h"
 
 //--------------------------------------------------
 //    Constructor
 //--------------------------------------------------
-kob::TrashTheCacheComponent::TrashTheCacheComponent(GameObject& parent)
+kob::ThrashTheCacheComponent::ThrashTheCacheComponent(GameObject& parent)
 	: Component(parent)
 {}
 
@@ -11,8 +11,8 @@ kob::TrashTheCacheComponent::TrashTheCacheComponent(GameObject& parent)
 //--------------------------------------------------
 //    Loop
 //--------------------------------------------------
-void kob::TrashTheCacheComponent::Update() {}
-void kob::TrashTheCacheComponent::ImGuiRenderUpdate()
+void kob::ThrashTheCacheComponent::Update() {}
+void kob::ThrashTheCacheComponent::ImGuiRenderUpdate()
 {
 	ImPlot::PushStyleVar(ImPlotStyleVar_PlotPadding, ImVec2(5, 5));
 
@@ -28,7 +28,7 @@ void kob::TrashTheCacheComponent::ImGuiRenderUpdate()
 //--------------------------------------------------
 //    ImGui per exercise
 //--------------------------------------------------
-void kob::TrashTheCacheComponent::PlotResults(const char* title, const std::vector<float>& results, const ImVec4& lineColor)
+void kob::ThrashTheCacheComponent::PlotResults(const char* title, const std::vector<float>& results, const ImVec4& lineColor)
 {
 	if (!results.empty())
 	{
@@ -47,7 +47,7 @@ void kob::TrashTheCacheComponent::PlotResults(const char* title, const std::vect
 	}
 
 }
-void kob::TrashTheCacheComponent::ImGuiExercise01()
+void kob::ThrashTheCacheComponent::ImGuiExercise01()
 {
 	ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(m_WINDOW_SIZES, ImGuiCond_Once);
@@ -77,7 +77,7 @@ void kob::TrashTheCacheComponent::ImGuiExercise01()
 	}
 	ImGui::End();
 }
-void kob::TrashTheCacheComponent::ImGuiExercise02()
+void kob::ThrashTheCacheComponent::ImGuiExercise02()
 {
 	ImGui::SetNextWindowPos(ImVec2(320, 10), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(m_WINDOW_SIZES, ImGuiCond_Once);

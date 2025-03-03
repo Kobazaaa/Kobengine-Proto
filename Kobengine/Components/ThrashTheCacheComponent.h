@@ -10,13 +10,13 @@
 
 namespace kob
 {
-	class TrashTheCacheComponent : public Component
+	class ThrashTheCacheComponent : public Component
 	{
 	public:
 		//--------------------------------------------------
 		//    Constructor
 		//--------------------------------------------------
-		explicit TrashTheCacheComponent(GameObject& parent);
+		explicit ThrashTheCacheComponent(GameObject& parent);
 
 
 		//--------------------------------------------------

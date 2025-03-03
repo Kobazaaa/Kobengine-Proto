@@ -19,7 +19,7 @@ namespace fs = std::filesystem;
 #include "ImageRendererComponent.h"
 #include "TextRendererComponent.h"
 #include "RotateComponent.h"
-#include "TrashTheCacheComponent.h"
+#include "ThrashTheCacheComponent.h"
 
 void load()
 {
@@ -66,7 +66,7 @@ void load()
 	scene.Add(go);
 
 	go = std::make_shared<kob::GameObject>();
-	go->AddComponent<kob::TrashTheCacheComponent>();
+	go->AddComponent<kob::ThrashTheCacheComponent>();
 	scene.Add(go);
 }
 
