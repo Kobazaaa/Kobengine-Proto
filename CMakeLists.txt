@@ -39,8 +39,8 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Kobengine/Engine/Managers/SceneManager.cpp"
   "Kobengine/Engine/Managers/SceneManager.h"
     # Engine/Input/
-  "Kobengine/Engine/Command/Command.h"
-     
+  "Kobengine/Engine/Input/Gamepad.cpp"
+  "Kobengine/Engine/Input/Gamepad.h"
 
   # Object/
   "Kobengine/Object/GameObject.cpp"
@@ -49,6 +49,7 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Kobengine/Object/Transform.h"
   "Kobengine/Object/Component.h"
   "Kobengine/Object/Component.cpp"
+  "Kobengine/Object/Command.h"
 
   # Components/
   "Kobengine/Components/TextRendererComponent.cpp"
@@ -152,7 +153,7 @@ if (WIN32)
     ${SDL2_TTF_INCLUDE_DIR})
   
   # set libraries to link with
-  target_link_libraries(${TARGET_NAME} PUBLIC
+  target_link_libraries(${TARGET_NAME} PUBLIC Xinput
     ${SDL2_LIBRARIES} 
     ${SDL2_IMAGE_LIBRARIES} 
     ${SDL2_TTF_LIBRARIES} 
