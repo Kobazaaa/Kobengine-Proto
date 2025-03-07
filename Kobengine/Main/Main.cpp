@@ -20,6 +20,7 @@ namespace fs = std::filesystem;
 #include "TextRendererComponent.h"
 #include "RotateComponent.h"
 #include "ThrashTheCacheComponent.h"
+#include "InputManager.h"
 
 void load()
 {
