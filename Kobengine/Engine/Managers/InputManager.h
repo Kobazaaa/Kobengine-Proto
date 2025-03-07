@@ -1,8 +1,8 @@
 #pragma once
 #include <unordered_map>
 
-#include "Object/Command.h"
-#include "Input/Gamepad.h"
+#include "Command.h"
+#include "Gamepad.h"
 #include "Singleton.h"
 
 namespace kob

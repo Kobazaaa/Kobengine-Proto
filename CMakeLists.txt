@@ -241,6 +241,7 @@ target_include_directories(${TARGET_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/Kobengine/Components
   ${CMAKE_SOURCE_DIR}/Kobengine/Engine
   ${CMAKE_SOURCE_DIR}/Kobengine/Engine/Managers
+  ${CMAKE_SOURCE_DIR}/Kobengine/Engine/Input
   ${CMAKE_SOURCE_DIR}/Kobengine/Main
   ${CMAKE_SOURCE_DIR}/Kobengine/Object
 

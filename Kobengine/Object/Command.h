@@ -1,8 +1,11 @@
 #pragma once
 
-class Command
+namespace kob
 {
-public:
-	virtual ~Command() = default;
-	virtual void Execute() = 0;
-};
+	class Command
+	{
+	public:
+		virtual ~Command() = default;
+		virtual void Execute() = 0;
+	};
+}

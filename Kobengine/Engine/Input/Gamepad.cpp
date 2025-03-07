@@ -4,7 +4,7 @@
 //--------------------------------------------------
 //    Constructor
 //--------------------------------------------------
-Gamepad::Gamepad(int controllerIndex)
+kob::Gamepad::Gamepad(int controllerIndex)
 	: m_ControllerIndex { controllerIndex }
 {}
 
@@ -12,7 +12,7 @@ Gamepad::Gamepad(int controllerIndex)
 //--------------------------------------------------
 //    Update
 //--------------------------------------------------
-void Gamepad::Update()
+void kob::Gamepad::Update()
 {
 	m_ButtonsPressed = 0;
 	m_ButtonsReleased = 0;
@@ -30,19 +30,19 @@ void Gamepad::Update()
 //--------------------------------------------------
 //    Accessors
 //--------------------------------------------------
-bool Gamepad::IsConnected() const
+bool kob::Gamepad::IsConnected() const
 {
 	return m_IsConnected;
 }
-bool Gamepad::IsButtonPressed(WORD button) const
+bool kob::Gamepad::IsButtonPressed(WORD button) const
 {
 	return m_ButtonsPressed & button;
 }
-bool Gamepad::IsButtonDown(WORD button) const
+bool kob::Gamepad::IsButtonDown(WORD button) const
 {
 	return m_CurrentState.Gamepad.wButtons & button;
 }
-bool Gamepad::IsButtonReleased(WORD button) const
+bool kob::Gamepad::IsButtonReleased(WORD button) const
 {
 	return m_ButtonsReleased & button;
 }
