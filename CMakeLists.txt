@@ -38,6 +38,9 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Kobengine/Engine/Managers/ResourceManager.h"
   "Kobengine/Engine/Managers/SceneManager.cpp"
   "Kobengine/Engine/Managers/SceneManager.h"
+    # Engine/Input/
+  "Kobengine/Engine/Command/Command.h"
+     
 
   # Object/
   "Kobengine/Object/GameObject.cpp"
