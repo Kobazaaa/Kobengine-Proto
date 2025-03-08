@@ -18,9 +18,8 @@ namespace fs = std::filesystem;
 #include "FPSComponent.h"
 #include "ImageRendererComponent.h"
 #include "TextRendererComponent.h"
-#include "RotateComponent.h"
-#include "ThrashTheCacheComponent.h"
 #include "InputManager.h"
+#include "MoveCommands.h"
 
 void load()
 {
@@ -47,28 +46,26 @@ void load()
 	go->AddComponent<kob::FPSComponent>();
 	scene.Add(go);
 
-
-	auto emptyGo = std::make_shared<kob::GameObject>();
-	emptyGo->SetLocalPosition(glm::vec3(300, 250, 0));
-	scene.Add(emptyGo);
-
-	auto chefGo = std::make_shared<kob::GameObject>();
-	chefGo->AddComponent<kob::ImageRendererComponent>("Chef.png");
-	chefGo->SetLocalPosition(glm::vec3(0, 0, 0));
-	chefGo->SetParent(emptyGo.get(), false);
-	chefGo->AddComponent<kob::RotateComponent>(0.5f, 150.f);
-	scene.Add(chefGo);
+	constexpr float speed = 50.f;
+	auto& inputManager = kob::InputManager::GetInstance();
+	go = std::make_shared<kob::GameObject>();
+	go->AddComponent<kob::ImageRendererComponent>("Chef.png");
+	go->SetLocalPosition(glm::vec3(50, 250, 0));
+	scene.Add(go);
+	inputManager.RegisterGamepadButton(XINPUT_GAMEPAD_DPAD_UP,	  std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 0, -1, 0 }, speed), kob::TriggerState::Down);
+	inputManager.RegisterGamepadButton(XINPUT_GAMEPAD_DPAD_DOWN,  std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 0,  1, 0 }, speed), kob::TriggerState::Down);
+	inputManager.RegisterGamepadButton(XINPUT_GAMEPAD_DPAD_RIGHT, std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 1,  0, 0 }, speed), kob::TriggerState::Down);
+	inputManager.RegisterGamepadButton(XINPUT_GAMEPAD_DPAD_LEFT,  std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{-1,  0, 0 }, speed), kob::TriggerState::Down);
 
 	go = std::make_shared<kob::GameObject>();
 	go->AddComponent<kob::ImageRendererComponent>("Bean.png");
-	go->SetLocalPosition(glm::vec3(0, 0, 0));
-	go->SetParent(chefGo.get(), false);
-	go->AddComponent<kob::RotateComponent>(20.f, 50.f);
+	go->SetLocalPosition(glm::vec3(50, 300, 0));
 	scene.Add(go);
+	inputManager.RegisterKeyboardKey(SDLK_w, std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 0, -1, 0 }, 2 * speed), kob::TriggerState::Down);
+	inputManager.RegisterKeyboardKey(SDLK_s, std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 0,  1, 0 }, 2 * speed), kob::TriggerState::Down);
+	inputManager.RegisterKeyboardKey(SDLK_d, std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 1,  0, 0 }, 2 * speed), kob::TriggerState::Down);
+	inputManager.RegisterKeyboardKey(SDLK_a, std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{-1,  0, 0 }, 2 * speed), kob::TriggerState::Down);
 
-	go = std::make_shared<kob::GameObject>();
-	go->AddComponent<kob::ThrashTheCacheComponent>();
-	scene.Add(go);
 }
 
 int main(int, char*[]) {

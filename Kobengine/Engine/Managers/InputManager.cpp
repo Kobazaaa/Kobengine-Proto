@@ -1,5 +1,8 @@
 #include <SDL.h>
 #include "InputManager.h"
+
+#include <memory>
+
 #include "backends/imgui_impl_sdl2.h"
 
 bool kob::InputManager::ProcessInput()
@@ -20,15 +23,15 @@ bool kob::InputManager::ProcessInput()
 	return true;
 }
 
-void kob::InputManager::RegisterGamepadButton(WORD button, Command* cmd, TriggerState state)
+void kob::InputManager::RegisterGamepadButton(WORD button, std::unique_ptr<Command> cmd, TriggerState state)
 {
-    m_GamepadMappings[button].command = cmd;
+    m_GamepadMappings[button].command = std::move(cmd);
     m_GamepadMappings[button].state = state;
 }
 
-void kob::InputManager::RegisterKeyboardKey(SDL_KeyCode key, Command* cmd, TriggerState state)
+void kob::InputManager::RegisterKeyboardKey(SDL_KeyCode key, std::unique_ptr<Command> cmd, TriggerState state)
 {
-    m_KeyboardMappings[key].command = cmd;
+    m_KeyboardMappings[key].command = std::move(cmd);
     m_KeyboardMappings[key].state = state;
 }
 

@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <unordered_map>
 
 #include "Command.h"
@@ -19,8 +20,8 @@ namespace kob
 	public:
 		bool ProcessInput();
 
-		void RegisterGamepadButton(WORD button, Command* cmd, TriggerState state);
-		void RegisterKeyboardKey(SDL_KeyCode key, Command* cmd, TriggerState state);
+		void RegisterGamepadButton(WORD button, std::unique_ptr<Command> cmd, TriggerState state);
+		void RegisterKeyboardKey(SDL_KeyCode key, std::unique_ptr<Command> cmd, TriggerState state);
 	private:
 		void ProcessKeyboard();
 		void ProcessGamepad();
@@ -28,7 +29,7 @@ namespace kob
 		struct Input
 		{
 			TriggerState state;
-			Command* command;
+			std::unique_ptr<Command> command;
 		};
 
 		Gamepad m_Gamepad{0};

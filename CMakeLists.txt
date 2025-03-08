@@ -51,6 +51,10 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Kobengine/Object/Component.cpp"
   "Kobengine/Object/Command.h"
 
+  # Commands/
+  "Kobengine/Commands/MoveCommands.cpp"
+  "Kobengine/Commands/MoveCommands.h"
+
   # Components/
   "Kobengine/Components/TextRendererComponent.cpp"
   "Kobengine/Components/TextRendererComponent.h"
@@ -238,6 +242,7 @@ target_sources(${TARGET_NAME} PRIVATE
 
 target_include_directories(${TARGET_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/Kobengine/
+  ${CMAKE_SOURCE_DIR}/Kobengine/Commands
   ${CMAKE_SOURCE_DIR}/Kobengine/Components
   ${CMAKE_SOURCE_DIR}/Kobengine/Engine
   ${CMAKE_SOURCE_DIR}/Kobengine/Engine/Managers
