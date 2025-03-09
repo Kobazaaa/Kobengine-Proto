@@ -1,9 +1,8 @@
 #include <SDL.h>
-#include "InputManager.h"
-
 #include <memory>
-
 #include "backends/imgui_impl_sdl2.h"
+
+#include "InputManager.h"
 
 bool kob::InputManager::ProcessInput()
 {
@@ -23,7 +22,7 @@ bool kob::InputManager::ProcessInput()
 	return true;
 }
 
-void kob::InputManager::RegisterGamepadButton(WORD button, std::unique_ptr<Command> cmd, TriggerState state)
+void kob::InputManager::RegisterGamepadButton(unsigned short button, std::unique_ptr<Command> cmd, TriggerState state)
 {
     m_GamepadMappings[button].command = std::move(cmd);
     m_GamepadMappings[button].state = state;

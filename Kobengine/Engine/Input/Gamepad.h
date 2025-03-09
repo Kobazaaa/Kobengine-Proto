@@ -1,8 +1,4 @@
 #pragma once
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <Xinput.h>
-
 namespace kob
 {
 	class Gamepad final
@@ -12,7 +8,12 @@ namespace kob
 		//    Constructor
 		//--------------------------------------------------
 		explicit Gamepad(int controllerIndex);
+		~Gamepad();
 
+		Gamepad(const Gamepad& other) = delete;
+		Gamepad(Gamepad&& other) noexcept = delete;
+		Gamepad& operator=(const Gamepad& other) = delete;
+		Gamepad& operator=(Gamepad&& other) noexcept = delete;
 
 		//--------------------------------------------------
 		//    Update
@@ -24,19 +25,12 @@ namespace kob
 		//    Accessors
 		//--------------------------------------------------
 		bool IsConnected() const;
-		bool IsButtonPressed(WORD button) const;
-		bool IsButtonDown(WORD button) const;
-		bool IsButtonReleased(WORD button) const;
+		bool IsButtonPressed(unsigned short button) const;
+		bool IsButtonDown(unsigned short button) const;
+		bool IsButtonReleased(unsigned short button) const;
 
 	private:
-		// Index
-		int				m_ControllerIndex;
-
-		// States
-		XINPUT_STATE	m_CurrentState{};
-		XINPUT_STATE	m_PreviousState{};
-		WORD			m_ButtonsPressed{};
-		WORD			m_ButtonsReleased{};
-		bool			m_IsConnected = false;
+		class GamepadImpl;
+		GamepadImpl* m_pImpl;
 	};
 }

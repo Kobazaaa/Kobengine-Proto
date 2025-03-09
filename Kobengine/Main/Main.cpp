@@ -21,6 +21,11 @@ namespace fs = std::filesystem;
 #include "InputManager.h"
 #include "MoveCommands.h"
 
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+#include <Xinput.h>
+
+
 void load()
 {
 	auto& scene = kob::SceneManager::GetInstance().CreateScene("Demo");
@@ -65,7 +70,6 @@ void load()
 	inputManager.RegisterKeyboardKey(SDLK_s, std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 0,  1, 0 }, 2 * speed), kob::TriggerState::Down);
 	inputManager.RegisterKeyboardKey(SDLK_d, std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 1,  0, 0 }, 2 * speed), kob::TriggerState::Down);
 	inputManager.RegisterKeyboardKey(SDLK_a, std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{-1,  0, 0 }, 2 * speed), kob::TriggerState::Down);
-
 }
 
 int main(int, char*[]) {
