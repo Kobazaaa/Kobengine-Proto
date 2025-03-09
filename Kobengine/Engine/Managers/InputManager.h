@@ -22,7 +22,7 @@ namespace kob
 
 		template<typename CommandType, typename... Args>
 			requires std::derived_from<CommandType, Command>
-		void RegisterGamepadCmd(unsigned short button, TriggerState state, Args&&... commandArgs)
+		void RegisterGamepadCmd(Gamepad::Button button, TriggerState state, Args&&... commandArgs)
 		{
 			m_GamepadMappings[button].command = std::make_unique<CommandType>(std::forward<Args>(commandArgs)...);
 			m_GamepadMappings[button].state = state;
@@ -45,7 +45,7 @@ namespace kob
 		};
 
 		Gamepad m_Gamepad{0};
-		std::unordered_map<unsigned short, InputDetails> m_GamepadMappings;
+		std::unordered_map<Gamepad::Button, InputDetails> m_GamepadMappings;
 		std::unordered_map<SDL_KeyCode, InputDetails> m_KeyboardMappings;
 
 		Uint8 m_PreviousKeyboardStates[SDL_NUM_SCANCODES] = {0};

@@ -21,11 +21,6 @@ namespace fs = std::filesystem;
 #include "InputManager.h"
 #include "MoveCommands.h"
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <Xinput.h>
-
-
 void load()
 {
 	using namespace kob;
@@ -68,10 +63,10 @@ void load()
 	go->AddComponent<ImageRendererComponent>("Chef.png");
 	go->SetLocalPosition(glm::vec3(50, 250, 0));
 	scene.Add(go);
-	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_UP,    TriggerState::Down, *go.get(), glm::vec3{ 0, -1, 0 }, 2 * speed);
-	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_DOWN,  TriggerState::Down, *go.get(), glm::vec3{ 0,  1, 0 }, 2 * speed);
-	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_RIGHT, TriggerState::Down, *go.get(), glm::vec3{ 1,  0, 0 }, 2 * speed);
-	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_LEFT,  TriggerState::Down, *go.get(), glm::vec3{-1,  0, 0 }, 2 * speed);
+	inputManager.RegisterGamepadCmd<MoveCommand>(Gamepad::Button::DPAD_UP,    TriggerState::Down, *go.get(), glm::vec3{ 0, -1, 0 }, 2 * speed);
+	inputManager.RegisterGamepadCmd<MoveCommand>(Gamepad::Button::DPAD_DOWN,  TriggerState::Down, *go.get(), glm::vec3{ 0,  1, 0 }, 2 * speed);
+	inputManager.RegisterGamepadCmd<MoveCommand>(Gamepad::Button::DPAD_RIGHT, TriggerState::Down, *go.get(), glm::vec3{ 1,  0, 0 }, 2 * speed);
+	inputManager.RegisterGamepadCmd<MoveCommand>(Gamepad::Button::DPAD_LEFT,  TriggerState::Down, *go.get(), glm::vec3{-1,  0, 0 }, 2 * speed);
 
 	go = std::make_shared<GameObject>();
 	go->AddComponent<ImageRendererComponent>("Bean.png");

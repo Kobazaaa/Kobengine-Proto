@@ -24,13 +24,45 @@ namespace kob
 		//--------------------------------------------------
 		//    Accessors
 		//--------------------------------------------------
+		enum class Button;
 		bool IsConnected() const;
-		bool IsButtonPressed(unsigned short button) const;
-		bool IsButtonDown(unsigned short button) const;
-		bool IsButtonReleased(unsigned short button) const;
+		bool IsButtonPressed(Button button) const;
+		bool IsButtonDown(Button button) const;
+		bool IsButtonReleased(Button button) const;
+
+
+		//--------------------------------------------------
+		//    Buttons
+		//--------------------------------------------------
+		enum class Button
+		{
+			// Buttons
+			A,
+			B,
+			X,
+			Y,
+
+			// Bumpers
+			LEFT_BUMPER,
+			RIGHT_BUMPER,
+
+			// 
+			BACK,
+			START,
+
+			// Thumb Buttons
+			LEFT_THUMB,
+			RIGHT_THUMB,
+
+			// DPAD
+			DPAD_UP,
+			DPAD_DOWN,
+			DPAD_LEFT,
+			DPAD_RIGHT
+		};
 
 	private:
-		class GamepadImpl;
-		GamepadImpl* m_pImpl;
+		class GamepadXInputImpl;
+		GamepadXInputImpl* m_pImpl;
 	};
 }

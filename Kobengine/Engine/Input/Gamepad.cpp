@@ -8,13 +8,13 @@
 //--------------------------------------------------
 //    PIMPL
 //--------------------------------------------------
-class kob::Gamepad::GamepadImpl final
+class kob::Gamepad::GamepadXInputImpl final
 {
 public:
 	//--------------------------------------------------
 	//    Constructor
 	//--------------------------------------------------
-	explicit Gamepad::GamepadImpl(int controllerIndex)
+	explicit Gamepad::GamepadXInputImpl(int controllerIndex)
 		: m_ControllerIndex{ controllerIndex }
 	{}
 
@@ -43,20 +43,43 @@ public:
 	{
 		return m_IsConnected;
 	}
-	bool IsButtonPressed(WORD button) const
+	bool IsButtonPressed(Button button) const
 	{
-		return m_ButtonsPressed & button;
+		return m_ButtonsPressed & ToXInputButton(button);
 	}
-	bool IsButtonDown(WORD button) const
+	bool IsButtonDown(Button button) const
 	{
-		return m_CurrentState.Gamepad.wButtons & button;
+		return m_CurrentState.Gamepad.wButtons & ToXInputButton(button);
 	}
-	bool IsButtonReleased(WORD button) const
+	bool IsButtonReleased(Button button) const
 	{
-		return m_ButtonsReleased & button;
+		return m_ButtonsReleased & ToXInputButton(button);
 	}
 
-
+	//--------------------------------------------------
+	//    Conversion
+	//--------------------------------------------------
+	WORD ToXInputButton(Button button) const
+	{
+		switch (button)
+		{
+		case Button::A:					return XINPUT_GAMEPAD_A;
+		case Button::B:					return XINPUT_GAMEPAD_B;
+		case Button::X:					return XINPUT_GAMEPAD_X;
+		case Button::Y:					return XINPUT_GAMEPAD_Y;
+		case Button::LEFT_BUMPER:		return XINPUT_GAMEPAD_LEFT_SHOULDER;
+		case Button::RIGHT_BUMPER:		return XINPUT_GAMEPAD_RIGHT_SHOULDER;
+		case Button::BACK:				return XINPUT_GAMEPAD_BACK;
+		case Button::START:				return XINPUT_GAMEPAD_START;
+		case Button::LEFT_THUMB:		return XINPUT_GAMEPAD_LEFT_THUMB;
+		case Button::RIGHT_THUMB:		return XINPUT_GAMEPAD_RIGHT_THUMB;
+		case Button::DPAD_UP:			return XINPUT_GAMEPAD_DPAD_UP;
+		case Button::DPAD_DOWN:			return XINPUT_GAMEPAD_DPAD_DOWN;
+		case Button::DPAD_LEFT:			return XINPUT_GAMEPAD_DPAD_LEFT;
+		case Button::DPAD_RIGHT:		return XINPUT_GAMEPAD_DPAD_RIGHT;
+		default: return 0;
+		}
+	}
 private:
 	// Index
 	int				m_ControllerIndex;
@@ -77,7 +100,7 @@ private:
 //    Constructor
 //--------------------------------------------------
 kob::Gamepad::Gamepad(int controllerIndex)
-	: m_pImpl{ new GamepadImpl(controllerIndex) }
+	: m_pImpl{ new GamepadXInputImpl(controllerIndex) }
 {}
 kob::Gamepad::~Gamepad()
 {
@@ -102,15 +125,15 @@ bool kob::Gamepad::IsConnected() const
 {
 	return m_pImpl->IsConnected();
 }
-bool kob::Gamepad::IsButtonPressed(unsigned short button) const
+bool kob::Gamepad::IsButtonPressed(Button button) const
 {
 	return m_pImpl->IsButtonPressed(button);
 }
-bool kob::Gamepad::IsButtonDown(unsigned short button) const
+bool kob::Gamepad::IsButtonDown(Button button) const
 {
 	return m_pImpl->IsButtonDown(button);
 }
-bool kob::Gamepad::IsButtonReleased(unsigned short button) const
+bool kob::Gamepad::IsButtonReleased(Button button) const
 {
 	return m_pImpl->IsButtonReleased(button);
 }
