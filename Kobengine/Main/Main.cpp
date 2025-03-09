@@ -68,19 +68,19 @@ void load()
 	go->AddComponent<ImageRendererComponent>("Chef.png");
 	go->SetLocalPosition(glm::vec3(50, 250, 0));
 	scene.Add(go);
-	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_UP,    TriggerState::Down, *go.get(), glm::vec3{ 0, -1, 0 }, speed);
-	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_DOWN,  TriggerState::Down, *go.get(), glm::vec3{ 0,  1, 0 }, speed);
-	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_RIGHT, TriggerState::Down, *go.get(), glm::vec3{ 1,  0, 0 }, speed);
-	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_LEFT,  TriggerState::Down, *go.get(), glm::vec3{-1,  0, 0 }, speed);
+	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_UP,    TriggerState::Down, *go.get(), glm::vec3{ 0, -1, 0 }, 2 * speed);
+	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_DOWN,  TriggerState::Down, *go.get(), glm::vec3{ 0,  1, 0 }, 2 * speed);
+	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_RIGHT, TriggerState::Down, *go.get(), glm::vec3{ 1,  0, 0 }, 2 * speed);
+	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_LEFT,  TriggerState::Down, *go.get(), glm::vec3{-1,  0, 0 }, 2 * speed);
 
 	go = std::make_shared<GameObject>();
 	go->AddComponent<ImageRendererComponent>("Bean.png");
 	go->SetLocalPosition(glm::vec3(50, 300, 0));
 	scene.Add(go);
-	inputManager.RegisterKeyboardCmd<MoveCommand>(SDLK_w, TriggerState::Down, *go.get(), glm::vec3{ 0, -1, 0 }, 2 * speed);
-	inputManager.RegisterKeyboardCmd<MoveCommand>(SDLK_s, TriggerState::Down, *go.get(), glm::vec3{ 0,  1, 0 }, 2 * speed);
-	inputManager.RegisterKeyboardCmd<MoveCommand>(SDLK_d, TriggerState::Down, *go.get(), glm::vec3{ 1,  0, 0 }, 2 * speed);
-	inputManager.RegisterKeyboardCmd<MoveCommand>(SDLK_a, TriggerState::Down, *go.get(), glm::vec3{-1,  0, 0 }, 2 * speed);
+	inputManager.RegisterKeyboardCmd<MoveCommand>(SDLK_w, TriggerState::Down, *go.get(), glm::vec3{ 0, -1, 0 }, speed);
+	inputManager.RegisterKeyboardCmd<MoveCommand>(SDLK_s, TriggerState::Down, *go.get(), glm::vec3{ 0,  1, 0 }, speed);
+	inputManager.RegisterKeyboardCmd<MoveCommand>(SDLK_d, TriggerState::Down, *go.get(), glm::vec3{ 1,  0, 0 }, speed);
+	inputManager.RegisterKeyboardCmd<MoveCommand>(SDLK_a, TriggerState::Down, *go.get(), glm::vec3{-1,  0, 0 }, speed);
 }
 
 int main(int, char*[]) {
