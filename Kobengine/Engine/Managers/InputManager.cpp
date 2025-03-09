@@ -22,18 +22,6 @@ bool kob::InputManager::ProcessInput()
 	return true;
 }
 
-void kob::InputManager::RegisterGamepadButton(unsigned short button, std::unique_ptr<Command> cmd, TriggerState state)
-{
-    m_GamepadMappings[button].command = std::move(cmd);
-    m_GamepadMappings[button].state = state;
-}
-
-void kob::InputManager::RegisterKeyboardKey(SDL_KeyCode key, std::unique_ptr<Command> cmd, TriggerState state)
-{
-    m_KeyboardMappings[key].command = std::move(cmd);
-    m_KeyboardMappings[key].state = state;
-}
-
 void kob::InputManager::ProcessKeyboard()
 {
     const Uint8* currentKeyboard = SDL_GetKeyboardState(nullptr);

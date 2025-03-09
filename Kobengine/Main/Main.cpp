@@ -28,48 +28,59 @@ namespace fs = std::filesystem;
 
 void load()
 {
-	auto& scene = kob::SceneManager::GetInstance().CreateScene("Demo");
+	using namespace kob;
+	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	auto go = std::make_shared<kob::GameObject>();
-	go->AddComponent<kob::ImageRendererComponent>("background.tga");
+	auto go = std::make_shared<GameObject>();
+	go->AddComponent<ImageRendererComponent>("background.tga");
 	scene.Add(go);
 	
-	go = std::make_shared<kob::GameObject>();
-	go->AddComponent<kob::ImageRendererComponent>("logo.tga");
+	go = std::make_shared<GameObject>();
+	go->AddComponent<ImageRendererComponent>("logo.tga");
 	go->SetLocalPosition(glm::vec3(216, 180, 0));
 	scene.Add(go);
 
-	auto font = kob::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	go = std::make_shared<kob::GameObject>();
-	go->AddComponent<kob::TextRendererComponent>("Programming 4 Assignment", font);
+	auto fontL = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	auto fontS = ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
+	go = std::make_shared<GameObject>();
+	go->AddComponent<TextRendererComponent>("Use the D-Pad to move the Chef", fontS);
+	go->SetLocalPosition(glm::vec3(5, 100, 0));
+	scene.Add(go);
+	go = std::make_shared<GameObject>();
+	go->AddComponent<TextRendererComponent>("Use WASD to move the HotDog", fontS);
+	go->SetLocalPosition(glm::vec3(5, 120, 0));
+	scene.Add(go);
+	go = std::make_shared<GameObject>();
+	go->AddComponent<TextRendererComponent>("Programming 4 Assignment", fontL);
 	go->SetLocalPosition(glm::vec3(80, 20, 0));
 	scene.Add(go);
 
-	go = std::make_shared<kob::GameObject>();
-	go->AddComponent<kob::TextRendererComponent>("FPS", font);
+	go = std::make_shared<GameObject>();
+	go->AddComponent<TextRendererComponent>("FPS", fontL);
 	go->SetLocalPosition(glm::vec3(0, 450, 0));
-	go->AddComponent<kob::FPSComponent>();
+	go->AddComponent<FPSComponent>();
 	scene.Add(go);
 
 	constexpr float speed = 50.f;
-	auto& inputManager = kob::InputManager::GetInstance();
-	go = std::make_shared<kob::GameObject>();
-	go->AddComponent<kob::ImageRendererComponent>("Chef.png");
+	auto& inputManager = InputManager::GetInstance();
+
+	go = std::make_shared<GameObject>();
+	go->AddComponent<ImageRendererComponent>("Chef.png");
 	go->SetLocalPosition(glm::vec3(50, 250, 0));
 	scene.Add(go);
-	inputManager.RegisterGamepadButton(XINPUT_GAMEPAD_DPAD_UP,	  std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 0, -1, 0 }, speed), kob::TriggerState::Down);
-	inputManager.RegisterGamepadButton(XINPUT_GAMEPAD_DPAD_DOWN,  std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 0,  1, 0 }, speed), kob::TriggerState::Down);
-	inputManager.RegisterGamepadButton(XINPUT_GAMEPAD_DPAD_RIGHT, std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 1,  0, 0 }, speed), kob::TriggerState::Down);
-	inputManager.RegisterGamepadButton(XINPUT_GAMEPAD_DPAD_LEFT,  std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{-1,  0, 0 }, speed), kob::TriggerState::Down);
+	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_UP,    TriggerState::Down, *go.get(), glm::vec3{ 0, -1, 0 }, speed);
+	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_DOWN,  TriggerState::Down, *go.get(), glm::vec3{ 0,  1, 0 }, speed);
+	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_RIGHT, TriggerState::Down, *go.get(), glm::vec3{ 1,  0, 0 }, speed);
+	inputManager.RegisterGamepadCmd<MoveCommand>(XINPUT_GAMEPAD_DPAD_LEFT,  TriggerState::Down, *go.get(), glm::vec3{-1,  0, 0 }, speed);
 
-	go = std::make_shared<kob::GameObject>();
-	go->AddComponent<kob::ImageRendererComponent>("Bean.png");
+	go = std::make_shared<GameObject>();
+	go->AddComponent<ImageRendererComponent>("Bean.png");
 	go->SetLocalPosition(glm::vec3(50, 300, 0));
 	scene.Add(go);
-	inputManager.RegisterKeyboardKey(SDLK_w, std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 0, -1, 0 }, 2 * speed), kob::TriggerState::Down);
-	inputManager.RegisterKeyboardKey(SDLK_s, std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 0,  1, 0 }, 2 * speed), kob::TriggerState::Down);
-	inputManager.RegisterKeyboardKey(SDLK_d, std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{ 1,  0, 0 }, 2 * speed), kob::TriggerState::Down);
-	inputManager.RegisterKeyboardKey(SDLK_a, std::make_unique<kob::MoveCommand>(*go.get(), glm::vec3{-1,  0, 0 }, 2 * speed), kob::TriggerState::Down);
+	inputManager.RegisterKeyboardCmd<MoveCommand>(SDLK_w, TriggerState::Down, *go.get(), glm::vec3{ 0, -1, 0 }, 2 * speed);
+	inputManager.RegisterKeyboardCmd<MoveCommand>(SDLK_s, TriggerState::Down, *go.get(), glm::vec3{ 0,  1, 0 }, 2 * speed);
+	inputManager.RegisterKeyboardCmd<MoveCommand>(SDLK_d, TriggerState::Down, *go.get(), glm::vec3{ 1,  0, 0 }, 2 * speed);
+	inputManager.RegisterKeyboardCmd<MoveCommand>(SDLK_a, TriggerState::Down, *go.get(), glm::vec3{-1,  0, 0 }, 2 * speed);
 }
 
 int main(int, char*[]) {
