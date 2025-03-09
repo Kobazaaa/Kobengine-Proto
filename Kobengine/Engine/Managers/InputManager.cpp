@@ -22,6 +22,15 @@ bool kob::InputManager::ProcessInput()
 	return true;
 }
 
+void kob::InputManager::UnregisterGamepadBtn(Gamepad::Button button)
+{
+	m_GamepadMappings.erase(button);
+}
+void kob::InputManager::UnregisterKeyboardKey(SDL_KeyCode key)
+{
+	m_KeyboardMappings.erase(key);
+}
+
 void kob::InputManager::ProcessKeyboard()
 {
     const Uint8* currentKeyboard = SDL_GetKeyboardState(nullptr);

@@ -34,6 +34,10 @@ namespace kob
 			m_KeyboardMappings[key].command = std::make_unique<CommandType>(std::forward<Args>(commandArgs)...);
 			m_KeyboardMappings[key].state = state;
 		}
+
+		void UnregisterGamepadBtn(Gamepad::Button button);
+		void UnregisterKeyboardKey(SDL_KeyCode key);
+
 	private:
 		void ProcessKeyboard();
 		void ProcessGamepad();
