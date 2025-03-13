@@ -65,7 +65,9 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Kobengine/Components/RotateComponent.h"
   "Kobengine/Components/RotateComponent.cpp"
   "Kobengine/Components/ThrashTheCacheComponent.h"
-  "Kobengine/Components/ThrashTheCacheComponent.cpp")
+  "Kobengine/Components/ThrashTheCacheComponent.cpp"
+  "Kobengine/Components/HealthComponent.h"
+  "Kobengine/Components/HealthComponent.cpp")
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
