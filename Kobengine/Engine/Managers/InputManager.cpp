@@ -22,6 +22,17 @@ bool kob::InputManager::ProcessInput()
 	return true;
 }
 
+void kob::InputManager::RegisterGamepadCmd(Gamepad::Button button, TriggerState state, std::unique_ptr<Command> upCommand)
+{
+	m_GamepadMappings[button].command = std::move(upCommand);
+	m_GamepadMappings[button].state = state;
+}
+void kob::InputManager::RegisterKeyboardCmd(SDL_KeyCode key, TriggerState state, std::unique_ptr<Command> upCommand)
+{
+	m_KeyboardMappings[key].command = std::move(upCommand);
+	m_KeyboardMappings[key].state = state;
+}
+
 void kob::InputManager::UnregisterGamepadBtn(Gamepad::Button button)
 {
 	m_GamepadMappings.erase(button);

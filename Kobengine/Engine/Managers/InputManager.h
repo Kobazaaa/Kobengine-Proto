@@ -20,21 +20,8 @@ namespace kob
 	public:
 		bool ProcessInput();
 
-		template<typename CommandType, typename... Args>
-			requires std::derived_from<CommandType, Command>
-		void RegisterGamepadCmd(Gamepad::Button button, TriggerState state, Args&&... commandArgs)
-		{
-			m_GamepadMappings[button].command = std::make_unique<CommandType>(std::forward<Args>(commandArgs)...);
-			m_GamepadMappings[button].state = state;
-		}
-		template<typename CommandType, typename... Args>
-			requires std::derived_from<CommandType, Command>
-		void RegisterKeyboardCmd(SDL_KeyCode key, TriggerState state, Args&&... commandArgs)
-		{
-			m_KeyboardMappings[key].command = std::make_unique<CommandType>(std::forward<Args>(commandArgs)...);
-			m_KeyboardMappings[key].state = state;
-		}
-
+		void RegisterGamepadCmd(Gamepad::Button button, TriggerState state, std::unique_ptr<Command> upCommand);
+		void RegisterKeyboardCmd(SDL_KeyCode key, TriggerState state, std::unique_ptr<Command> upCommand);
 		void UnregisterGamepadBtn(Gamepad::Button button);
 		void UnregisterKeyboardKey(SDL_KeyCode key);
 
