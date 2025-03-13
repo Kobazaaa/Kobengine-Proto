@@ -58,24 +58,31 @@ void load()
 
 	constexpr float speed = 50.f;
 	auto& inputManager = InputManager::GetInstance();
+	inputManager.RegisterGamepad();
+	inputManager.RegisterGamepad();
 
 	go = std::make_shared<GameObject>();
 	go->AddComponent<ImageRendererComponent>("Chef.png");
 	go->SetLocalPosition(glm::vec3(50, 250, 0));
 	scene.Add(go);
-	inputManager.RegisterGamepadCmd(Gamepad::Button::DPAD_UP,    TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{ 0, -1, 0 }, 2 * speed));
-	inputManager.RegisterGamepadCmd(Gamepad::Button::DPAD_DOWN,  TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{ 0,  1, 0 }, 2 * speed));
-	inputManager.RegisterGamepadCmd(Gamepad::Button::DPAD_RIGHT, TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{ 1,  0, 0 }, 2 * speed));
-	inputManager.RegisterGamepadCmd(Gamepad::Button::DPAD_LEFT,  TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{-1,  0, 0 }, 2 * speed));
+	inputManager.RegisterGamepadCmd(Gamepad::Button::DPAD_UP,    TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{ 0, -1, 0 }, 2 * speed), 0);
+	inputManager.RegisterGamepadCmd(Gamepad::Button::DPAD_DOWN,  TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{ 0,  1, 0 }, 2 * speed), 0);
+	inputManager.RegisterGamepadCmd(Gamepad::Button::DPAD_RIGHT, TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{ 1,  0, 0 }, 2 * speed), 0);
+	inputManager.RegisterGamepadCmd(Gamepad::Button::DPAD_LEFT,  TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{-1,  0, 0 }, 2 * speed), 0);
 
 	go = std::make_shared<GameObject>();
 	go->AddComponent<ImageRendererComponent>("Bean.png");
 	go->SetLocalPosition(glm::vec3(50, 300, 0));
 	scene.Add(go);
-	inputManager.RegisterKeyboardCmd(SDLK_w, TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{ 0, -1, 0 }, speed));
-	inputManager.RegisterKeyboardCmd(SDLK_s, TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{ 0,  1, 0 }, speed));
-	inputManager.RegisterKeyboardCmd(SDLK_d, TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{ 1,  0, 0 }, speed));
-	inputManager.RegisterKeyboardCmd(SDLK_a, TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{-1,  0, 0 }, speed));
+	//inputManager.RegisterKeyboardCmd(SDLK_w, TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{ 0, -1, 0 }, speed));
+	//inputManager.RegisterKeyboardCmd(SDLK_s, TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{ 0,  1, 0 }, speed));
+	//inputManager.RegisterKeyboardCmd(SDLK_d, TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{ 1,  0, 0 }, speed));
+	//inputManager.RegisterKeyboardCmd(SDLK_a, TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{-1,  0, 0 }, speed));
+	inputManager.RegisterGamepadCmd(Gamepad::Button::DPAD_UP,	 TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{  0, -1, 0 }, 2 * speed), 1);
+	inputManager.RegisterGamepadCmd(Gamepad::Button::DPAD_DOWN,  TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{  0,  1, 0 }, 2 * speed), 1);
+	inputManager.RegisterGamepadCmd(Gamepad::Button::DPAD_RIGHT, TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{  1,  0, 0 }, 2 * speed), 1);
+	inputManager.RegisterGamepadCmd(Gamepad::Button::DPAD_LEFT,  TriggerState::Down, std::make_unique<MoveCommand>(*go.get(), glm::vec3{ -1,  0, 0 }, 2 * speed), 1);
+
 }
 
 int main(int, char*[]) {

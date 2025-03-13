@@ -39,6 +39,10 @@ public:
 	//--------------------------------------------------
 	//    Accessors
 	//--------------------------------------------------
+	int GetGamepadID() const
+	{
+		return m_ControllerIndex;
+	}
 	bool IsConnected() const
 	{
 		return m_IsConnected;
@@ -121,6 +125,10 @@ void kob::Gamepad::Update()
 //--------------------------------------------------
 //    Accessors
 //--------------------------------------------------
+int kob::Gamepad::GetGamepadID() const
+{
+	return m_pImpl->GetGamepadID();
+}
 bool kob::Gamepad::IsConnected() const
 {
 	return m_pImpl->IsConnected();

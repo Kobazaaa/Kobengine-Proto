@@ -25,6 +25,7 @@ namespace kob
 		//    Accessors
 		//--------------------------------------------------
 		enum class Button;
+		int GetGamepadID() const;
 		bool IsConnected() const;
 		bool IsButtonPressed(Button button) const;
 		bool IsButtonDown(Button button) const;

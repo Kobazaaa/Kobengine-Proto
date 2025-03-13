@@ -17,15 +17,16 @@ bool kob::InputManager::ProcessInput()
 	}
 
 	ProcessKeyboard();
-	ProcessGamepad();
+	for (auto& gamepad : m_vGamepads)
+		ProcessGamepad(gamepad->GetGamepadID());
 
 	return true;
 }
 
-void kob::InputManager::RegisterGamepadCmd(Gamepad::Button button, TriggerState state, std::unique_ptr<Command> upCommand)
+void kob::InputManager::RegisterGamepadCmd(Gamepad::Button button, TriggerState state, std::unique_ptr<Command> upCommand, int gamepadID)
 {
-	m_GamepadMappings[button].command = std::move(upCommand);
-	m_GamepadMappings[button].state = state;
+	m_vGamepadMappings[gamepadID][button].command = std::move(upCommand);
+	m_vGamepadMappings[gamepadID][button].state = state;
 }
 void kob::InputManager::RegisterKeyboardCmd(SDL_KeyCode key, TriggerState state, std::unique_ptr<Command> upCommand)
 {
@@ -33,13 +34,23 @@ void kob::InputManager::RegisterKeyboardCmd(SDL_KeyCode key, TriggerState state,
 	m_KeyboardMappings[key].state = state;
 }
 
-void kob::InputManager::UnregisterGamepadBtn(Gamepad::Button button)
+void kob::InputManager::UnregisterGamepadBtn(Gamepad::Button button, int gamepadID)
 {
-	m_GamepadMappings.erase(button);
+	m_vGamepadMappings[gamepadID].erase(button);
 }
 void kob::InputManager::UnregisterKeyboardKey(SDL_KeyCode key)
 {
 	m_KeyboardMappings.erase(key);
+}
+
+void kob::InputManager::RegisterGamepad()
+{
+	int index = static_cast<int>(m_vGamepads.size());
+	m_vGamepads.push_back(std::make_unique<Gamepad>(index));
+}
+const kob::Gamepad* kob::InputManager::GetGamepad(int gamepadID) const
+{
+	return m_vGamepads.at(gamepadID).get();
 }
 
 void kob::InputManager::ProcessKeyboard()
@@ -72,10 +83,13 @@ void kob::InputManager::ProcessKeyboard()
     memcpy(m_PreviousKeyboardStates, currentKeyboard, SDL_NUM_SCANCODES);
 }
 
-void kob::InputManager::ProcessGamepad()
+void kob::InputManager::ProcessGamepad(int gamepadID)
 {
-	m_Gamepad.Update();
-	for (const auto& input : m_GamepadMappings)
+	auto& gamepad = m_vGamepads[gamepadID];
+	gamepad->Update();
+
+	const auto& mapping = m_vGamepadMappings[gamepadID];
+	for (const auto& input : mapping)
 	{
 		const auto& button = input.first;
 		const auto& state = input.second.state;
@@ -84,13 +98,13 @@ void kob::InputManager::ProcessGamepad()
 		switch (state)
 		{
 		case TriggerState::Pressed:
-			if (m_Gamepad.IsButtonPressed(button)) command->Execute();
+			if (gamepad->IsButtonPressed(button)) command->Execute();
 			break;
 		case TriggerState::Down:
-			if (m_Gamepad.IsButtonDown(button)) command->Execute();
+			if (gamepad->IsButtonDown(button)) command->Execute();
 			break;
 		case TriggerState::Released:
-			if (m_Gamepad.IsButtonReleased(button)) command->Execute();
+			if (gamepad->IsButtonReleased(button)) command->Execute();
 			break;
 		}
 	}
