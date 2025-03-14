@@ -1,5 +1,4 @@
 #include <SDL.h>
-#include <steam_api.h>
 #include <iostream>
 
 #if _DEBUG
@@ -34,6 +33,7 @@ namespace fs = std::filesystem;
 
 // Events
 #include "Event.h"
+#include "SteamAchievements.h"
 
 void load()
 {
@@ -144,6 +144,7 @@ void load()
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// ~~    Event/Listener Setup
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 	auto chefHealthUITxt = chefHealthUI->GetComponent<TextRendererComponent>();
 	auto healthListenerChef = std::make_shared<HealthUIListener>(*chefHealthUITxt);
 	chefHealth->OnHealthChanged() += healthListenerChef;
@@ -160,6 +161,14 @@ void load()
 	auto scoreListenerBean = std::make_shared<ScoreUIListener>(*beanScoreUITxt);
 	beanScore->OnScoreChanged() += scoreListenerBean;
 
+	auto steamAchievementCallback = std::make_shared<EventCallback<int>>([](int score)
+	{
+		if (score >= 500)
+			g_SteamAchievements->SetAchievement("ACH_WIN_ONE_GAME");
+
+	});
+	beanScore->OnScoreChanged() += steamAchievementCallback;
+	chefScore->OnScoreChanged() += steamAchievementCallback;
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// ~~    Input Setup
@@ -205,12 +214,17 @@ int main(int, char*[])
 	}
 	else
 	{
+		g_SteamAchievements = new SteamAchievements(g_Achievements, 4);
+		g_SteamAchievements->ResetAllAchievements();
 		std::cout << "Successfully initialized steam." << std::endl;
 	}
+
 
 	kob::Kobengine engine(data_location);
 	engine.Run(load);
 
 	SteamAPI_Shutdown();
+	if (g_SteamAchievements) delete g_SteamAchievements;
+
     return 0;
 }

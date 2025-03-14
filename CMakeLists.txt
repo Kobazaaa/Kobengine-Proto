@@ -63,6 +63,10 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Kobengine/Events/EventListeners.h"
   "Kobengine/Events/Event.h"
   
+  # Achievements/
+  "Kobengine/SteamAchievements/SteamAchievements.h"
+  "Kobengine/SteamAchievements/SteamAchievements.cpp"
+  
 
   # Components/
   "Kobengine/Components/TextRendererComponent.h"
@@ -264,6 +268,7 @@ target_include_directories(${TARGET_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/Kobengine/Main
   ${CMAKE_SOURCE_DIR}/Kobengine/Object
   ${CMAKE_SOURCE_DIR}/Kobengine/Events
+  ${CMAKE_SOURCE_DIR}/Kobengine/SteamAchievements
 
   ${glm_SOURCE_DIR}
 

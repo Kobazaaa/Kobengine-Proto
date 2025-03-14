@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <iostream>
+#include <steam_api.h>
 
 #if WIN32
 #define WIN32_LEAN_AND_MEAN 
@@ -128,6 +129,7 @@ void kob::Kobengine::RunOneFrame()
 	SceneManager::GetInstance().Update();
 	SceneManager::GetInstance().LateUpdate();
 	Renderer::GetInstance().Render();
+	SteamAPI_RunCallbacks();
 
 	std::this_thread::sleep_for(Timer::SleepDurationNanoSeconds());
 }
