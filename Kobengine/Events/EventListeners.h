@@ -1,5 +1,9 @@
 #pragma once
 #include <functional>
+#include <sstream>
+
+#include "TextRendererComponent.h"
+
 
 namespace kob
 {
@@ -25,5 +29,21 @@ namespace kob
 		}
 	private:
 		std::function<void(Args...)> m_Callback;
+	};
+
+	class HealthUIListener : public EventListener<int>
+	{
+		TextRendererComponent* m_pTextRenderer{};
+	public:
+		HealthUIListener(TextRendererComponent& textComp)
+			: m_pTextRenderer{ &textComp }
+		{ }
+		virtual void Notify(int changed) override
+		{
+			std::stringstream newTxt;
+			newTxt << "# lives: ";
+			newTxt << changed;
+			m_pTextRenderer->SetText(newTxt.str());
+		}
 	};
 }
