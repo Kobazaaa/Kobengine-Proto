@@ -12,6 +12,6 @@ namespace kob
 		void Execute() override;
 	private:
 		HealthComponent* m_pHealthComponent;
-		int m_Amount{ 1 };
+		int m_Amount;
 	};
 }

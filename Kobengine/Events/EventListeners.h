@@ -46,4 +46,19 @@ namespace kob
 			m_pTextRenderer->SetText(newTxt.str());
 		}
 	};
+	class ScoreUIListener : public EventListener<int>
+	{
+		TextRendererComponent* m_pTextRenderer{};
+	public:
+		ScoreUIListener(TextRendererComponent& textComp)
+			: m_pTextRenderer{ &textComp }
+		{ }
+		virtual void Notify(int changed) override
+		{
+			std::stringstream newTxt;
+			newTxt << "Score: ";
+			newTxt << changed;
+			m_pTextRenderer->SetText(newTxt.str());
+		}
+	};
 }

@@ -56,6 +56,8 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Kobengine/Commands/MoveCommands.h"
   "Kobengine/Commands/DamageCommand.h"
   "Kobengine/Commands/DamageCommand.cpp"
+  "Kobengine/Commands/ScoreCommand.h"
+  "Kobengine/Commands/ScoreCommand.cpp"
 
   # Events/
   "Kobengine/Events/EventListeners.h"
@@ -63,8 +65,8 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   
 
   # Components/
-  "Kobengine/Components/TextRendererComponent.cpp"
   "Kobengine/Components/TextRendererComponent.h"
+  "Kobengine/Components/TextRendererComponent.cpp"
   "Kobengine/Components/ImageRendererComponent.h"
   "Kobengine/Components/ImageRendererComponent.cpp"
   "Kobengine/Components/FPSComponent.h"
@@ -74,7 +76,10 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Kobengine/Components/ThrashTheCacheComponent.h"
   "Kobengine/Components/ThrashTheCacheComponent.cpp"
   "Kobengine/Components/HealthComponent.h"
-  "Kobengine/Components/HealthComponent.cpp")
+  "Kobengine/Components/HealthComponent.cpp"
+  "Kobengine/Components/ScoreComponent.h"
+  "Kobengine/Components/ScoreComponent.cpp"
+)
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)

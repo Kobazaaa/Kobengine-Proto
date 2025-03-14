@@ -23,10 +23,12 @@ namespace fs = std::filesystem;
 #include "ImageRendererComponent.h"
 #include "TextRendererComponent.h"
 #include "HealthComponent.h"
+#include "ScoreComponent.h"
 
 // Commands
 #include "MoveCommands.h"
 #include "DamageCommand.h"
+#include "ScoreCommand.h"
 
 // Events
 #include "Event.h"
@@ -71,6 +73,7 @@ void load()
 	auto chef = std::make_shared<GameObject>();
 	chef->AddComponent<ImageRendererComponent>("Chef.png");
 	chef->AddComponent<HealthComponent>(3);
+	chef->AddComponent<ScoreComponent>();
 	chef->SetLocalPosition(glm::vec3(50, 250, 0));
 	scene.Add(chef);
 
@@ -78,6 +81,7 @@ void load()
 	auto bean = std::make_shared<GameObject>();
 	bean->AddComponent<ImageRendererComponent>("Bean.png");
 	bean->AddComponent<HealthComponent>(3);
+	bean->AddComponent<ScoreComponent>();
 	bean->SetLocalPosition(glm::vec3(50, 300, 0));
 	scene.Add(bean);
 
@@ -121,8 +125,8 @@ void load()
 
 
 	// Score
-	//auto chefScore = chef->GetComponent<ScoreComponent>();
-	//auto beanScore = bean->GetComponent<ScoreComponent>();
+	auto chefScore = chef->GetComponent<ScoreComponent>();
+	auto beanScore = bean->GetComponent<ScoreComponent>();
 
 	auto chefScoreUI = std::make_shared<GameObject>();
 	chefScoreUI->AddComponent<TextRendererComponent>("Score: 0", fontS);
@@ -146,6 +150,14 @@ void load()
 	auto healthListenerBean = std::make_shared<HealthUIListener>(*beanHealthUITxt);
 	beanHealth->OnHealthChanged() += healthListenerBean;
 
+	auto chefScoreUITxt = chefScoreUI->GetComponent<TextRendererComponent>();
+	auto scoreListenerChef = std::make_shared<ScoreUIListener>(*chefScoreUITxt);
+	chefScore->OnScoreChanged() += scoreListenerChef;
+
+	auto beanScoreUITxt = beanScoreUI->GetComponent<TextRendererComponent>();
+	auto scoreListenerBean = std::make_shared<ScoreUIListener>(*beanScoreUITxt);
+	beanScore->OnScoreChanged() += scoreListenerBean;
+
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// ~~    Input Setup
@@ -159,6 +171,8 @@ void load()
 	inputManager.RegisterGamepadCmd(Gamepad::Button::DPAD_LEFT,  TriggerState::Down, std::make_unique<MoveCommand>(*chef.get(), glm::vec3{ -1,  0, 0 }, 2 * speed), 0);
 
 	inputManager.RegisterGamepadCmd(Gamepad::Button::X, TriggerState::Pressed, std::make_unique<DamageCommand>(*chefHealth), 0);
+	inputManager.RegisterGamepadCmd(Gamepad::Button::A, TriggerState::Pressed, std::make_unique<ScoreCommand>(*chefScore, 10), 0);
+	inputManager.RegisterGamepadCmd(Gamepad::Button::B, TriggerState::Pressed, std::make_unique<ScoreCommand>(*chefScore, 100), 0);
 
 	// Bean
 	inputManager.RegisterKeyboardCmd(SDLK_w, TriggerState::Down, std::make_unique<MoveCommand>(*bean.get(), glm::vec3{ 0, -1, 0 }, speed));
@@ -167,6 +181,8 @@ void load()
 	inputManager.RegisterKeyboardCmd(SDLK_a, TriggerState::Down, std::make_unique<MoveCommand>(*bean.get(), glm::vec3{-1,  0, 0 }, speed));
 
 	inputManager.RegisterKeyboardCmd(SDLK_c, TriggerState::Pressed, std::make_unique<DamageCommand>(*beanHealth));
+	inputManager.RegisterKeyboardCmd(SDLK_z, TriggerState::Pressed, std::make_unique<ScoreCommand>(*beanScore, 10));
+	inputManager.RegisterKeyboardCmd(SDLK_x, TriggerState::Pressed, std::make_unique<ScoreCommand>(*beanScore, 100));
 
 }
 
