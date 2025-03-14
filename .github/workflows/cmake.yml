@@ -3,9 +3,9 @@ name: CMake
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "SteamworksSDK" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "SteamworksSDK" ]
 
 jobs:
   build:
