@@ -39,7 +39,7 @@ bool SteamAchievements::SetAchievement(const char* id)
 	// Have we received a call back from Steam yet
 	if (m_IsInitialized)
 	{
-		SteamUserStats()->SetAchievement(ID);
+		SteamUserStats()->SetAchievement(id);
 		return SteamUserStats()->StoreStats();
 	}
 	// If not then we can't set achievements yet
