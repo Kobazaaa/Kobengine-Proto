@@ -315,3 +315,30 @@ elseif(WIN32)
     COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/Resources" "$<TARGET_FILE_DIR:${TARGET_NAME}>/Resources"
   )
 endif()
+
+# Set Steamworks SDK Paths
+set(STEAMWORKS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/External/steamworks_sdk")
+set(STEAMWORKS_HEADERS_DIR "${STEAMWORKS_DIR}/public/steam")
+set(STEAMWORKS_BINARIES_DIR "${STEAMWORKS_DIR}/redistributable_bin")
+set(STEAMWORKS_APPID_FILE "${CMAKE_CURRENT_SOURCE_DIR}/External/steam_appid.txt")
+
+add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${STEAMWORKS_APPID_FILE} $<TARGET_FILE_DIR:${TARGET_NAME}>
+)
+
+# Include Steamworks headers
+target_include_directories(${TARGET_NAME} PRIVATE ${STEAMWORKS_HEADERS_DIR})
+
+# Link Steamworks Lib
+if (WIN32)
+    set(STEAMWORKS_DLL "${STEAMWORKS_BINARIES_DIR}/win64/steam_api64.dll")
+    set(STEAMWORKS_LIB "${STEAMWORKS_BINARIES_DIR}/win64/steam_api64.lib")
+
+    target_link_libraries(${TARGET_NAME} PRIVATE "${STEAMWORKS_LIB}")
+
+    add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${STEAMWORKS_DLL} $<TARGET_FILE_DIR:${TARGET_NAME}>
+    )
+endif()

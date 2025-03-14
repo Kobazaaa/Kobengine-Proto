@@ -1,4 +1,6 @@
 #include <SDL.h>
+#include <steam_api.h>
+#include <iostream>
 
 #if _DEBUG
 // ReSharper disable once CppUnusedIncludeDirective
@@ -186,7 +188,8 @@ void load()
 
 }
 
-int main(int, char*[]) {
+int main(int, char*[])
+{
 #if __EMSCRIPTEN__
 	fs::path data_location = "";
 #else
@@ -194,7 +197,20 @@ int main(int, char*[]) {
 	if(!fs::exists(data_location))
 		data_location = "../Resources/";
 #endif
+
+	if (!SteamAPI_Init())
+	{
+		std::cerr << "Fatal Error - Steam must be running to play this game (SteamAPI_Init() failed)." << std::endl;
+		return 1;
+	}
+	else
+	{
+		std::cout << "Successfully initialized steam." << std::endl;
+	}
+
 	kob::Kobengine engine(data_location);
 	engine.Run(load);
+
+	SteamAPI_Shutdown();
     return 0;
 }
