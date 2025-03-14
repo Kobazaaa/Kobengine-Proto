@@ -57,6 +57,10 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Kobengine/Commands/DamageCommand.h"
   "Kobengine/Commands/DamageCommand.cpp"
 
+  # Events/
+  "Kobengine/Events/EventListeners.h"
+  "Kobengine/Events/Event.h"
+  
 
   # Components/
   "Kobengine/Components/TextRendererComponent.cpp"
@@ -254,6 +258,7 @@ target_include_directories(${TARGET_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/Kobengine/Engine/Input
   ${CMAKE_SOURCE_DIR}/Kobengine/Main
   ${CMAKE_SOURCE_DIR}/Kobengine/Object
+  ${CMAKE_SOURCE_DIR}/Kobengine/Events
 
   ${glm_SOURCE_DIR}
 
