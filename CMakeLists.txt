@@ -54,6 +54,9 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   # Commands/
   "Kobengine/Commands/MoveCommands.cpp"
   "Kobengine/Commands/MoveCommands.h"
+  "Kobengine/Commands/DamageCommand.h"
+  "Kobengine/Commands/DamageCommand.cpp"
+
 
   # Components/
   "Kobengine/Components/TextRendererComponent.cpp"
