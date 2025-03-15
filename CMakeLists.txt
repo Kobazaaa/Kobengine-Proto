@@ -79,6 +79,8 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Kobengine/Components/HealthComponent.cpp"
   "Kobengine/Components/ScoreComponent.h"
   "Kobengine/Components/ScoreComponent.cpp"
+  "Kobengine/Components/IntUIComponent.h"
+  "Kobengine/Components/IntUIComponent.cpp"
 )
 
 # enable c++20 features

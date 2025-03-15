@@ -1,7 +1,7 @@
 #pragma once
-#include <vector>
+#include <unordered_set>
+
 #include "EventListeners.h"
-#include "GameObject.h"
 
 namespace kob
 {
@@ -13,7 +13,13 @@ namespace kob
 		//    Constructor & Destructor
 		//--------------------------------------------------
 		Event() = default;
-		virtual ~Event() = default;
+		~Event()
+		{
+			for (EventListener<Args...>* listener : m_pEventListeners)
+			{
+				listener->RemoveEvent(this);
+			}
+		};
 
 		Event(const Event& other) = delete;
 		Event(Event&& other) noexcept = delete;
@@ -23,21 +29,29 @@ namespace kob
 		//--------------------------------------------------
 		//    Event
 		//--------------------------------------------------
-		void AddListener(const std::shared_ptr<EventListener<Args...>>& listener)
+		void AddListener(EventListener<Args...>* listener)
 		{
 			if (!listener) return;
-			if (std::ranges::find(m_pEventListeners, listener) == m_pEventListeners.end())
-			{
-				m_pEventListeners.push_back(listener);
-			}
+
+			auto result = m_pEventListeners.insert(listener);
+			// Let Listener know if insertion succeeded
+			if (result.second)
+				listener->AddEvent(this);
 		}
-		void RemoveListener(const std::shared_ptr<EventListener<Args...>>& listener)
+		void RemoveListener(EventListener<Args...>* listener)
 		{
-			std::erase_if(m_pEventListeners, [&](const EventListener<Args...>* l) { return l == listener; });
+			if (!listener) return;
+			if (m_pEventListeners.empty()) return;
+
+			auto result = m_pEventListeners.erase(listener);
+			if (result == 1)
+				listener->RemoveEvent(this);
 		}
 		void RemoveAllListeners()
 		{
-			m_pEventListeners.erase(m_pEventListeners.begin(), m_pEventListeners.end());
+			for (EventListener<Args...>*& listener : m_pEventListeners)
+				listener->RemoveEvent(this);
+
 			m_pEventListeners.clear();
 		}
 		void Invoke(Args... args)
@@ -53,11 +67,11 @@ namespace kob
 		//--------------------------------------------------
 		//    Operator Overloading
 		//--------------------------------------------------
-		void operator+=(const std::shared_ptr<EventListener<Args...>>& listener) { AddListener(listener); }
-		void operator-=(const std::shared_ptr<EventListener<Args...>>& listener) { RemoveListener(listener); }
-		void operator()(Args... args)											 { Invoke(args...); }
+		void operator+=(EventListener<Args...>* listener)		{ AddListener(listener); }
+		void operator-=(EventListener<Args...>* listener)		{ RemoveListener(listener); }
+		void operator()(Args... args)							{ Invoke(args...); }
 
 	private:
-		std::vector<std::shared_ptr<EventListener<Args...>>> m_pEventListeners{};
+		std::unordered_set<EventListener<Args...>*> m_pEventListeners{};
 	};
 }
