@@ -66,7 +66,9 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   # Achievements/
   "Kobengine/SteamAchievements/SteamAchievements.h"
   "Kobengine/SteamAchievements/SteamAchievements.cpp"
+  "Kobengine/SteamAchievements/AchievementManager.h"
   
+
 
   # Components/
   "Kobengine/Components/TextRendererComponent.h"

@@ -15,6 +15,7 @@
 
 #include <filesystem>
 
+#include "AchievementManager.h"
 #include "IntUIComponent.h"
 namespace fs = std::filesystem;
 
@@ -146,6 +147,9 @@ void load()
 	beanScoreUI->SetLocalPosition(glm::vec3(5, 220, 0));
 	scene.Add(beanScoreUI);
 
+	// Achievements
+	AchievementManager::GetInstance().RegisterAchievement<int>(beanScore->OnScoreChanged(), std::function([](int score) { return score >= 500; }), "ACH_WIN_ONE_GAME");
+	AchievementManager::GetInstance().RegisterAchievement<int>(chefScore->OnScoreChanged(), std::function([](int score) { return score >= 500; }), "ACH_WIN_ONE_GAME");
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// ~~    Input Setup
@@ -191,8 +195,7 @@ int main(int, char*[])
 	}
 	else
 	{
-		g_SteamAchievements = new SteamAchievements(g_Achievements, 4);
-		g_SteamAchievements->ResetAllAchievements();
+		kob::AchievementManager::GetInstance().GetSteamAchievementsPtr()->ResetAllAchievements();
 		std::cout << "Successfully initialized steam." << std::endl;
 	}
 
@@ -201,7 +204,5 @@ int main(int, char*[])
 	engine.Run(load);
 
 	SteamAPI_Shutdown();
-	if (g_SteamAchievements) delete g_SteamAchievements;
-
     return 0;
 }

@@ -5,15 +5,22 @@
 
 namespace kob
 {
+	class BaseListener
+	{
+	public:
+		virtual ~BaseListener() = default;
+	};
+
 	template<typename... Args>
 	class Event;
 
 	template<typename... Args>
-	class EventListener
+	class EventListener : public BaseListener
 	{
 	public:
-		virtual ~EventListener()
+		virtual ~EventListener() override
 		{
+			m_isDestroying = true;
 			for (Event<Args...>* pEvent : m_vEvents)
 				(*pEvent) -= this;
 		}
@@ -23,10 +30,11 @@ namespace kob
 		friend class Event<Args...>;
 
 		// Does not Subscribe! Purely used to manipulate container
-		void AddEvent(Event<Args...>* pEvent) { m_vEvents.insert(pEvent); }
+		void AddEvent(Event<Args...>* pEvent) { if (!m_isDestroying) m_vEvents.insert(pEvent); }
 		// Does not Unsubscribe! Purely used to manipulate container
-		void RemoveEvent(Event<Args...>* pEvent) { m_vEvents.erase(pEvent); }
+		void RemoveEvent(Event<Args...>* pEvent) { if (!m_isDestroying) m_vEvents.erase(pEvent); }
 
+		bool m_isDestroying = false;
 		std::unordered_set<Event<Args...>*> m_vEvents;
 	};
 
