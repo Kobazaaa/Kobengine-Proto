@@ -1,64 +1,75 @@
 #pragma once
+#include <unordered_set>
 #include <functional>
-#include <sstream>
-
-#include "TextRendererComponent.h"
 
 
 namespace kob
 {
 	template<typename... Args>
+	class Event;
+
+	template<typename... Args>
 	class EventListener
 	{
 	public:
-		virtual ~EventListener() = default;
+		virtual ~EventListener()
+		{
+			for (Event<Args...>* pEvent : m_vEvents)
+				(*pEvent) -= this;
+		}
 		virtual void Notify(Args... args) = 0;
+
+	private:
+		friend class Event<Args...>;
+
+		// Does not Subscribe! Purely used to manipulate container
+		void AddEvent(Event<Args...>* pEvent) { m_vEvents.insert(pEvent); }
+		// Does not Unsubscribe! Purely used to manipulate container
+		void RemoveEvent(Event<Args...>* pEvent) { m_vEvents.erase(pEvent); }
+
+		std::unordered_set<Event<Args...>*> m_vEvents;
 	};
 
 	template<typename... Args>
 	class EventCallback : public EventListener<Args...>
 	{
 	public:
+		// Function
 		EventCallback(const std::function<void(Args...)>& callback)
 		{
 			m_Callback = callback;
 		}
+
+		// Member Function
+		template<typename ObjType>
+		EventCallback(ObjType* object, void (ObjType::* memberFunction)(Args...))
+		{
+			if (object == nullptr)
+				return;
+
+			m_Callback = [object, memberFunction](Args... args)
+				{
+					(object->*memberFunction)(args...);
+				};
+		}
+		// Const Member Function
+		template<typename ObjType>
+		EventCallback(ObjType* object, void (ObjType::* memberFunction)(Args...) const)
+		{
+			if (object == nullptr)
+				return;
+
+			m_Callback = [object, memberFunction](Args... args)
+				{
+					(object->*memberFunction)(args...);
+				};
+		}
+
 		virtual void Notify(Args... args) override
 		{
 			m_Callback(args...);
 		}
 	private:
 		std::function<void(Args...)> m_Callback;
-	};
-
-	class HealthUIListener : public EventListener<int>
-	{
-		TextRendererComponent* m_pTextRenderer{};
-	public:
-		HealthUIListener(TextRendererComponent& textComp)
-			: m_pTextRenderer{ &textComp }
-		{ }
-		virtual void Notify(int changed) override
-		{
-			std::stringstream newTxt;
-			newTxt << "# lives: ";
-			newTxt << changed;
-			m_pTextRenderer->SetText(newTxt.str());
-		}
-	};
-	class ScoreUIListener : public EventListener<int>
-	{
-		TextRendererComponent* m_pTextRenderer{};
-	public:
-		ScoreUIListener(TextRendererComponent& textComp)
-			: m_pTextRenderer{ &textComp }
-		{ }
-		virtual void Notify(int changed) override
-		{
-			std::stringstream newTxt;
-			newTxt << "Score: ";
-			newTxt << changed;
-			m_pTextRenderer->SetText(newTxt.str());
-		}
 	};
 }

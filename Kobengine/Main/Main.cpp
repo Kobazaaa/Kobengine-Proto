@@ -14,6 +14,8 @@
 #include "Scene.h"
 
 #include <filesystem>
+
+#include "IntUIComponent.h"
 namespace fs = std::filesystem;
 
 // Managers
@@ -117,11 +119,13 @@ void load()
 
 	auto chefHealthUI = std::make_shared<GameObject>();
 	chefHealthUI->AddComponent<TextRendererComponent>("# lives: " + std::to_string(chefHealth->GetMaxLives()), fontS);
+	chefHealthUI->AddComponent<IntUIComponent>("# lives: ", chefHealth->GetMaxLives(), "", chefHealth->OnHealthChanged());
 	chefHealthUI->SetLocalPosition(glm::vec3(5, 150, 0));
 	scene.Add(chefHealthUI);
 
 	auto beanHealthUI = std::make_shared<GameObject>();
 	beanHealthUI->AddComponent<TextRendererComponent>("# lives: " + std::to_string(beanHealth->GetMaxLives()), fontS);
+	beanHealthUI->AddComponent<IntUIComponent>("# lives: ",beanHealth->GetMaxLives(), "", beanHealth->OnHealthChanged());
 	beanHealthUI->SetLocalPosition(glm::vec3(5, 200, 0));
 	scene.Add(beanHealthUI);
 
@@ -132,43 +136,16 @@ void load()
 
 	auto chefScoreUI = std::make_shared<GameObject>();
 	chefScoreUI->AddComponent<TextRendererComponent>("Score: 0", fontS);
+	chefScoreUI->AddComponent<IntUIComponent>("Score: ", 0, "", chefScore->OnScoreChanged());
 	chefScoreUI->SetLocalPosition(glm::vec3(5, 170, 0));
 	scene.Add(chefScoreUI);
 
 	auto beanScoreUI = std::make_shared<GameObject>();
 	beanScoreUI->AddComponent<TextRendererComponent>("Score: 0", fontS);
+	beanScoreUI->AddComponent<IntUIComponent>("Score: ", 0, "", beanScore->OnScoreChanged());
 	beanScoreUI->SetLocalPosition(glm::vec3(5, 220, 0));
 	scene.Add(beanScoreUI);
 
-
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// ~~    Event/Listener Setup
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-	auto chefHealthUITxt = chefHealthUI->GetComponent<TextRendererComponent>();
-	auto healthListenerChef = std::make_shared<HealthUIListener>(*chefHealthUITxt);
-	chefHealth->OnHealthChanged() += healthListenerChef;
-
-	auto beanHealthUITxt = beanHealthUI->GetComponent<TextRendererComponent>();
-	auto healthListenerBean = std::make_shared<HealthUIListener>(*beanHealthUITxt);
-	beanHealth->OnHealthChanged() += healthListenerBean;
-
-	auto chefScoreUITxt = chefScoreUI->GetComponent<TextRendererComponent>();
-	auto scoreListenerChef = std::make_shared<ScoreUIListener>(*chefScoreUITxt);
-	chefScore->OnScoreChanged() += scoreListenerChef;
-
-	auto beanScoreUITxt = beanScoreUI->GetComponent<TextRendererComponent>();
-	auto scoreListenerBean = std::make_shared<ScoreUIListener>(*beanScoreUITxt);
-	beanScore->OnScoreChanged() += scoreListenerBean;
-
-	auto steamAchievementCallback = std::make_shared<EventCallback<int>>([](int score)
-	{
-		if (score >= 500)
-			g_SteamAchievements->SetAchievement("ACH_WIN_ONE_GAME");
-
-	});
-	beanScore->OnScoreChanged() += steamAchievementCallback;
-	chefScore->OnScoreChanged() += steamAchievementCallback;
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// ~~    Input Setup
