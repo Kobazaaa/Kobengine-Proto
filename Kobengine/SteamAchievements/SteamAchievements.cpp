@@ -47,24 +47,15 @@ bool SteamAchievements::SetAchievement(const char* id)
 }
 void SteamAchievements::ResetAllAchievements() const
 {
-	bool bStatsChanged = false;  // Flag to check if any stats were modified
-
-	// Iterate through all achievements
 	for (int achIdx = 0; achIdx < m_NumAchievements; ++achIdx)
 	{
 		Achievement_t& achievement = m_pAchievements[achIdx];
 
-		// Reset the achievement if it's unlocked
+		// Reset the achievement
 		if (SteamUserStats()->ClearAchievement(achievement.achievementIDName))
 		{
-			bStatsChanged = true;  // If any achievement is cleared, mark stats as changed
+			SteamUserStats()->StoreStats();
 		}
-	}
-
-	// Store stats if any achievements were reset
-	if (bStatsChanged)
-	{
-		SteamUserStats()->StoreStats();
 	}
 }
 
