@@ -34,6 +34,7 @@ public:
 	bool RequestStats();
 	bool SetAchievement(const char* id);
 	void ResetAllAchievements() const;
+	bool HasAchievement(const char* id) const;
 
 	//--------------------------------------------------
 	//    Callbacks

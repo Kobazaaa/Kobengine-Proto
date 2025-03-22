@@ -57,6 +57,7 @@ namespace kob
 		void Invoke(Args... args)
 		{
 			if (m_pEventListeners.empty()) return;
+
 			for (const auto& listener : m_pEventListeners)
 			{
 				listener->Notify(args...);

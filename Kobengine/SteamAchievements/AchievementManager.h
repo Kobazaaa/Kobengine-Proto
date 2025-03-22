@@ -14,6 +14,10 @@ namespace kob
         template <typename... Args>
         void RegisterAchievement(Event<Args...>& eventRef, std::function<bool(Args...)> condition, const std::string& achievementID)
 		{
+            // If achievement is already unlocked, don't register
+            if (m_SteamAchievements->HasAchievement(achievementID.c_str()))
+                return;
+
             // Link event to achievement logic
             auto result = m_Callbacks.insert(std::make_unique<EventCallback<Args...>>
                 (

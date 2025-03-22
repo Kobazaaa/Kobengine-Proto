@@ -58,7 +58,15 @@ void SteamAchievements::ResetAllAchievements() const
 		}
 	}
 }
-
+bool SteamAchievements::HasAchievement(const char* id) const
+{
+	bool achieved = false;
+	if (SteamUserStats()->GetAchievement(id, &achieved))
+	{
+		return achieved;
+	}
+	return false; // If retrieval fails, assume it's locked
+}
 
 //--------------------------------------------------
 //    Callbacks
