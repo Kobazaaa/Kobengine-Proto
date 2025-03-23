@@ -8,9 +8,13 @@
 
 namespace fs = std::filesystem;
 
+
+//--------------------------------------------------
+//    Constructor & Destructor
+//--------------------------------------------------
 void kob::ResourceManager::Init(const std::filesystem::path& dataPath)
 {
-	m_dataPath = dataPath;
+	m_DataPath = dataPath;
 
 	if (TTF_Init() != 0)
 	{
@@ -18,39 +22,43 @@ void kob::ResourceManager::Init(const std::filesystem::path& dataPath)
 	}
 }
 
+
+//--------------------------------------------------
+//    Accessors & Mutators
+//--------------------------------------------------
 std::shared_ptr<kob::Texture2D> kob::ResourceManager::LoadTexture(const std::string& file)
 {
-	const auto fullPath = m_dataPath/file;
+	const auto fullPath = m_DataPath/file;
 	const auto filename = fs::path(fullPath).filename().string();
-	if(m_loadedTextures.find(filename) == m_loadedTextures.end())
-		m_loadedTextures.insert(std::pair(filename,std::make_shared<Texture2D>(fullPath.string())));
-	return m_loadedTextures.at(filename);
-}
 
+	const auto& result = m_mLoadedTextures.insert(std::pair(filename, std::make_shared<Texture2D>(fullPath.string())));
+	return result.first->second;
+}
 std::shared_ptr<kob::Font> kob::ResourceManager::LoadFont(const std::string& file, uint8_t size)
-	{
-	const auto fullPath = m_dataPath/file;
+{
+	const auto fullPath = m_DataPath/file;
 	const auto filename = fs::path(fullPath).filename().string();
 	const auto key = std::pair<std::string, uint8_t>(filename, size);
-	if(m_loadedFonts.find(key) == m_loadedFonts.end())
-		m_loadedFonts.insert(std::pair(key,std::make_shared<Font>(fullPath.string(), size)));
-	return m_loadedFonts.at(key);
-	}
+
+	const auto& result = m_mLoadedFonts.insert(std::pair(key, std::make_shared<Font>(fullPath.string(), size)));
+	return result.first->second;
+}
+
 
 void kob::ResourceManager::UnloadUnusedResources()
 {
-	for (auto it = m_loadedTextures.begin(); it != m_loadedTextures.end();)
+	for (auto it = m_mLoadedTextures.begin(); it != m_mLoadedTextures.end();)
 	{
 		if (it->second.use_count() == 1)
-			it = m_loadedTextures.erase(it);
+			it = m_mLoadedTextures.erase(it);
 		else
 			++it;
 	}
 
-	for (auto it = m_loadedFonts.begin(); it != m_loadedFonts.end();)
+	for (auto it = m_mLoadedFonts.begin(); it != m_mLoadedFonts.end();)
 	{
 		if (it->second.use_count() == 1)
-			it = m_loadedFonts.erase(it);
+			it = m_mLoadedFonts.erase(it);
 		else
 			++it;
 	}
