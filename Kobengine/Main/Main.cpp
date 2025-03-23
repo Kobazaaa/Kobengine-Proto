@@ -74,20 +74,16 @@ void load()
 	// Chef
 	auto& chef = scene.AddEmpty();
 	chef.AddComponent<ImageRendererComponent>("Chef.png");
-	chef.AddComponent<HealthComponent>(3);
-	chef.AddComponent<ScoreComponent>();
+	const auto chefHealth = chef.AddComponent<HealthComponent>(3);
+	const auto chefScore = chef.AddComponent<ScoreComponent>();
 	chef.SetLocalPosition(glm::vec3(50, 250, 0));
-	const auto chefHealth = chef.GetComponent<HealthComponent>();
-	const auto chefScore = chef.GetComponent<ScoreComponent>();
 
 	// Bean
 	auto& bean = scene.AddEmpty();
 	bean.AddComponent<ImageRendererComponent>("Bean.png");
-	bean.AddComponent<HealthComponent>(3);
-	bean.AddComponent<ScoreComponent>();
+	const auto beanHealth = bean.AddComponent<HealthComponent>(3);
+	const auto beanScore = bean.AddComponent<ScoreComponent>();
 	bean.SetLocalPosition(glm::vec3(50, 300, 0));
-	const auto beanHealth = bean.GetComponent<HealthComponent>();
-	const auto beanScore = bean.GetComponent<ScoreComponent>();
 
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

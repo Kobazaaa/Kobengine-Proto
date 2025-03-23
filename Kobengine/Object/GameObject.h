@@ -68,9 +68,10 @@ namespace kob
 		}
 		template <typename ComponentType, typename... Args>
 			requires std::derived_from<ComponentType, Component>
-		void AddComponent(Args&&... args)
+		ComponentType* AddComponent(Args&&... args)
 		{
 			m_vComponents.push_back(std::make_unique<ComponentType>(*this, std::forward<Args>(args)...));
+			return dynamic_cast<ComponentType*>(m_vComponents.back().get());
 		}
 		template <typename ComponentType>
 			requires std::derived_from<ComponentType, Component>
