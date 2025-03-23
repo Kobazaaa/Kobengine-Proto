@@ -1,9 +1,12 @@
 #include <SDL.h>
 #include <memory>
 #include "backends/imgui_impl_sdl2.h"
-
 #include "InputManager.h"
 
+
+//--------------------------------------------------
+//    Loop
+//--------------------------------------------------
 bool kob::InputManager::ProcessInput()
 {
 	SDL_Event e;
@@ -22,7 +25,66 @@ bool kob::InputManager::ProcessInput()
 
 	return true;
 }
+void kob::InputManager::ProcessKeyboard()
+{
+	const Uint8* currentKeyboard = SDL_GetKeyboardState(nullptr);
 
+	for (const auto& input : m_KeyboardMappings)
+	{
+		const auto& keycode = input.first;
+		const SDL_Scancode key = SDL_GetScancodeFromKey(keycode);
+		const auto& state = input.second.state;
+		const auto& command = input.second.command;
+
+		switch (state)
+		{
+		case TriggerState::Pressed:
+			if (m_PreviousKeyboardStates[key] == 0 && currentKeyboard[key] == 1) command->Execute();
+			break;
+
+		case TriggerState::Released:
+			if (m_PreviousKeyboardStates[key] == 1 && currentKeyboard[key] == 0) command->Execute();
+			break;
+
+		case TriggerState::Down:
+			if (currentKeyboard[key]) command->Execute();
+			break;
+		}
+	}
+
+	memcpy(m_PreviousKeyboardStates, currentKeyboard, SDL_NUM_SCANCODES);
+}
+void kob::InputManager::ProcessGamepad(int gamepadID)
+{
+	auto& gamepad = m_vGamepads[gamepadID];
+	gamepad->Update();
+
+	const auto& mapping = m_vGamepadMappings[gamepadID];
+	for (const auto& input : mapping)
+	{
+		const auto& button = input.first;
+		const auto& state = input.second.state;
+		const auto& command = input.second.command;
+
+		switch (state)
+		{
+		case TriggerState::Pressed:
+			if (gamepad->IsButtonPressed(button)) command->Execute();
+			break;
+		case TriggerState::Down:
+			if (gamepad->IsButtonDown(button)) command->Execute();
+			break;
+		case TriggerState::Released:
+			if (gamepad->IsButtonReleased(button)) command->Execute();
+			break;
+		}
+	}
+}
+
+
+//--------------------------------------------------
+//    Registration of Commands
+//--------------------------------------------------
 void kob::InputManager::RegisterGamepadCmd(Gamepad::Button button, TriggerState state, std::unique_ptr<Command> upCommand, int gamepadID)
 {
 	m_vGamepadMappings[gamepadID][button].command = std::move(upCommand);
@@ -51,61 +113,4 @@ void kob::InputManager::RegisterGamepad()
 const kob::Gamepad* kob::InputManager::GetGamepad(int gamepadID) const
 {
 	return m_vGamepads.at(gamepadID).get();
-}
-
-void kob::InputManager::ProcessKeyboard()
-{
-    const Uint8* currentKeyboard = SDL_GetKeyboardState(nullptr);
-
-    for (const auto& input : m_KeyboardMappings)
-    {
-        const auto& keycode = input.first;
-		const SDL_Scancode key = SDL_GetScancodeFromKey(keycode);
-        const auto& state = input.second.state;
-        const auto& command = input.second.command;
-
-        switch (state)
-        {
-        case TriggerState::Pressed:
-            if (m_PreviousKeyboardStates[key] == 0 && currentKeyboard[key] == 1) command->Execute();
-            break;
-
-        case TriggerState::Released:
-            if (m_PreviousKeyboardStates[key] == 1 && currentKeyboard[key] == 0) command->Execute();
-            break;
-
-        case TriggerState::Down:
-            if (currentKeyboard[key]) command->Execute();
-            break;
-        }
-    }
-
-    memcpy(m_PreviousKeyboardStates, currentKeyboard, SDL_NUM_SCANCODES);
-}
-
-void kob::InputManager::ProcessGamepad(int gamepadID)
-{
-	auto& gamepad = m_vGamepads[gamepadID];
-	gamepad->Update();
-
-	const auto& mapping = m_vGamepadMappings[gamepadID];
-	for (const auto& input : mapping)
-	{
-		const auto& button = input.first;
-		const auto& state = input.second.state;
-		const auto& command = input.second.command;
-
-		switch (state)
-		{
-		case TriggerState::Pressed:
-			if (gamepad->IsButtonPressed(button)) command->Execute();
-			break;
-		case TriggerState::Down:
-			if (gamepad->IsButtonDown(button)) command->Execute();
-			break;
-		case TriggerState::Released:
-			if (gamepad->IsButtonReleased(button)) command->Execute();
-			break;
-		}
-	}
 }
