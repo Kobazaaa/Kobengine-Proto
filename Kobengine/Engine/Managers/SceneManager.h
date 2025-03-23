@@ -3,10 +3,10 @@
 #include <string>
 #include <memory>
 #include "Singleton.h"
+#include "Scene.h"
 
 namespace kob
 {
-	class Scene;
 	class SceneManager final : public Singleton<SceneManager>
 	{
 		//--------------------------------------------------

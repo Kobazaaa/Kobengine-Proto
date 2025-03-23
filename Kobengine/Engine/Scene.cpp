@@ -1,5 +1,4 @@
 #include "Scene.h"
-#include "GameObject.h"
 #include <algorithm>
 
 using namespace kob;
@@ -16,9 +15,15 @@ Scene::Scene(const std::string& name)
 //--------------------------------------------------
 //    Adding & Removing GameObjects
 //--------------------------------------------------
-void Scene::Add(std::unique_ptr<GameObject> object)
+GameObject& Scene::Add(std::unique_ptr<GameObject> object)
 {
 	m_vObjects.emplace_back(std::move(object));
+	return *m_vObjects.back();
+}
+GameObject& Scene::AddEmpty()
+{
+	m_vObjects.emplace_back(std::make_unique<GameObject>());
+	return *m_vObjects.back();
 }
 void Scene::Remove(const std::unique_ptr<GameObject>& object)
 {
@@ -33,10 +38,13 @@ void Scene::RemoveAll()
 }
 void Scene::CleanupDeletedObjects()
 {
-	std::erase_if(m_vObjects, [](const std::shared_ptr<GameObject>& object)
-	              {
-		              return object->IsFlaggedForDeletion();
-	              });
+	m_vObjects.erase(
+		std::remove_if(m_vObjects.begin(), m_vObjects.end(),
+			[](const std::unique_ptr<GameObject>& object)
+			{
+				return object->IsFlaggedForDeletion();
+			}),
+		m_vObjects.end());
 }
 
 

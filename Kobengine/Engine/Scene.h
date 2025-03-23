@@ -1,17 +1,15 @@
 #pragma once
-#include "SceneManager.h"
+#include "GameObject.h"
 
 namespace kob
 {
-	class GameObject;
 	class Scene final
 	{
 		//--------------------------------------------------
 		//    Constructor & Destructor
 		//--------------------------------------------------
-	private:
-		explicit Scene(const std::string& name);
 	public:
+		explicit Scene(const std::string& name);
 		~Scene() = default;
 
 		Scene(const Scene& other) = delete;
@@ -23,7 +21,8 @@ namespace kob
 		//--------------------------------------------------
 		//    Adding & Removing GameObjects
 		//--------------------------------------------------
-		void Add(std::unique_ptr<GameObject> object);
+		GameObject& Add(std::unique_ptr<GameObject> object);
+		[[nodiscard]] GameObject& AddEmpty();
 		void Remove(const std::unique_ptr<GameObject>& object);
 		void RemoveAll();
 
@@ -39,7 +38,6 @@ namespace kob
 		void ImGuiRenderUpdate() const;
 
 	private:
-		friend Scene& SceneManager::CreateScene(const std::string& name);
 		void CleanupDeletedObjects();
 
 		inline static unsigned int m_IdCounter = 0;
