@@ -9,18 +9,32 @@ namespace kob
 	class Scene;
 	class SceneManager final : public Singleton<SceneManager>
 	{
+		//--------------------------------------------------
+		//    Constructor & Destructor
+		//--------------------------------------------------
+	private:
+		SceneManager() = default;
 	public:
 		Scene& CreateScene(const std::string& name);
 
-		void Start();
-		void Update();
-		void LateUpdate();
-		void FixedUpdate();
+		//--------------------------------------------------
+		//    Accessors & Mutators
+		//--------------------------------------------------
+		Scene* GetScene(int index) const;
+
+
+		//--------------------------------------------------
+		//    Loop
+		//--------------------------------------------------
+		void Start() const;
+		void Update() const;
+		void LateUpdate() const;
+		void FixedUpdate() const;
 		void Render() const;
-		void ImGuiRenderUpdate();
+		void ImGuiRenderUpdate() const;
+
 	private:
 		friend class Singleton<SceneManager>;
-		SceneManager() = default;
-		std::vector<std::shared_ptr<Scene>> m_scenes;
+		std::vector<std::unique_ptr<Scene>> m_vScenes;
 	};
 }
