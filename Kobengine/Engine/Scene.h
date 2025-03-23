@@ -6,33 +6,46 @@ namespace kob
 	class GameObject;
 	class Scene final
 	{
-		friend Scene& SceneManager::CreateScene(const std::string& name);
+		//--------------------------------------------------
+		//    Constructor & Destructor
+		//--------------------------------------------------
+	private:
+		explicit Scene(const std::string& name);
 	public:
-		void Add(std::shared_ptr<GameObject> object);
-		void Remove(std::shared_ptr<GameObject> object);
-		void RemoveAll();
+		~Scene() = default;
 
-		void Start();
-		void Update();
-		void LateUpdate();
-		void FixedUpdate();
-		void Render() const;
-		void ImGuiRenderUpdate();
-
-		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
-	private: 
-		explicit Scene(const std::string& name);
+
+		//--------------------------------------------------
+		//    Adding & Removing GameObjects
+		//--------------------------------------------------
+		void Add(std::unique_ptr<GameObject> object);
+		void Remove(const std::unique_ptr<GameObject>& object);
+		void RemoveAll();
+
+
+		//--------------------------------------------------
+		//    Loop
+		//--------------------------------------------------
+		void Start() const;
+		void Update() const;
+		void LateUpdate();
+		void FixedUpdate() const;
+		void Render() const;
+		void ImGuiRenderUpdate() const;
+
+	private:
+		friend Scene& SceneManager::CreateScene(const std::string& name);
 		void CleanupDeletedObjects();
 
-		std::string m_name;
-		std::vector < std::shared_ptr<GameObject>> m_objects{};
+		inline static unsigned int m_IdCounter = 0;
 
-		static unsigned int m_idCounter; 
+		std::string m_Name;
+		std::vector<std::unique_ptr<GameObject>> m_vObjects{};
 	};
 
 }

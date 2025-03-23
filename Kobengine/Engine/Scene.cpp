@@ -1,88 +1,88 @@
 #include "Scene.h"
 #include "GameObject.h"
-
 #include <algorithm>
 
 using namespace kob;
 
-unsigned int Scene::m_idCounter = 0;
 
-Scene::Scene(const std::string& name) : m_name(name) {}
+//--------------------------------------------------
+//    Constructor & Destructor
+//--------------------------------------------------
+Scene::Scene(const std::string& name)
+	: m_Name(name)
+{}
 
-void Scene::CleanupDeletedObjects()
+
+//--------------------------------------------------
+//    Adding & Removing GameObjects
+//--------------------------------------------------
+void Scene::Add(std::unique_ptr<GameObject> object)
 {
-	m_objects.erase(
-		std::remove_if(m_objects.begin(), m_objects.end(),
-			[](const std::shared_ptr<GameObject>& object)
-			{
-				return object->IsFlaggedForDeletion();
-			}),
-		m_objects.end());
+	m_vObjects.emplace_back(std::move(object));
 }
-
-Scene::~Scene() = default;
-
-void Scene::Add(std::shared_ptr<GameObject> object)
+void Scene::Remove(const std::unique_ptr<GameObject>& object)
 {
-	m_objects.emplace_back(std::move(object));
+	object->FlagForDeletion();
 }
-
-void Scene::Remove(std::shared_ptr<GameObject> object)
-{
-	m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), object), m_objects.end());
-}
-
 void Scene::RemoveAll()
 {
-	m_objects.clear();
+	for (auto& object : m_vObjects)
+	{
+		object->FlagForDeletion();
+	}
+}
+void Scene::CleanupDeletedObjects()
+{
+	std::erase_if(m_vObjects, [](const std::shared_ptr<GameObject>& object)
+	              {
+		              return object->IsFlaggedForDeletion();
+	              });
 }
 
-void Scene::Start()
+
+//--------------------------------------------------
+//    Loop
+//--------------------------------------------------
+void Scene::Start() const
 {
-	for(auto& object : m_objects)
+	for(auto& object : m_vObjects)
 	{
 		object->Start();
 	}
 }
-
-void Scene::Update()
+void Scene::Update() const
 {
-	for(auto& object : m_objects)
+	for(auto& object : m_vObjects)
 	{
 		object->Update();
 	}
 }
-
 void Scene::LateUpdate()
 {
-	for(auto& object : m_objects)
+	for(auto& object : m_vObjects)
 	{
 		object->LateUpdate();
 	}
 	CleanupDeletedObjects();
 }
-
-void Scene::FixedUpdate()
+void Scene::FixedUpdate() const
 {
-	for(auto& object : m_objects)
+	for(auto& object : m_vObjects)
 	{
 		object->FixedUpdate();
 	}
 }
-
 void Scene::Render() const
 {
-	for (const auto& object : m_objects)
+	for (const auto& object : m_vObjects)
 	{
 		object->Render();
 	}
 }
-
-void Scene::ImGuiRenderUpdate()
+void Scene::ImGuiRenderUpdate() const
 {
-	for (const auto& object : m_objects)
+	for (const auto& object : m_vObjects)
 	{
 		object->ImGuiRenderUpdate();
 	}
 }
-
