@@ -30,6 +30,6 @@ namespace kob
 		glm::ivec2 GetSize() const;
 
 	private:
-		SDL_Texture* m_Texture;
+		SDL_Texture* m_pTexture;
 	};
 }

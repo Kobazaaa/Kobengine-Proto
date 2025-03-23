@@ -8,20 +8,21 @@
 //--------------------------------------------------
 //    Constructor & Destructor
 //--------------------------------------------------
-kob::Texture2D::Texture2D(SDL_Texture* texture) : m_Texture{ texture }
+kob::Texture2D::Texture2D(SDL_Texture* texture)
+	: m_pTexture{ texture }
 {
-	assert(m_Texture != nullptr);
+	assert(m_pTexture != nullptr);
 }
 kob::Texture2D::Texture2D(const std::string& fullPath)
 {
-	m_Texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
-	if (m_Texture == nullptr)
+	m_pTexture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
+	if (m_pTexture == nullptr)
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
 }
 
 kob::Texture2D::~Texture2D()
 {
-	SDL_DestroyTexture(m_Texture);
+	SDL_DestroyTexture(m_pTexture);
 }
 
 
@@ -30,7 +31,7 @@ kob::Texture2D::~Texture2D()
 //--------------------------------------------------
 SDL_Texture* kob::Texture2D::GetSDLTexture() const
 {
-	return m_Texture;
+	return m_pTexture;
 }
 glm::ivec2 kob::Texture2D::GetSize() const
 {
