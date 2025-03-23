@@ -34,6 +34,11 @@ void kob::Renderer::Init(SDL_Window* window)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImPlot::CreateContext();
+
+	// Enable docking & Viewports
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
 	ImGui_ImplOpenGL3_Init();
 }
@@ -60,6 +65,7 @@ void kob::Renderer::ImGuiRenderUpdate() const
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
+	ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 	//ImGui::ShowDemoWindow();
 	SceneManager::GetInstance().ImGuiRenderUpdate();
 

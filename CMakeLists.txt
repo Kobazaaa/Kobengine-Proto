@@ -224,7 +224,7 @@ endif()
 # add ImGui
 FetchContent_Declare(
   imgui
-  URL https://github.com/ocornut/imgui/archive/refs/tags/v1.91.8.zip
+  URL https://github.com/ocornut/imgui/archive/refs/tags/v1.91.9b-docking.zip
   DOWNLOAD_NO_PROGRESS ON
   DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
 )
