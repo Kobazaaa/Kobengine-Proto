@@ -8,25 +8,15 @@
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl3.h"
 
-int GetOpenGLDriverIndex()
-{
-	auto openglIndex = -1;
-	const auto driverCount = SDL_GetNumRenderDrivers();
-	for (auto i = 0; i < driverCount; i++)
-	{
-		SDL_RendererInfo info;
-		if (!SDL_GetRenderDriverInfo(i, &info))
-			if (!strcmp(info.name, "opengl"))
-				openglIndex = i;
-	}
-	return openglIndex;
-}
 
+//--------------------------------------------------
+//    Constructor & Destructor
+//--------------------------------------------------
 void kob::Renderer::Init(SDL_Window* window)
 {
-	m_window = window;
-	m_renderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED);
-	if (m_renderer == nullptr) 
+	m_pWindow = window;
+	m_pRenderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED);
+	if (m_pRenderer == nullptr)
 	{
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
@@ -42,13 +32,30 @@ void kob::Renderer::Init(SDL_Window* window)
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
 	ImGui_ImplOpenGL3_Init();
 }
+void kob::Renderer::Destroy()
+{
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImPlot::DestroyContext();
+	ImGui::DestroyContext();
 
+	if (m_pRenderer != nullptr)
+	{
+		SDL_DestroyRenderer(m_pRenderer);
+		m_pRenderer = nullptr;
+	}
+}
+
+
+//--------------------------------------------------
+//    Rendering
+//--------------------------------------------------
 void kob::Renderer::Render() const
 {
 	// Clear screen
 	const auto& color = GetBackgroundColor();
-	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
-	SDL_RenderClear(m_renderer);
+	SDL_SetRenderDrawColor(m_pRenderer, color.r, color.g, color.b, color.a);
+	SDL_RenderClear(m_pRenderer);
 
 	// Render
 	SceneManager::GetInstance().Render();
@@ -56,7 +63,25 @@ void kob::Renderer::Render() const
 	ImGuiRenderUpdate();
 
 	// Present
-	SDL_RenderPresent(m_renderer);
+	SDL_RenderPresent(m_pRenderer);
+}
+
+void kob::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const
+{
+	SDL_Rect dst{};
+	dst.x = static_cast<int>(x);
+	dst.y = static_cast<int>(y);
+	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
+	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+}
+void kob::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
+{
+	SDL_Rect dst{};
+	dst.x = static_cast<int>(x);
+	dst.y = static_cast<int>(y);
+	dst.w = static_cast<int>(width);
+	dst.h = static_cast<int>(height);
+	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
 void kob::Renderer::ImGuiRenderUpdate() const
@@ -73,37 +98,33 @@ void kob::Renderer::ImGuiRenderUpdate() const
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void kob::Renderer::Destroy()
+//--------------------------------------------------
+//    Accessors & Mutators
+//--------------------------------------------------
+SDL_Renderer* kob::Renderer::GetSDLRenderer() const
 {
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImPlot::DestroyContext();
-	ImGui::DestroyContext();
+	return m_pRenderer;
+}
 
-	if (m_renderer != nullptr)
+const SDL_Color& kob::Renderer::GetBackgroundColor() const
+{
+	return m_ClearColor;
+}
+void kob::Renderer::SetBackgroundColor(const SDL_Color& color)
+{
+	m_ClearColor = color;
+}
+
+int kob::Renderer::GetOpenGLDriverIndex()
+{
+	auto openglIndex = -1;
+	const auto driverCount = SDL_GetNumRenderDrivers();
+	for (auto i = 0; i < driverCount; i++)
 	{
-		SDL_DestroyRenderer(m_renderer);
-		m_renderer = nullptr;
+		SDL_RendererInfo info;
+		if (!SDL_GetRenderDriverInfo(i, &info))
+			if (!strcmp(info.name, "opengl"))
+				openglIndex = i;
 	}
+	return openglIndex;
 }
-
-void kob::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const
-{
-	SDL_Rect dst{};
-	dst.x = static_cast<int>(x);
-	dst.y = static_cast<int>(y);
-	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
-}
-
-void kob::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
-{
-	SDL_Rect dst{};
-	dst.x = static_cast<int>(x);
-	dst.y = static_cast<int>(y);
-	dst.w = static_cast<int>(width);
-	dst.h = static_cast<int>(height);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
-}
-
-SDL_Renderer* kob::Renderer::GetSDLRenderer() const { return m_renderer; }
