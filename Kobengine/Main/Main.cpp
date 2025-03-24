@@ -164,14 +164,12 @@ void load()
 
 }
 
-int main(int, char*[]) {
-#if __EMSCRIPTEN__
-	fs::path data_location = "";
-#else
+int main(int, char*[])
+{
 	fs::path data_location = "./Resources/";
 	if(!fs::exists(data_location))
 		data_location = "../Resources/";
-#endif
+
 	kob::Kobengine engine(data_location);
 	engine.Run(load);
     return 0;

@@ -1,17 +1,13 @@
+#--------------------------------------------------
+#    Main CMake
+#--------------------------------------------------
+
 cmake_minimum_required(VERSION 3.26)
 project(Kobengine)
 
-if(EMSCRIPTEN)
-  message("Using Emscripten!")
-endif()
 
-if(EMSCRIPTEN)
-  set(TARGET_NAME kobengine_web)
-  set(TARGET_PARAM )
-else()
-  set(TARGET_NAME kobengine)
-  set(TARGET_PARAM WIN32)
-endif()
+set(TARGET_NAME kobengine)
+set(TARGET_PARAM WIN32)
 
 # list source files here
 add_executable(${TARGET_NAME} ${TARGET_PARAM}
@@ -179,8 +175,7 @@ if (WIN32)
     ${SDL2_TTF_LIBRARIES} 
     ${VLD_LIBRARY}
   )
-
-elseif(NOT EMSCRIPTEN)
+else()
 
   FetchContent_Declare(
     SDL2
@@ -281,26 +276,7 @@ target_compile_options(${TARGET_NAME} PRIVATE
   $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
 )
 
-if(EMSCRIPTEN)
-  set(EMSCRIPTEN_COMPILE_FLAGS "${EMSCRIPTEN_LINK_FLAGS} -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2 -g")
-  set(EMSCRIPTEN_LINK_FLAGS "${EMSCRIPTEN_LINK_FLAGS} -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2 -g -sALLOW_MEMORY_GROWTH --preload-file \"${CMAKE_SOURCE_DIR}/Resources@/\" -sSDL2_IMAGE_FORMATS=['tga','png']")
-
-  # work around https://github.com/emscripten-core/emscripten/issues/11513
-  set(EMSCRIPTEN_LINK_FLAGS "${EMSCRIPTEN_LINK_FLAGS} -fno-stack-protector")
-
-  # Use the Emscripten toolchain
-  set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/EmscriptenToolchain.cmake)
-
-  # Additional settings for Emscripten build
-  set_target_properties(${TARGET_NAME} PROPERTIES
-      COMPILE_FLAGS "${EMSCRIPTEN_COMPILE_FLAGS}"
-      LINK_FLAGS "${EMSCRIPTEN_LINK_FLAGS}"
-  )
-
-  # Have emscripten generate a html page too.
-  set(CMAKE_EXECUTABLE_SUFFIX ".html")
-  
-elseif(WIN32)
+if(WIN32)
   set_target_properties(${TARGET_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:${TARGET_NAME}>")
 
   # add post build commands

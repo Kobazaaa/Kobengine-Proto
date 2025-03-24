@@ -23,14 +23,6 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "Timer.h"
-#ifdef __EMSCRIPTEN__
-#include "emscripten.h"
-
-void LoopCallback(void* arg)
-{
-	static_cast<kob::Kobengine*>(arg)->RunOneFrame();
-}
-#endif
 
 //--------------------------------------------------
 //    Constructor & Destructor
@@ -77,12 +69,9 @@ void kob::Kobengine::Run(const std::function<void()>& load)
 	load();
 	SceneManager::GetInstance().Start();
 	Timer::Start();
-#ifndef __EMSCRIPTEN__
+
 	while (!m_Quit)
 		RunOneFrame();
-#else
-	emscripten_set_main_loop_arg(&LoopCallback, this, 0, true);
-#endif
 }
 
 void kob::Kobengine::RunOneFrame()
