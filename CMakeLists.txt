@@ -7,6 +7,10 @@ project(Kobengine)
 set(ENGINE_NAME kobengine)
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Kobengine)
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR})
+
 # list source files here
 add_library(${ENGINE_NAME}
   # Main/
@@ -248,15 +252,15 @@ target_sources(${ENGINE_NAME} PRIVATE
 )
 
 target_include_directories(${ENGINE_NAME} PUBLIC
-  ${CMAKE_SOURCE_DIR}/Kobengine/
-  ${CMAKE_SOURCE_DIR}/Kobengine/Commands
-  ${CMAKE_SOURCE_DIR}/Kobengine/Components
-  ${CMAKE_SOURCE_DIR}/Kobengine/Engine
-  ${CMAKE_SOURCE_DIR}/Kobengine/Engine/Managers
-  ${CMAKE_SOURCE_DIR}/Kobengine/Engine/Input
-  ${CMAKE_SOURCE_DIR}/Kobengine/Main
-  ${CMAKE_SOURCE_DIR}/Kobengine/Object
-  ${CMAKE_SOURCE_DIR}/Kobengine/Events
+  ${SOURCE_DIR}
+  ${SOURCE_DIR}/Commands
+  ${SOURCE_DIR}/Components
+  ${SOURCE_DIR}/Engine
+  ${SOURCE_DIR}/Engine/Managers
+  ${SOURCE_DIR}/Engine/Input
+  ${SOURCE_DIR}/Main
+  ${SOURCE_DIR}/Object
+  ${SOURCE_DIR}/Events
 
   ${glm_SOURCE_DIR}
 
