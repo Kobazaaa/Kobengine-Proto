@@ -1,88 +1,84 @@
 #--------------------------------------------------
-#    Main CMake
+#    Kobengine CMake
 #--------------------------------------------------
-
 cmake_minimum_required(VERSION 3.26)
 project(Kobengine)
 
-
-set(TARGET_NAME kobengine)
-set(TARGET_PARAM WIN32)
+set(ENGINE_NAME kobengine)
+set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Kobengine)
 
 # list source files here
-add_executable(${TARGET_NAME} ${TARGET_PARAM}
+add_library(${ENGINE_NAME}
   # Main/
-  "Kobengine/Main/Main.cpp"
-  "Kobengine/Main/Kobengine.cpp"
-  "Kobengine/Main/Kobengine.h"
+  "${SOURCE_DIR}/Main/Main.cpp"
+  "${SOURCE_DIR}/Main/Kobengine.cpp"
+  "${SOURCE_DIR}/Main/Kobengine.h"
 
   # Engine/
-  "Kobengine/Engine/Font.cpp"
-  "Kobengine/Engine/Font.h"
-  "Kobengine/Engine/Renderer.cpp"
-  "Kobengine/Engine/Renderer.h"
-  "Kobengine/Engine/Scene.cpp"
-  "Kobengine/Engine/Scene.h"
-  "Kobengine/Engine/Texture2D.cpp"
-  "Kobengine/Engine/Texture2D.h"
-  "Kobengine/Engine/Timer.h"
-  "Kobengine/Engine/Timer.cpp"
+  "${SOURCE_DIR}/Engine/Font.cpp"
+  "${SOURCE_DIR}/Engine/Font.h"
+  "${SOURCE_DIR}/Engine/Renderer.cpp"
+  "${SOURCE_DIR}/Engine/Renderer.h"
+  "${SOURCE_DIR}/Engine/Scene.cpp"
+  "${SOURCE_DIR}/Engine/Scene.h"
+  "${SOURCE_DIR}/Engine/Texture2D.cpp"
+  "${SOURCE_DIR}/Engine/Texture2D.h"
+  "${SOURCE_DIR}/Engine/Timer.h"
+  "${SOURCE_DIR}/Engine/Timer.cpp"
     # Engine/Managers/
-  "Kobengine/Engine/Managers/InputManager.cpp"
-  "Kobengine/Engine/Managers/InputManager.h"
-  "Kobengine/Engine/Managers/ResourceManager.cpp"
-  "Kobengine/Engine/Managers/ResourceManager.h"
-  "Kobengine/Engine/Managers/SceneManager.cpp"
-  "Kobengine/Engine/Managers/SceneManager.h"
+  "${SOURCE_DIR}/Engine/Managers/InputManager.cpp"
+  "${SOURCE_DIR}/Engine/Managers/InputManager.h"
+  "${SOURCE_DIR}/Engine/Managers/ResourceManager.cpp"
+  "${SOURCE_DIR}/Engine/Managers/ResourceManager.h"
+  "${SOURCE_DIR}/Engine/Managers/SceneManager.cpp"
+  "${SOURCE_DIR}/Engine/Managers/SceneManager.h"
     # Engine/Input/
-  "Kobengine/Engine/Input/Gamepad.cpp"
-  "Kobengine/Engine/Input/Gamepad.h"
+  "${SOURCE_DIR}/Engine/Input/Gamepad.cpp"
+  "${SOURCE_DIR}/Engine/Input/Gamepad.h"
 
-  # Object/
-  "Kobengine/Object/GameObject.cpp"
-  "Kobengine/Object/GameObject.h"
-  "Kobengine/Object/Transform.cpp"
-  "Kobengine/Object/Transform.h"
-  "Kobengine/Object/Component.h"
-  "Kobengine/Object/Component.cpp"
-  "Kobengine/Object/Command.h"
+  #../ Object/
+  "${SOURCE_DIR}/Object/GameObject.cpp"
+  "${SOURCE_DIR}/Object/GameObject.h"
+  "${SOURCE_DIR}/Object/Transform.cpp"
+  "${SOURCE_DIR}/Object/Transform.h"
+  "${SOURCE_DIR}/Object/Component.h"
+  "${SOURCE_DIR}/Object/Component.cpp"
+  "${SOURCE_DIR}/Object/Command.h"
 
-  # Commands/
-  "Kobengine/Commands/MoveCommands.cpp"
-  "Kobengine/Commands/MoveCommands.h"
-  "Kobengine/Commands/DamageCommand.h"
-  "Kobengine/Commands/DamageCommand.cpp"
-  "Kobengine/Commands/ScoreCommand.h"
-  "Kobengine/Commands/ScoreCommand.cpp"
+  #../ Commands/
+  "${SOURCE_DIR}/Commands/MoveCommands.cpp"
+  "${SOURCE_DIR}/Commands/MoveCommands.h"
+  "${SOURCE_DIR}/Commands/DamageCommand.h"
+  "${SOURCE_DIR}/Commands/DamageCommand.cpp"
+  "${SOURCE_DIR}/Commands/ScoreCommand.h"
+  "${SOURCE_DIR}/Commands/ScoreCommand.cpp"
 
-  # Events/
-  "Kobengine/Events/EventListeners.h"
-  "Kobengine/Events/Event.h"
-  
+  #../ Events/
+  "${SOURCE_DIR}/Events/EventListeners.h"
+  "${SOURCE_DIR}/Events/Event.h"
 
-  # Components/
-  "Kobengine/Components/TextRendererComponent.h"
-  "Kobengine/Components/TextRendererComponent.cpp"
-  "Kobengine/Components/ImageRendererComponent.h"
-  "Kobengine/Components/ImageRendererComponent.cpp"
-  "Kobengine/Components/FPSComponent.h"
-  "Kobengine/Components/FPSComponent.cpp"
-  "Kobengine/Components/RotateComponent.h"
-  "Kobengine/Components/RotateComponent.cpp"
-  "Kobengine/Components/ThrashTheCacheComponent.h"
-  "Kobengine/Components/ThrashTheCacheComponent.cpp"
-  "Kobengine/Components/HealthComponent.h"
-  "Kobengine/Components/HealthComponent.cpp"
-  "Kobengine/Components/ScoreComponent.h"
-  "Kobengine/Components/ScoreComponent.cpp"
-  "Kobengine/Components/IntUIComponent.h"
-  "Kobengine/Components/IntUIComponent.cpp"
+
+  #../ Components/
+  "${SOURCE_DIR}/Components/TextRendererComponent.h"
+  "${SOURCE_DIR}/Components/TextRendererComponent.cpp"
+  "${SOURCE_DIR}/Components/ImageRendererComponent.h"
+  "${SOURCE_DIR}/Components/ImageRendererComponent.cpp"
+  "${SOURCE_DIR}/Components/FPSComponent.h"
+  "${SOURCE_DIR}/Components/FPSComponent.cpp"
+  "${SOURCE_DIR}/Components/RotateComponent.h"
+  "${SOURCE_DIR}/Components/RotateComponent.cpp"
+  "${SOURCE_DIR}/Components/ThrashTheCacheComponent.h"
+  "${SOURCE_DIR}/Components/ThrashTheCacheComponent.cpp"
+  "${SOURCE_DIR}/Components/HealthComponent.h"
+  "${SOURCE_DIR}/Components/HealthComponent.cpp"
+  "${SOURCE_DIR}/Components/ScoreComponent.h"
+  "${SOURCE_DIR}/Components/ScoreComponent.cpp"
+  "${SOURCE_DIR}/Components/IntUIComponent.h"
+  "${SOURCE_DIR}/Components/IntUIComponent.cpp"
 )
 
 # enable c++20 features
-target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
-# set Kobengine as the default startup project
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${TARGET_NAME})
+target_compile_features(${ENGINE_NAME} PUBLIC cxx_std_20)
 
 include(FetchContent)
 # add glm
@@ -162,14 +158,14 @@ if (WIN32)
   find_package(VLD CONFIG)
 
   # set all include directories
-  target_include_directories(${TARGET_NAME} PRIVATE
+  target_include_directories(${ENGINE_NAME} PUBLIC
     ${VLD_INCLUDE_DIR}
     ${SDL2_INCLUDE_DIR} 
     ${SDL2_IMAGE_INCLUDE_DIR} 
     ${SDL2_TTF_INCLUDE_DIR})
   
   # set libraries to link with
-  target_link_libraries(${TARGET_NAME} PUBLIC Xinput
+  target_link_libraries(${ENGINE_NAME} PUBLIC Xinput
     ${SDL2_LIBRARIES} 
     ${SDL2_IMAGE_LIBRARIES} 
     ${SDL2_TTF_LIBRARIES} 
@@ -206,12 +202,12 @@ else()
   set(SDL2TTF_INSTALL OFF)
   FetchContent_MakeAvailable(SDL2_ttf)
 
-  target_include_directories("${TARGET_NAME}" PUBLIC 
+  target_include_directories("${ENGINE_NAME}" PUBLIC 
     ${sdl2_SOURCE_DIR}/include
     ${sdl2_image_SOURCE_DIR}/include
     ${sdl2_ttf_SOURCE_DIR}
   )
-  target_link_libraries("${TARGET_NAME}" PUBLIC 
+  target_link_libraries("${ENGINE_NAME}" PUBLIC 
     SDL2::SDL2main SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf
   )
 endif()
@@ -235,7 +231,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(implot)
 
 # Add the ImGui sources to project
-target_sources(${TARGET_NAME} PRIVATE
+target_sources(${ENGINE_NAME} PRIVATE
   ${imgui_SOURCE_DIR}/imgui.cpp
   ${imgui_SOURCE_DIR}/imgui_draw.cpp
   ${imgui_SOURCE_DIR}/imgui_widgets.cpp
@@ -246,12 +242,12 @@ target_sources(${TARGET_NAME} PRIVATE
 )
 
 # Add the ImPlot sources to project
-target_sources(${TARGET_NAME} PRIVATE
+target_sources(${ENGINE_NAME} PRIVATE
   ${implot_SOURCE_DIR}/implot.cpp
   ${implot_SOURCE_DIR}/implot_items.cpp
 )
 
-target_include_directories(${TARGET_NAME} PRIVATE
+target_include_directories(${ENGINE_NAME} PUBLIC
   ${CMAKE_SOURCE_DIR}/Kobengine/
   ${CMAKE_SOURCE_DIR}/Kobengine/Commands
   ${CMAKE_SOURCE_DIR}/Kobengine/Components
@@ -271,25 +267,25 @@ target_include_directories(${TARGET_NAME} PRIVATE
 )
 
 # compile at max warning level + treat warnings as errors
-target_compile_options(${TARGET_NAME} PRIVATE
+target_compile_options(${ENGINE_NAME} PRIVATE
   $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
   $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
 )
 
 if(WIN32)
-  set_target_properties(${TARGET_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:${TARGET_NAME}>")
+  set_target_properties(${ENGINE_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:${ENGINE_NAME}>")
 
   # add post build commands
-  add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
-      COMMAND "${CMAKE_COMMAND}" -E copy "${SDL2_LIBRARY_DLL}" "$<TARGET_FILE_DIR:${TARGET_NAME}>"
+  add_custom_command(TARGET ${ENGINE_NAME} POST_BUILD
+      COMMAND "${CMAKE_COMMAND}" -E copy "${SDL2_LIBRARY_DLL}" "$<TARGET_FILE_DIR:${ENGINE_NAME}>"
   )
-  add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
-      COMMAND "${CMAKE_COMMAND}" -E copy "${SDL2_IMAGE_LIBRARY_DLL}" "$<TARGET_FILE_DIR:${TARGET_NAME}>"
+  add_custom_command(TARGET ${ENGINE_NAME} POST_BUILD
+      COMMAND "${CMAKE_COMMAND}" -E copy "${SDL2_IMAGE_LIBRARY_DLL}" "$<TARGET_FILE_DIR:${ENGINE_NAME}>"
   )
-  add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
-      COMMAND "${CMAKE_COMMAND}" -E copy "${SDL2_TTF_LIBRARY_DLL}" "$<TARGET_FILE_DIR:${TARGET_NAME}>"
+  add_custom_command(TARGET ${ENGINE_NAME} POST_BUILD
+      COMMAND "${CMAKE_COMMAND}" -E copy "${SDL2_TTF_LIBRARY_DLL}" "$<TARGET_FILE_DIR:${ENGINE_NAME}>"
   )
-  add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/Resources" "$<TARGET_FILE_DIR:${TARGET_NAME}>/Resources"
+  add_custom_command(TARGET ${ENGINE_NAME} POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/Resources" "$<TARGET_FILE_DIR:${ENGINE_NAME}>/Resources"
   )
 endif()
