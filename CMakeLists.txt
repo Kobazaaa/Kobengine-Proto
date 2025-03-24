@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.26)
 project(Kobengine)
 
 set(ENGINE_NAME kobengine)
-set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Kobengine)
+set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Kobengine)
 
 # list source files here
 add_library(${ENGINE_NAME}
