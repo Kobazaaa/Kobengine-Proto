@@ -27,7 +27,7 @@
 //--------------------------------------------------
 //    Constructor & Destructor
 //--------------------------------------------------
-kob::Kobengine::Kobengine(const std::filesystem::path &dataPath)
+kob::Kobengine::Kobengine()
 {
 	PrintSDLVersion();
 	
@@ -50,7 +50,8 @@ kob::Kobengine::Kobengine(const std::filesystem::path &dataPath)
 	}
 
 	Renderer::GetInstance().Init(m_pWindow);
-	ResourceManager::GetInstance().Init(dataPath);
+	FindAssetsFolder("assets");
+	ResourceManager::GetInstance().Init(std::filesystem::current_path());
 }
 kob::Kobengine::~Kobengine()
 {
@@ -64,16 +65,29 @@ kob::Kobengine::~Kobengine()
 //--------------------------------------------------
 //    Loop
 //--------------------------------------------------
-void kob::Kobengine::Run(const std::function<void()>& load)
+void kob::Kobengine::FindAssetsFolder(const std::string& name)
 {
-	load();
+	constexpr int MAX_TRAVERSAL{ 5 };
+
+	const std::filesystem::path pathName{ name };
+	int counter{ 0 };
+	while (!std::filesystem::exists(pathName) &&
+		counter < MAX_TRAVERSAL)
+	{
+		std::filesystem::current_path("..");
+		counter++;
+	}
+
+	std::filesystem::current_path(pathName);
+}
+void kob::Kobengine::Run()
+{
 	SceneManager::GetInstance().Start();
 	Timer::Start();
 
 	while (!m_Quit)
 		RunOneFrame();
 }
-
 void kob::Kobengine::RunOneFrame()
 {
 	Timer::Update();

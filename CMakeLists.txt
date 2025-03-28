@@ -14,6 +14,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR})
 # list source files here
 add_library(${ENGINE_NAME} STATIC
   # Main/
+  "${SOURCE_DIR}/Main/main.cpp"
   "${SOURCE_DIR}/Main/Kobengine.cpp"
   "${SOURCE_DIR}/Main/Kobengine.h"
 

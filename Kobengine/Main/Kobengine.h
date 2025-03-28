@@ -10,7 +10,7 @@ namespace kob
 		//--------------------------------------------------
 		//    Constructor & Destructor
 		//--------------------------------------------------
-		explicit Kobengine(const std::filesystem::path& dataPath);
+		explicit Kobengine();
 		~Kobengine();
 
 		Kobengine(const Kobengine& other) = delete;
@@ -22,10 +22,12 @@ namespace kob
 		//--------------------------------------------------
 		//    Loop
 		//--------------------------------------------------
-		void Run(const std::function<void()>& load);
+		void Setup();
+		void Run();
 		void RunOneFrame();
 
 	private:
+		static void FindAssetsFolder(const std::string& name);
 		static void LogSDLVersion(const std::string& message, const SDL_version& v);
 		static void PrintSDLVersion();
 
