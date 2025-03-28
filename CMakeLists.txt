@@ -12,9 +12,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR})
 
 # list source files here
-add_library(${ENGINE_NAME}
+add_library(${ENGINE_NAME} STATIC
   # Main/
-  "${SOURCE_DIR}/Main/Main.cpp"
   "${SOURCE_DIR}/Main/Kobengine.cpp"
   "${SOURCE_DIR}/Main/Kobengine.h"
 
@@ -49,18 +48,9 @@ add_library(${ENGINE_NAME}
   "${SOURCE_DIR}/Object/Component.cpp"
   "${SOURCE_DIR}/Object/Command.h"
 
-  #../ Commands/
-  "${SOURCE_DIR}/Commands/MoveCommands.cpp"
-  "${SOURCE_DIR}/Commands/MoveCommands.h"
-  "${SOURCE_DIR}/Commands/DamageCommand.h"
-  "${SOURCE_DIR}/Commands/DamageCommand.cpp"
-  "${SOURCE_DIR}/Commands/ScoreCommand.h"
-  "${SOURCE_DIR}/Commands/ScoreCommand.cpp"
-
   #../ Events/
   "${SOURCE_DIR}/Events/EventListeners.h"
   "${SOURCE_DIR}/Events/Event.h"
-
 
   #../ Components/
   "${SOURCE_DIR}/Components/TextRendererComponent.h"
@@ -69,14 +59,6 @@ add_library(${ENGINE_NAME}
   "${SOURCE_DIR}/Components/ImageRendererComponent.cpp"
   "${SOURCE_DIR}/Components/FPSComponent.h"
   "${SOURCE_DIR}/Components/FPSComponent.cpp"
-  "${SOURCE_DIR}/Components/RotateComponent.h"
-  "${SOURCE_DIR}/Components/RotateComponent.cpp"
-  "${SOURCE_DIR}/Components/ThrashTheCacheComponent.h"
-  "${SOURCE_DIR}/Components/ThrashTheCacheComponent.cpp"
-  "${SOURCE_DIR}/Components/HealthComponent.h"
-  "${SOURCE_DIR}/Components/HealthComponent.cpp"
-  "${SOURCE_DIR}/Components/ScoreComponent.h"
-  "${SOURCE_DIR}/Components/ScoreComponent.cpp"
   "${SOURCE_DIR}/Components/IntUIComponent.h"
   "${SOURCE_DIR}/Components/IntUIComponent.cpp"
 )
