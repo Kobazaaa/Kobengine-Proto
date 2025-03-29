@@ -272,7 +272,4 @@ if(WIN32)
   add_custom_command(TARGET ${ENGINE_NAME} POST_BUILD
       COMMAND "${CMAKE_COMMAND}" -E copy "${SDL2_TTF_LIBRARY_DLL}" "$<TARGET_FILE_DIR:${ENGINE_NAME}>"
   )
-  add_custom_command(TARGET ${ENGINE_NAME} POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/Resources" "$<TARGET_FILE_DIR:${ENGINE_NAME}>/Resources"
-  )
 endif()
