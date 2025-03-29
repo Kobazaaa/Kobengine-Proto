@@ -105,6 +105,8 @@ namespace kob
 		const Transform& GetLocalTransform() const;
 		const Transform& GetWorldTransform();
 		void			 SetLocalPosition(const glm::vec3& pos);
+		void			 SetLocalScale(const glm::vec3& scale);
+		void			 SetLocalRotation(const glm::vec3& eulerAngles);
 		void			 UpdateWorldPosition();
 
 		//--------------------------------------------------
@@ -112,7 +114,7 @@ namespace kob
 		//--------------------------------------------------
 		bool IsFlaggedForDeletion() const;
 		void FlagForDeletion();
-		void SetPositionDirty();
+		void SetTransformDirty();
 
 	private:
 		void CleanupDeletedComponents();
@@ -127,6 +129,6 @@ namespace kob
 		Transform m_WorldTransform{};
 
 		bool m_DeletionFlag{ false };
-		bool m_DirtyPositionFlag{ false };
+		bool m_DirtyTransformFlag{ false };
 	};
 }

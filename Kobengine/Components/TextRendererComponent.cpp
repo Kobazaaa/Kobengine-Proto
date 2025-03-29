@@ -42,7 +42,14 @@ void kob::TextRendererComponent::Render() const
 	if (m_textTexture != nullptr)
 	{
 		const auto& pos = GetParent()->GetWorldTransform().GetPosition();
-		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
+
+		const auto& scale = GetParent()->GetWorldTransform().GetScale();
+		const auto& size = m_textTexture->GetSize();
+		const auto& dstSize = glm::vec3(static_cast<float>(size.x) * scale.x, static_cast<float>(size.y) * scale.y, 0);
+
+		const auto& eulerAngles = GetParent()->GetWorldTransform().GetEulerRotation();
+
+		Renderer::GetInstance().RenderTexture(*m_textTexture, pos, dstSize, eulerAngles);
 	}
 }
 

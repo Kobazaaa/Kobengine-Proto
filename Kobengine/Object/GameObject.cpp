@@ -73,8 +73,12 @@ void kob::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 	else
 	{
 		if (keepWorldPosition)
+		{
 			SetLocalPosition(GetWorldTransform().GetPosition() - parent->GetWorldTransform().GetPosition());
-		SetPositionDirty();
+			SetLocalScale(GetWorldTransform().GetScale() / parent->GetWorldTransform().GetScale());
+			SetLocalRotation(GetWorldTransform().GetEulerRotation() - parent->GetWorldTransform().GetEulerRotation());
+		}
+		SetTransformDirty();
 	}
 	if (m_pParent) m_pParent->RemoveChild(this);
 	m_pParent = parent;
@@ -107,7 +111,7 @@ const kob::Transform& kob::GameObject::GetLocalTransform() const
 }
 const kob::Transform& kob::GameObject::GetWorldTransform()
 {
-	if (m_DirtyPositionFlag)
+	if (m_DirtyTransformFlag)
 		UpdateWorldPosition();
 	return m_WorldTransform;
 }
@@ -115,12 +119,24 @@ const kob::Transform& kob::GameObject::GetWorldTransform()
 void kob::GameObject::SetLocalPosition(const glm::vec3& pos)
 {
 	m_LocalTransform.SetPosition(pos.x, pos.y, pos.z);
-	SetPositionDirty();
+	SetTransformDirty();
 }
+
+void kob::GameObject::SetLocalScale(const glm::vec3& scale)
+{
+	m_LocalTransform.SetScale(scale.x, scale.y, scale.z);
+	SetTransformDirty();
+}
+
+void kob::GameObject::SetLocalRotation(const glm::vec3& eulerAngles)
+{
+	m_LocalTransform.SetEulerAngles(eulerAngles.x, eulerAngles.y, eulerAngles.z);
+	SetTransformDirty();
+}
+
 void kob::GameObject::UpdateWorldPosition()
 {
-	//TODO fix transform to work with scale/rotation
-	if (m_DirtyPositionFlag)
+	if (m_DirtyTransformFlag)
 	{
 		if (m_pParent == nullptr)
 			m_WorldTransform = m_LocalTransform;
@@ -128,9 +144,15 @@ void kob::GameObject::UpdateWorldPosition()
 		{
 			const auto newPos = m_pParent->GetWorldTransform().GetPosition() + m_LocalTransform.GetPosition();
 			m_WorldTransform.SetPosition(newPos);
+
+			const auto newScale = m_pParent->GetWorldTransform().GetScale() * m_LocalTransform.GetScale();
+			m_WorldTransform.SetScale(newScale);
+
+			const auto newRot = m_pParent->GetWorldTransform().GetEulerRotation() + m_LocalTransform.GetEulerRotation();
+			m_WorldTransform.SetEulerAngles(newRot);
 		}
 	}
-	m_DirtyPositionFlag = false;
+	m_DirtyTransformFlag = false;
 }
 
 
@@ -148,11 +170,11 @@ void kob::GameObject::FlagForDeletion()
 		child->FlagForDeletion();
 
 }
-void kob::GameObject::SetPositionDirty()
+void kob::GameObject::SetTransformDirty()
 {
-	m_DirtyPositionFlag = true;
+	m_DirtyTransformFlag = true;
 	for (auto& child : m_vChildren)
-		child->SetPositionDirty();
+		child->SetTransformDirty();
 }
 
 
@@ -171,7 +193,7 @@ void kob::GameObject::CleanupDeletedComponents()
 void kob::GameObject::AddChild(GameObject* child)
 {
 	// If the child already exists in the container, don't add it again!
-	if (std::find(m_vChildren.begin(), m_vChildren.end(), child) == m_vChildren.end())
+	if (std::find(m_vChildren.begin(), m_vChildren.end(), child) != m_vChildren.end())
 		return;
 
 	m_vChildren.push_back(child);
