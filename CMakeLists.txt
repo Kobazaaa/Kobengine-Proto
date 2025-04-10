@@ -142,6 +142,26 @@ if (WIN32)
   endif()
   endif()
 
+  # add SDL2_mixer
+  FetchContent_Declare(
+    SDL2_mixer
+    URL https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.8.1/SDL2_mixer-devel-2.8.1-VC.zip
+    DOWNLOAD_NO_PROGRESS ON
+    DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
+  )
+  FetchContent_GetProperties(SDL_mixer)
+  if(NOT SDL2_mixer_POPULATED)
+    FetchContent_Populate(SDL2_mixer)
+    set(SDL2_MIXER_INCLUDE_DIR ${sdl2_mixer_SOURCE_DIR}/include)
+  if (${CMAKE_SIZEOF_VOID_P} MATCHES 8)
+    set(SDL2_MIXER_LIBRARIES ${sdl2_mixer_SOURCE_DIR}/lib/x64/SDL2_mixer.lib)
+    set(SDL2_MIXER_LIBRARY_DLL "${sdl2_mixer_SOURCE_DIR}/lib/x64/SDL2_mixer.dll")
+  else()
+    set(SDL2_MIXER_LIBRARIES ${sdl2_mixer_SOURCE_DIR}/lib/x86/SDL2_mixer.lib)
+    set(SDL2_MIXER_LIBRARY_DLL "${sdl2_mixer_SOURCE_DIR}/lib/x86/SDL2_mixer.dll")
+  endif()
+  endif()
+
   find_package(VLD CONFIG)
 
   # set all include directories
@@ -149,13 +169,16 @@ if (WIN32)
     ${VLD_INCLUDE_DIR}
     ${SDL2_INCLUDE_DIR} 
     ${SDL2_IMAGE_INCLUDE_DIR} 
-    ${SDL2_TTF_INCLUDE_DIR})
+    ${SDL2_TTF_INCLUDE_DIR}
+    ${SDL2_MIXER_INCLUDE_DIR}
+  )
   
   # set libraries to link with
   target_link_libraries(${ENGINE_NAME} PUBLIC Xinput
     ${SDL2_LIBRARIES} 
     ${SDL2_IMAGE_LIBRARIES} 
     ${SDL2_TTF_LIBRARIES} 
+    ${SDL2_MIXER_LIBRARIES} 
     ${VLD_LIBRARY}
   )
 else()
@@ -189,13 +212,24 @@ else()
   set(SDL2TTF_INSTALL OFF)
   FetchContent_MakeAvailable(SDL2_ttf)
 
+  FetchContent_Declare(
+    SDL_mixer
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer.git
+    GIT_TAG release-2.8.1
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+  )
+  set(SDLMIXER_INSTALL OFF)
+  FetchContent_MakeAvailable(SDL_mixer)
+
   target_include_directories("${ENGINE_NAME}" PUBLIC 
     ${sdl2_SOURCE_DIR}/include
     ${sdl2_image_SOURCE_DIR}/include
     ${sdl2_ttf_SOURCE_DIR}
+    ${sdl2_mixer_SOURCE_DIR}
   )
   target_link_libraries("${ENGINE_NAME}" PUBLIC 
-    SDL2::SDL2main SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf
+    SDL2::SDL2main SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf SDL_mixer::SDL_mixer
   )
 endif()
 
@@ -272,4 +306,11 @@ if(WIN32)
   add_custom_command(TARGET ${ENGINE_NAME} POST_BUILD
       COMMAND "${CMAKE_COMMAND}" -E copy "${SDL2_TTF_LIBRARY_DLL}" "$<TARGET_FILE_DIR:${ENGINE_NAME}>"
   )
+  add_custom_command(TARGET ${ENGINE_NAME} POST_BUILD
+      COMMAND "${CMAKE_COMMAND}" -E copy "${SDL2_MIXER_LIBRARY_DLL}" "$<TARGET_FILE_DIR:${ENGINE_NAME}>"
+  )
 endif()
+
+  add_custom_command(TARGET ${ENGINE_NAME} POST_BUILD
+      COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_SOURCE_DIR}/assets/" "$<TARGET_FILE_DIR:${ENGINE_NAME}>/assets/"
+  )
