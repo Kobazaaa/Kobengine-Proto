@@ -311,6 +311,11 @@ if(WIN32)
   )
 endif()
 
+if(EXISTS "${CMAKE_SOURCE_DIR}/assets")
   add_custom_command(TARGET ${ENGINE_NAME} POST_BUILD
       COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_SOURCE_DIR}/assets/" "$<TARGET_FILE_DIR:${ENGINE_NAME}>/assets/"
+      COMMENT "Copying assets"
   )
+else()
+    message(WARNING "Assets directory not found. Skipping copy.")
+endif()
