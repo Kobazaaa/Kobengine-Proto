@@ -40,6 +40,8 @@ add_library(${ENGINE_NAME} STATIC
     # Engine/Input/
   "${SOURCE_DIR}/Engine/Input/Gamepad.cpp"
   "${SOURCE_DIR}/Engine/Input/Gamepad.h"
+    # Engine/Audio/
+  "${SOURCE_DIR}/Engine/Audio/ISoundSystem.h"
 
   #../ Object/
   "${SOURCE_DIR}/Object/GameObject.cpp"
@@ -276,6 +278,7 @@ target_include_directories(${ENGINE_NAME} PUBLIC
   ${SOURCE_DIR}/Engine
   ${SOURCE_DIR}/Engine/Managers
   ${SOURCE_DIR}/Engine/Input
+  ${SOURCE_DIR}/Engine/Audio
   ${SOURCE_DIR}/Main
   ${SOURCE_DIR}/Object
   ${SOURCE_DIR}/Events
