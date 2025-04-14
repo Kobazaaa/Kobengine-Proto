@@ -19,6 +19,7 @@
 #include "Kobengine.h"
 
 #include "InputManager.h"
+#include "LoggerSoundSystem.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
@@ -58,7 +59,11 @@ kob::Kobengine::Kobengine()
 	ResourceManager::GetInstance().Init(assetPath);
 
 	// Setup Service Locators
+#if _DEBUG
+	ServiceLocator<ISoundSystem>::RegisterService(std::make_unique<LoggerSoundSystem>(std::make_unique<SoundSystem>(assetPath)));
+#else
 	ServiceLocator<ISoundSystem>::RegisterService(std::make_unique<SoundSystem>(assetPath));
+#endif
 
 }
 kob::Kobengine::~Kobengine()
