@@ -23,6 +23,8 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "Timer.h"
+#include "ServiceLocator.h"
+#include "SDLSoundSystem.h"
 
 //--------------------------------------------------
 //    Constructor & Destructor
@@ -49,9 +51,15 @@ kob::Kobengine::Kobengine()
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
 
+	auto assetPath = FindAssetsFolder("assets");
+
+	// Initial Setup
 	Renderer::GetInstance().Init(m_pWindow);
-	FindAssetsFolder("assets");
-	ResourceManager::GetInstance().Init(std::filesystem::current_path());
+	ResourceManager::GetInstance().Init(assetPath);
+
+	// Setup Service Locators
+	ServiceLocator<ISoundSystem>::RegisterService(std::make_unique<SDLSoundSystem>(assetPath));
+
 }
 kob::Kobengine::~Kobengine()
 {
@@ -65,20 +73,21 @@ kob::Kobengine::~Kobengine()
 //--------------------------------------------------
 //    Loop
 //--------------------------------------------------
-void kob::Kobengine::FindAssetsFolder(const std::string& name)
+std::filesystem::path kob::Kobengine::FindAssetsFolder(const std::string& name)
 {
-	constexpr int MAX_TRAVERSAL{ 5 };
+	constexpr uint32_t MAX_TRAVERSAL{ 5 };
+	std::filesystem::path current = std::filesystem::current_path();
 
-	const std::filesystem::path pathName{ name };
-	int counter{ 0 };
-	while (!std::filesystem::exists(pathName) &&
-		counter < MAX_TRAVERSAL)
+	for (uint32_t level{}; level < MAX_TRAVERSAL; ++level)
 	{
-		std::filesystem::current_path("..");
-		counter++;
-	}
+		std::filesystem::path target = current / name;
+		if (std::filesystem::exists(target))
+			return target;
 
-	std::filesystem::current_path(pathName);
+		current = current.parent_path();
+	}
+	std::cerr << "Assets folder not found after " << MAX_TRAVERSAL << " traversals.\n";
+	return {};
 }
 void kob::Kobengine::Run()
 {

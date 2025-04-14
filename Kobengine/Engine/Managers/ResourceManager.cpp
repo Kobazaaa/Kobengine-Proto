@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "Texture2D.h"
 #include "Font.h"
+#include "ServiceLocator.h"
 
 namespace fs = std::filesystem;
 
@@ -38,12 +39,11 @@ std::shared_ptr<kob::Font> kob::ResourceManager::LoadFont(const std::string& fil
 {
 	const auto fullPath = m_DataPath/file;
 	const auto filename = fs::path(fullPath).filename().string();
-	const auto key = std::pair<std::string, uint8_t>(filename, size);
+	const auto key = std::pair(filename, size);
 
 	const auto& result = m_mLoadedFonts.insert(std::pair(key, std::make_shared<Font>(fullPath.string(), size)));
 	return result.first->second;
 }
-
 
 void kob::ResourceManager::UnloadUnusedResources()
 {

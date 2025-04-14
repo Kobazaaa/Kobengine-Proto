@@ -1,4 +1,5 @@
 #pragma once
+#include <filesystem>
 #include "ISoundSystem.h"
 
 namespace kob
@@ -9,7 +10,7 @@ namespace kob
 		//--------------------------------------------------
 		//    Constructor & Destructor
 		//--------------------------------------------------
-		SDLSoundSystem();
+		SDLSoundSystem(const std::filesystem::path& assetPath);
 		~SDLSoundSystem() override;
 
 		SDLSoundSystem(const SDLSoundSystem& other) = delete;
@@ -20,7 +21,14 @@ namespace kob
 		//--------------------------------------------------
 		//    Interface
 		//--------------------------------------------------
-		void Play() override;
+		AudioClip& Load(const std::filesystem::path& file) override;
+		void Play(const std::filesystem::path& file, float volume, int loops) override;
+		void Pause(const std::filesystem::path& file) override;
+		void PauseAll() override;
+		void Resume(const std::filesystem::path& file) override;
+		void ResumeAll() override;
+		void Stop(const std::filesystem::path& file) override;
+		void StopAll() override;
 
 	private:
 		class SDLSoundSystemImpl;

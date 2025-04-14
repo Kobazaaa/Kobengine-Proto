@@ -27,7 +27,7 @@ namespace kob
 		void RunOneFrame();
 
 	private:
-		static void FindAssetsFolder(const std::string& name);
+		static std::filesystem::path FindAssetsFolder(const std::string& name);
 		static void LogSDLVersion(const std::string& message, const SDL_version& v);
 		static void PrintSDLVersion();
 

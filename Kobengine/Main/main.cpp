@@ -8,16 +8,11 @@
 #endif
 
 #include "Kobengine.h"
-#include "ServiceLocator.h"
-#include "SDLSoundSystem.h"
 
 int main(int, char*[])
 {
 	// Create Engine
 	kob::Kobengine engine{};
-
-	// Setup Service Locators
-	kob::ServiceLocator<kob::ISoundSystem>::RegisterService(std::make_unique<kob::SDLSoundSystem>());
 
 	// Run Engine
 	engine.Setup(); // Needs to be defined by the user of the engine for their project
