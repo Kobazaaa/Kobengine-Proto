@@ -24,7 +24,7 @@
 #include "ResourceManager.h"
 #include "Timer.h"
 #include "ServiceLocator.h"
-#include "SDLSoundSystem.h"
+#include "SoundSystem.h"
 
 //--------------------------------------------------
 //    Constructor & Destructor
@@ -58,7 +58,7 @@ kob::Kobengine::Kobengine()
 	ResourceManager::GetInstance().Init(assetPath);
 
 	// Setup Service Locators
-	ServiceLocator<ISoundSystem>::RegisterService(std::make_unique<SDLSoundSystem>(assetPath));
+	ServiceLocator<ISoundSystem>::RegisterService(std::make_unique<SoundSystem>(assetPath));
 
 }
 kob::Kobengine::~Kobengine()

@@ -4,19 +4,19 @@
 
 namespace kob
 {
-	class SDLSoundSystem final : public ISoundSystem
+	class SoundSystem final : public ISoundSystem
 	{
 	public:
 		//--------------------------------------------------
 		//    Constructor & Destructor
 		//--------------------------------------------------
-		SDLSoundSystem(const std::filesystem::path& assetPath);
-		~SDLSoundSystem() override;
+		SoundSystem(const std::filesystem::path& assetPath);
+		~SoundSystem() override;
 
-		SDLSoundSystem(const SDLSoundSystem& other) = delete;
-		SDLSoundSystem(SDLSoundSystem&& other) noexcept = delete;
-		SDLSoundSystem& operator=(const SDLSoundSystem& other) = delete;
-		SDLSoundSystem& operator=(SDLSoundSystem&& other) noexcept = delete;
+		SoundSystem(const SoundSystem& other) = delete;
+		SoundSystem(SoundSystem&& other) noexcept = delete;
+		SoundSystem& operator=(const SoundSystem& other) = delete;
+		SoundSystem& operator=(SoundSystem&& other) noexcept = delete;
 
 		//--------------------------------------------------
 		//    Interface
@@ -31,7 +31,7 @@ namespace kob
 		void StopAll() override;
 
 	private:
-		class SDLSoundSystemImpl;
-		SDLSoundSystemImpl* m_pImpl;
+		class SoundSystemImpl;
+		SoundSystemImpl* m_pImpl;
 	};
 }

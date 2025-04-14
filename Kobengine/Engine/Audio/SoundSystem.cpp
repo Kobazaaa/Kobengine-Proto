@@ -1,5 +1,5 @@
 // Kobengine
-#include "SDLSoundSystem.h"
+#include "SoundSystem.h"
 
 // Standard Library
 #include <iostream>
@@ -12,13 +12,13 @@
 //--------------------------------------------------
 //    PIMPL
 //--------------------------------------------------
-class kob::SDLSoundSystem::SDLSoundSystemImpl final
+class kob::SoundSystem::SoundSystemImpl final
 {
 public:
 	//--------------------------------------------------
 	//    Constructor & Destructor
 	//--------------------------------------------------
-	SDLSoundSystemImpl(std::filesystem::path assetPath)
+	SoundSystemImpl(std::filesystem::path assetPath)
 		: m_AssetPath(std::move(assetPath))
 	{
 		if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
@@ -32,12 +32,12 @@ public:
 		if (flags != initializationFlags)
 			std::cerr << "Failed to initialize SDL_Mixer";
 	}
-	~SDLSoundSystemImpl() {	Mix_CloseAudio(); Mix_Quit(); SDL_QuitSubSystem(SDL_INIT_AUDIO); }
+	~SoundSystemImpl() {	Mix_CloseAudio(); Mix_Quit(); SDL_QuitSubSystem(SDL_INIT_AUDIO); }
 
-	SDLSoundSystemImpl(const SDLSoundSystemImpl& other) = delete;
-	SDLSoundSystemImpl(SDLSoundSystemImpl&& other) noexcept = delete;
-	SDLSoundSystemImpl& operator=(const SDLSoundSystemImpl& other) = delete;
-	SDLSoundSystemImpl& operator=(SDLSoundSystemImpl&& other) noexcept = delete;
+	SoundSystemImpl(const SoundSystemImpl& other) = delete;
+	SoundSystemImpl(SoundSystemImpl&& other) noexcept = delete;
+	SoundSystemImpl& operator=(const SoundSystemImpl& other) = delete;
+	SoundSystemImpl& operator=(SoundSystemImpl&& other) noexcept = delete;
 
 	//--------------------------------------------------
 	//    Functions
@@ -182,8 +182,8 @@ private:
 //--------------------------------------------------
 //    Constructor & Destructor
 //--------------------------------------------------
-kob::SDLSoundSystem::SDLSoundSystem(const std::filesystem::path& assetPath)	{ m_pImpl = new SDLSoundSystemImpl(assetPath); }
-kob::SDLSoundSystem::~SDLSoundSystem()										{ delete m_pImpl; m_pImpl = nullptr; }
+kob::SoundSystem::SoundSystem(const std::filesystem::path& assetPath)	{ m_pImpl = new SoundSystemImpl(assetPath); }
+kob::SoundSystem::~SoundSystem()										{ delete m_pImpl; m_pImpl = nullptr; }
 
 
 
@@ -191,13 +191,13 @@ kob::SDLSoundSystem::~SDLSoundSystem()										{ delete m_pImpl; m_pImpl = null
 //    Interface
 //--------------------------------------------------
 kob::ISoundSystem::AudioClip& 
-	kob::SDLSoundSystem::Load(const std::filesystem::path& file)							{ return m_pImpl->Load(file); }
-void kob::SDLSoundSystem::Play(const std::filesystem::path& file, float volume, int loops)	{ m_pImpl->Play(file, volume, loops); }
-void kob::SDLSoundSystem::Pause(const std::filesystem::path& file)							{ m_pImpl->Pause(file); }
-void kob::SDLSoundSystem::PauseAll()														{ SDLSoundSystemImpl::PauseAll(); }
+	kob::SoundSystem::Load(const std::filesystem::path& file)							{ return m_pImpl->Load(file); }
+void kob::SoundSystem::Play(const std::filesystem::path& file, float volume, int loops)	{ m_pImpl->Play(file, volume, loops); }
+void kob::SoundSystem::Pause(const std::filesystem::path& file)							{ m_pImpl->Pause(file); }
+void kob::SoundSystem::PauseAll()														{ SoundSystemImpl::PauseAll(); }
 
-void kob::SDLSoundSystem::Resume(const std::filesystem::path& file)							{ m_pImpl->Resume(file); }
-void kob::SDLSoundSystem::ResumeAll()														{ SDLSoundSystemImpl::PauseAll(); }
+void kob::SoundSystem::Resume(const std::filesystem::path& file)							{ m_pImpl->Resume(file); }
+void kob::SoundSystem::ResumeAll()														{ SoundSystemImpl::PauseAll(); }
 
-void kob::SDLSoundSystem::Stop(const std::filesystem::path& file)							{ m_pImpl->Stop(file); }
-void kob::SDLSoundSystem::StopAll()															{ SDLSoundSystemImpl::StopAll(); }
+void kob::SoundSystem::Stop(const std::filesystem::path& file)							{ m_pImpl->Stop(file); }
+void kob::SoundSystem::StopAll()															{ SoundSystemImpl::StopAll(); }
