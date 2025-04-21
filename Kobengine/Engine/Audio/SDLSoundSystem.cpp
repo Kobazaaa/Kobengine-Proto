@@ -4,6 +4,10 @@
 // Standard Library
 #include <iostream>
 #include <unordered_map>
+#include <functional>
+#include <mutex>
+#include <queue>
+#include <thread>
 
 // SDL
 #include "SDL.h"
@@ -20,7 +24,9 @@ public:
 	//--------------------------------------------------
 	SoundSystemImpl(std::filesystem::path assetPath)
 		: m_AssetPath(std::move(assetPath))
+		, m_IsThreadActive(true)
 	{
+		// Setup SDL Mixer
 		if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
 			std::cerr << "SDL_InitSubSystem failed: " << SDL_GetError() << "\n";
 
@@ -31,8 +37,39 @@ public:
 		int initializationFlags = Mix_Init(flags);
 		if (flags != initializationFlags)
 			std::cerr << "Failed to initialize SDL_Mixer";
+
+
+		// Start Sound Thread
+		m_SoundThread = std::jthread([this]
+			{
+				while (m_IsThreadActive)
+				{
+					std::unique_lock lock{ m_QueueMutex };
+					m_ConditionVar.wait(lock, [this]
+						{
+							return !m_EventQueue.empty() || !m_IsThreadActive;
+						});
+
+					while (!m_EventQueue.empty())
+					{
+						auto event = m_EventQueue.front();
+						m_EventQueue.pop();
+						event();
+					}
+				}
+			});
 	}
-	~SoundSystemImpl() {	Mix_CloseAudio(); Mix_Quit(); SDL_QuitSubSystem(SDL_INIT_AUDIO); }
+	~SoundSystemImpl()
+	{
+		// Shut Down Thread
+		m_IsThreadActive = false;
+		m_ConditionVar.notify_one();
+		if (m_SoundThread.joinable())
+			m_SoundThread.join();
+
+		// Shut down SDL
+		Mix_CloseAudio(); Mix_Quit(); SDL_QuitSubSystem(SDL_INIT_AUDIO);
+	}
 
 	SoundSystemImpl(const SoundSystemImpl& other) = delete;
 	SoundSystemImpl(SoundSystemImpl&& other) noexcept = delete;
@@ -56,69 +93,107 @@ public:
 
 	void Play(const std::filesystem::path& file, float volume, int loops)
 	{
-		// Loads if not yet loaded, otherwise returns existing clip
-		auto& clip = Load(file);
-		clip.Play(volume, loops);
+		// Lock QueueMutex to prevent the queue changing while we're adding to it.
+		std::lock_guard lock(m_QueueMutex);
+		// Place item in Queue
+		m_EventQueue.emplace([this, file, volume, loops]
+			{
+				// Loads if not yet loaded, otherwise returns existing clip
+				auto& clip = Load(file);
+				clip.Play(volume, loops);
+			});
+		// Notify thread that the queue has been updated!
+		m_ConditionVar.notify_one();
 	}
 
 	void Pause(const std::filesystem::path& file)
 	{
-		auto fullPath = (m_AssetPath / file).string();
-		if (m_mLoadedFX.contains(fullPath))
-		{
-			auto& clip = m_mLoadedFX[fullPath];
-			clip->Pause();
-		}
-		if (m_mLoadedMusic.contains(fullPath))
-		{
-			auto& clip = m_mLoadedMusic[fullPath];
-			clip->Pause();
-		}
+		std::lock_guard lock(m_QueueMutex);
+		m_EventQueue.emplace([this, file]
+			{
+				auto fullPath = (m_AssetPath / file).string();
+				if (m_mLoadedFX.contains(fullPath))
+				{
+					auto& clip = m_mLoadedFX[fullPath];
+					clip->Pause();
+				}
+				if (m_mLoadedMusic.contains(fullPath))
+				{
+					auto& clip = m_mLoadedMusic[fullPath];
+					clip->Pause();
+				}
+			});
+		m_ConditionVar.notify_one();
 	}
-	static void PauseAll()
+	void PauseAll()
 	{
-		Mix_PauseMusic();
-		Mix_Pause(-1);
+		std::lock_guard lock(m_QueueMutex);
+		m_EventQueue.emplace([]
+			{
+				Mix_PauseMusic();
+				Mix_Pause(-1);
+			});
+		m_ConditionVar.notify_one();
 	}
 
 	void Resume(const std::filesystem::path& file)
 	{
-		auto fullPath = (m_AssetPath / file).string();
-		if (m_mLoadedFX.contains(fullPath))
-		{
-			auto& clip = m_mLoadedFX[fullPath];
-			clip->Resume();
-		}
-		if (m_mLoadedMusic.contains(fullPath))
-		{
-			auto& clip = m_mLoadedMusic[fullPath];
-			clip->Resume();
-		}
+		std::lock_guard lock(m_QueueMutex);
+		m_EventQueue.emplace([this, file]
+			{
+				auto fullPath = (m_AssetPath / file).string();
+				if (m_mLoadedFX.contains(fullPath))
+				{
+					auto& clip = m_mLoadedFX[fullPath];
+					clip->Resume();
+				}
+				if (m_mLoadedMusic.contains(fullPath))
+				{
+					auto& clip = m_mLoadedMusic[fullPath];
+					clip->Resume();
+				}
+			});
+		m_ConditionVar.notify_one();
 	}
-	static void ResumeAll()
+	void ResumeAll()
 	{
-		Mix_ResumeMusic();
-		Mix_Resume(-1);
+		std::lock_guard lock(m_QueueMutex);
+		m_EventQueue.emplace([]
+			{
+				Mix_ResumeMusic();
+				Mix_Resume(-1);
+			});
+		m_ConditionVar.notify_one();
 	}
 
 	void Stop(const std::filesystem::path& file)
 	{
-		auto fullPath = (m_AssetPath / file).string();
-		if (m_mLoadedFX.contains(fullPath))
-		{
-			auto& clip = m_mLoadedFX[fullPath];
-			clip->Stop();
-		}
-		if (m_mLoadedMusic.contains(fullPath))
-		{
-			auto& clip = m_mLoadedMusic[fullPath];
-			clip->Stop();
-		}
+		std::lock_guard lock(m_QueueMutex);
+		m_EventQueue.emplace([this, file]
+			{
+				auto fullPath = (m_AssetPath / file).string();
+				if (m_mLoadedFX.contains(fullPath))
+				{
+					auto& clip = m_mLoadedFX[fullPath];
+					clip->Stop();
+				}
+				if (m_mLoadedMusic.contains(fullPath))
+				{
+					auto& clip = m_mLoadedMusic[fullPath];
+					clip->Stop();
+				}
+			});
+		m_ConditionVar.notify_one();
 	}
-	static void StopAll()
+	void StopAll()
 	{
-		Mix_HaltMusic();
-		Mix_HaltChannel(-1);
+		std::lock_guard lock(m_QueueMutex);
+		m_EventQueue.emplace([]
+			{
+				Mix_HaltMusic();
+				Mix_HaltChannel(-1);
+			});
+		m_ConditionVar.notify_one();
 	}
 
 private:
@@ -173,6 +248,13 @@ private:
 
 	std::filesystem::path m_AssetPath;
 
+	std::jthread m_SoundThread;
+	bool m_IsThreadActive;
+
+	std::mutex m_QueueMutex;
+	std::condition_variable m_ConditionVar;
+	std::queue<std::function<void()>> m_EventQueue;
+
 	std::unordered_map<std::string, std::unique_ptr<SDLSound>> m_mLoadedFX;
 	std::unordered_map<std::string, std::unique_ptr<SDLMusic>> m_mLoadedMusic;
 };
@@ -194,10 +276,10 @@ kob::ISoundSystem::AudioClip&
 	kob::SDLSoundSystem::Load(const std::filesystem::path& file)							{ return m_pImpl->Load(file); }
 void kob::SDLSoundSystem::Play(const std::filesystem::path& file, float volume, int loops)	{ m_pImpl->Play(file, volume, loops); }
 void kob::SDLSoundSystem::Pause(const std::filesystem::path& file)							{ m_pImpl->Pause(file); }
-void kob::SDLSoundSystem::PauseAll()														{ SoundSystemImpl::PauseAll(); }
+void kob::SDLSoundSystem::PauseAll()														{ m_pImpl->PauseAll(); }
 
 void kob::SDLSoundSystem::Resume(const std::filesystem::path& file)							{ m_pImpl->Resume(file); }
-void kob::SDLSoundSystem::ResumeAll()														{ SoundSystemImpl::PauseAll(); }
+void kob::SDLSoundSystem::ResumeAll()														{ m_pImpl->PauseAll(); }
 
 void kob::SDLSoundSystem::Stop(const std::filesystem::path& file)							{ m_pImpl->Stop(file); }
-void kob::SDLSoundSystem::StopAll()															{ SoundSystemImpl::StopAll(); }
+void kob::SDLSoundSystem::StopAll()															{ m_pImpl->StopAll(); }

@@ -62,7 +62,7 @@ kob::Kobengine::Kobengine()
 #if _DEBUG
 	ServiceLocator<ISoundSystem>::RegisterService(std::make_unique<LoggerSoundSystem>(std::make_unique<SDLSoundSystem>(assetPath)));
 #else
-	ServiceLocator<ISoundSystem>::RegisterService(std::make_unique<SoundSystem>(assetPath));
+	ServiceLocator<ISoundSystem>::RegisterService(std::make_unique<SDLSoundSystem>(assetPath));
 #endif
 
 }
