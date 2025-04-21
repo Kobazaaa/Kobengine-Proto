@@ -42,8 +42,8 @@ add_library(${ENGINE_NAME} STATIC
   "${SOURCE_DIR}/Engine/Input/Gamepad.h"
     # Engine/Audio/
   "${SOURCE_DIR}/Engine/Audio/ISoundSystem.h"
-  "${SOURCE_DIR}/Engine/Audio/SoundSystem.h"
-  "${SOURCE_DIR}/Engine/Audio/SoundSystem.cpp"
+  "${SOURCE_DIR}/Engine/Audio/SDLSoundSystem.h"
+  "${SOURCE_DIR}/Engine/Audio/SDLSoundSystem.cpp"
   "${SOURCE_DIR}/Engine/Audio/LoggerSoundSystem.h"
   "${SOURCE_DIR}/Engine/Audio/LoggerSoundSystem.cpp"
 
