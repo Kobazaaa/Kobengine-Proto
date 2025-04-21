@@ -120,6 +120,12 @@ void kob::Kobengine::RunOneFrame()
 	std::this_thread::sleep_for(Timer::SleepDurationNanoSeconds());
 }
 
+//--------------------------------------------------
+//    Loop
+//--------------------------------------------------
+void kob::Kobengine::SetWindowSize(int width, int height)		const	{ SDL_SetWindowSize(m_pWindow, width, height); }
+void kob::Kobengine::SetWindowTitle(const std::string& title)	const	{ SDL_SetWindowTitle(m_pWindow, title.c_str()); }
+
 
 //--------------------------------------------------
 //    SDL Version Logging

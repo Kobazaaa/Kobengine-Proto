@@ -26,6 +26,12 @@ namespace kob
 		void Run();
 		void RunOneFrame();
 
+		//--------------------------------------------------
+		//    Window
+		//--------------------------------------------------
+		void SetWindowSize(int width, int height) const;
+		void SetWindowTitle(const std::string& title) const;
+
 	private:
 		static std::filesystem::path FindAssetsFolder(const std::string& name);
 		static void LogSDLVersion(const std::string& message, const SDL_version& v);
