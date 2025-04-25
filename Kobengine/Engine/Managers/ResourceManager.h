@@ -3,14 +3,15 @@
 #include <string>
 #include <memory>
 #include <map>
+#include <unordered_map>
 
 #include "Singleton.h"
+#include "Texture2D.h"
+#include "Font.h"
+#include "SpriteSheet.h"
 
 namespace kob
 {
-	class Texture2D;
-	class Font;
-
 	class ResourceManager final : public Singleton<ResourceManager>
 	{
 		//--------------------------------------------------
@@ -24,16 +25,17 @@ namespace kob
 		//--------------------------------------------------
 		//    Accessors & Mutators
 		//--------------------------------------------------
-		std::shared_ptr<Texture2D> LoadTexture(const std::string& file);
-		std::shared_ptr<Font> LoadFont(const std::string& file, uint8_t size);
+		Texture2D* LoadTexture(const std::string& file);
+		SpriteSheet* LoadSpriteSheet(const std::string& file, const std::unordered_map<std::string, SpriteSheetAnimation>& anims = {});
+		Font* LoadFont(const std::string& file, uint8_t size);
 	private:
 		friend class Singleton<ResourceManager>;
 
 		std::filesystem::path m_DataPath;
-		void UnloadUnusedResources();
 
-		std::map<std::string, std::shared_ptr<Texture2D>> m_mLoadedTextures;
-		std::map<std::pair<std::string, uint8_t>, std::shared_ptr<Font>> m_mLoadedFonts;
+		std::map<std::string, std::unique_ptr<Texture2D>> m_mLoadedTextures;
+		std::map<std::string, std::unique_ptr<SpriteSheet>> m_mLoadedSpriteSheets;
+		std::map<std::pair<std::string, uint8_t>, std::unique_ptr<Font>> m_mLoadedFonts;
 
 	};
 }

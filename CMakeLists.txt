@@ -19,6 +19,8 @@ add_library(${ENGINE_NAME} STATIC
   "${SOURCE_DIR}/Main/Kobengine.h"
 
   # Engine/
+  "${SOURCE_DIR}/Engine/SpriteSheet.cpp"
+  "${SOURCE_DIR}/Engine/SpriteSheet.h"
   "${SOURCE_DIR}/Engine/Font.cpp"
   "${SOURCE_DIR}/Engine/Font.h"
   "${SOURCE_DIR}/Engine/Renderer.cpp"
@@ -69,6 +71,8 @@ add_library(${ENGINE_NAME} STATIC
   "${SOURCE_DIR}/Components/FPSComponent.cpp"
   "${SOURCE_DIR}/Components/IntUIComponent.h"
   "${SOURCE_DIR}/Components/IntUIComponent.cpp"
+  "${SOURCE_DIR}/Components/Animator.cpp"
+  "${SOURCE_DIR}/Components/Animator.h"
 )
 
 # enable c++20 features

@@ -15,7 +15,7 @@ namespace kob
 		//--------------------------------------------------
 		//    Constructors and Destructors
 		//--------------------------------------------------
-		explicit TextRendererComponent(GameObject& parent, const std::string& text, std::shared_ptr<Font> font);
+		explicit TextRendererComponent(GameObject& parent, const std::string& text, Font* font);
 		~TextRendererComponent() override = default;
 
 		TextRendererComponent(const TextRendererComponent& other) = delete;
@@ -40,7 +40,7 @@ namespace kob
 	private:
 		bool m_needsUpdate;
 		std::string m_text;
-		std::shared_ptr<Font> m_font;
+		Font* m_font;
 		std::shared_ptr<Texture2D> m_textTexture;
 	};
 }

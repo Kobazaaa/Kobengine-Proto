@@ -3,6 +3,7 @@
 #include <string>
 
 #include "Component.h"
+#include "vec4.hpp"
 
 namespace kob
 {
@@ -15,6 +16,7 @@ namespace kob
 		//    Constructors and Destructors
 		//--------------------------------------------------
 		explicit ImageRendererComponent(GameObject& parent, const std::string& fileName);
+		explicit ImageRendererComponent(GameObject& parent, Texture2D* tex);
 		~ImageRendererComponent() override = default;
 
 		ImageRendererComponent(const ImageRendererComponent& other) = delete;
@@ -29,7 +31,13 @@ namespace kob
 		void Update() override;
 		void Render() const override;
 
+		//--------------------------------------------------
+		//    Setter
+		//--------------------------------------------------
+		void SetSourceRect(const glm::ivec4& rect);
+
 	private:
-		std::shared_ptr<Texture2D> m_imageTexture;
+		Texture2D* m_pImageTexture;
+		glm::ivec4 m_SrcRect;
 	};
 }

@@ -9,8 +9,8 @@
 //--------------------------------------------------
 //    Constructors and Destructors
 //--------------------------------------------------
-kob::TextRendererComponent::TextRendererComponent(GameObject& parent, const std::string& text, std::shared_ptr<Font> font)
-	: Component(parent), m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
+kob::TextRendererComponent::TextRendererComponent(GameObject& parent, const std::string& text, Font* font)
+	: Component(parent), m_needsUpdate(true), m_text(text), m_font(font), m_textTexture(nullptr)
 { }
 
 
