@@ -19,7 +19,7 @@ namespace kob
 			{
 				listener->RemoveEvent(this);
 			}
-		};
+		}
 
 		Event(const Event& other) = delete;
 		Event(Event&& other) noexcept = delete;
@@ -38,6 +38,11 @@ namespace kob
 			if (result.second)
 				listener->AddEvent(this);
 		}
+		void AddLambda(const std::function<void(Args...)>& lambda)
+		{
+			if (!lambda) return;
+			m_pEventLambdas.push_back(lambda);
+		}
 		void RemoveListener(EventListener<Args...>* listener)
 		{
 			if (!listener) return;
@@ -53,25 +58,27 @@ namespace kob
 				listener->RemoveEvent(this);
 
 			m_pEventListeners.clear();
+			m_pEventLambdas.clear();
 		}
 		void Invoke(Args... args)
 		{
-			if (m_pEventListeners.empty()) return;
 			for (const auto& listener : m_pEventListeners)
-			{
 				listener->Notify(args...);
-			}
+			for (const auto& listener : m_pEventLambdas)
+				listener(args...);
 		}
 
 
 		//--------------------------------------------------
 		//    Operator Overloading
 		//--------------------------------------------------
-		void operator+=(EventListener<Args...>* listener)		{ AddListener(listener); }
-		void operator-=(EventListener<Args...>* listener)		{ RemoveListener(listener); }
-		void operator()(Args... args)							{ Invoke(args...); }
+		void operator+=(EventListener<Args...>* listener)				{ AddListener(listener); }
+		void operator+=(const std::function<void(Args...)>& listener)	{ AddLambda(listener); }
+		void operator-=(EventListener<Args...>* listener)				{ RemoveListener(listener); }
+		void operator()(Args... args)									{ Invoke(args...); }
 
 	private:
 		std::unordered_set<EventListener<Args...>*> m_pEventListeners{};
+		std::vector<std::function<void(Args...)>> m_pEventLambdas{};
 	};
 }
