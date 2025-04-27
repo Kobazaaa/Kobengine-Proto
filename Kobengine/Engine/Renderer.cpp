@@ -90,6 +90,12 @@ void kob::Renderer::RenderTexture(const Texture2D& texture, const glm::vec3& pos
 	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), srcRect, &dst, eulerAngles.z, &center, SDL_FLIP_NONE);
 }
 
+void kob::Renderer::RenderLine(const glm::vec2& p1, const glm::vec2& p2, const glm::vec4& color) const
+{
+	SDL_SetRenderDrawColor(m_pRenderer, static_cast<Uint8>(color.r * 255), static_cast<Uint8>(color.g * 255), static_cast<Uint8>(color.b * 255), static_cast<Uint8>(color.a * 255));
+	SDL_RenderDrawLineF(m_pRenderer, p1.x, p1.y, p2.x, p2.y);
+}
+
 void kob::Renderer::ImGuiRenderUpdate() const
 {
 	ImGui_ImplOpenGL3_NewFrame();

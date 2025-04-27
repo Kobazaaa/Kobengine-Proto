@@ -1,7 +1,9 @@
 #pragma once
 #include <SDL.h>
 #include "Singleton.h"
+#include "vec2.hpp"
 #include "vec3.hpp"
+#include "vec4.hpp"
 
 namespace kob
 {
@@ -27,6 +29,7 @@ namespace kob
 
 		void RenderTexture(const Texture2D& texture, const glm::vec3& pos, const glm::vec3& size, const glm::vec3& eulerAngles) const;
 		void RenderTexture(const Texture2D& texture, const glm::vec3& pos, const glm::vec3& size, const glm::vec3& eulerAngles, const SDL_Rect* srcRect) const;
+		void RenderLine(const glm::vec2& p1, const glm::vec2& p2, const glm::vec4& color = {1.f, 1.f, 1.f, 1.f}) const;
 
 
 		//--------------------------------------------------
