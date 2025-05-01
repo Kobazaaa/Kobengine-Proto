@@ -50,10 +50,14 @@ public:
 							return !m_EventQueue.empty() || !m_IsThreadActive;
 						});
 
+
 					while (!m_EventQueue.empty())
 					{
+						if (!lock.owns_lock())
+							lock.lock();
 						auto event = m_EventQueue.front();
 						m_EventQueue.pop();
+						lock.unlock();
 						event();
 					}
 				}
