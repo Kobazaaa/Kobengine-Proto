@@ -69,10 +69,10 @@ void kob::Renderer::Render() const
 void kob::Renderer::RenderTexture(const Texture2D& texture, const glm::vec3& pos, const glm::vec3& size, const glm::vec3& eulerAngles) const
 {
 	SDL_Rect dst{};
-	dst.x = static_cast<int>(pos.x);
-	dst.y = static_cast<int>(pos.y);
 	dst.w = abs(static_cast<int>(size.x));
 	dst.h = abs(static_cast<int>(size.y));
+	dst.x = static_cast<int>(pos.x - dst.w / 2);
+	dst.y = static_cast<int>(pos.y - dst.h / 2);
 	SDL_Point center = { dst.w / 2, dst.h / 2 };
 
 	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst, eulerAngles.z, &center, SDL_FLIP_NONE);
@@ -81,10 +81,10 @@ void kob::Renderer::RenderTexture(const Texture2D& texture, const glm::vec3& pos
 void kob::Renderer::RenderTexture(const Texture2D& texture, const glm::vec3& pos, const glm::vec3& size, const glm::vec3& eulerAngles, const SDL_Rect* srcRect) const
 {
 	SDL_Rect dst{};
-	dst.x = static_cast<int>(pos.x);
-	dst.y = static_cast<int>(pos.y);
 	dst.w = abs(static_cast<int>(size.x));
 	dst.h = abs(static_cast<int>(size.y));
+	dst.x = static_cast<int>(pos.x - dst.w / 2);
+	dst.y = static_cast<int>(pos.y - dst.h / 2);
 	SDL_Point center = { dst.w / 2, dst.h / 2 };
 
 	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), srcRect, &dst, eulerAngles.z, &center, SDL_FLIP_NONE);
