@@ -16,7 +16,7 @@ namespace kob
 		//--------------------------------------------------
 		//    Constructors and Destructors
 		//--------------------------------------------------
-		GameObject() = default;
+		explicit GameObject(const std::string& name ="GameObject");
 		~GameObject() = default;
 
 		GameObject(const GameObject& other) = delete;
@@ -102,12 +102,14 @@ namespace kob
 		//--------------------------------------------------
 		//    Transform
 		//--------------------------------------------------
-		const Transform& GetLocalTransform() const;
-		const Transform& GetWorldTransform();
-		void			 SetLocalPosition(const glm::vec3& pos);
-		void			 SetLocalScale(const glm::vec3& scale);
-		void			 SetLocalRotation(const glm::vec3& eulerAngles);
-		void			 UpdateWorldPosition();
+		const Transform&   GetLocalTransform() const;
+		const Transform&   GetWorldTransform();
+		void			   SetLocalPosition(const glm::vec3& pos);
+		void			   SetLocalScale(const glm::vec3& scale);
+		void			   SetLocalRotation(const glm::vec3& eulerAngles);
+		void			   UpdateWorldPosition();
+		void			   SetName(const std::string& name);
+		const std::string& GetName() const;
 
 		//--------------------------------------------------
 		//    Flags
@@ -124,6 +126,8 @@ namespace kob
 		void RemoveChild(GameObject* child);
 		GameObject* m_pParent{};
 		std::vector<GameObject*> m_vChildren{};
+
+		std::string m_Name{"GameObject"};
 
 		Transform m_LocalTransform{};
 		Transform m_WorldTransform{};

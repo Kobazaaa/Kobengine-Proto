@@ -22,10 +22,9 @@ namespace kob
 		//    Adding & Removing GameObjects
 		//--------------------------------------------------
 		GameObject& Add(std::unique_ptr<GameObject> object);
-		[[nodiscard]] GameObject& AddEmpty();
+		[[nodiscard]] GameObject& AddEmpty(const std::string& name = "GameObject");
 		void Remove(const std::unique_ptr<GameObject>& object);
 		void RemoveAll();
-
 
 		//--------------------------------------------------
 		//    Loop
@@ -36,6 +35,12 @@ namespace kob
 		void FixedUpdate() const;
 		void Render() const;
 		void ImGuiRenderUpdate() const;
+
+		//--------------------------------------------------
+		//    Accessors
+		//--------------------------------------------------
+		const std::string& GetName() const;
+		std::vector<GameObject*> GetObjectsByName(const std::string& name) const;
 
 	private:
 		void CleanupDeletedObjects();

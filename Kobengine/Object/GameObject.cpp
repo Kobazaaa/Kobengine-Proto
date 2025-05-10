@@ -4,6 +4,12 @@
 #include "Renderer.h"
 
 
+//--------------------------------------------------
+//    Constructors and Destructors
+//--------------------------------------------------
+kob::GameObject::GameObject(const std::string& name)
+	: m_Name(name)
+{}
 
 //--------------------------------------------------
 //    Loop
@@ -154,6 +160,8 @@ void kob::GameObject::UpdateWorldPosition()
 	}
 	m_DirtyTransformFlag = false;
 }
+void kob::GameObject::SetName(const std::string& name)	{ m_Name = name; }
+const std::string& kob::GameObject::GetName()	const	{ return m_Name; }
 
 
 //--------------------------------------------------

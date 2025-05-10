@@ -21,6 +21,7 @@ namespace kob
 		//    Accessors & Mutators
 		//--------------------------------------------------
 		Scene* GetScene(int index) const;
+		Scene* GetScene(const std::string& name) const;
 
 
 		//--------------------------------------------------

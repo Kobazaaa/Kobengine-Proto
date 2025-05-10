@@ -20,6 +20,13 @@ kob::Scene* kob::SceneManager::GetScene(int index) const
 		return nullptr;
 	return m_vScenes[index].get();
 }
+kob::Scene* kob::SceneManager::GetScene(const std::string& name) const
+{
+	for (auto& scene : m_vScenes)
+		if (scene->GetName() == name)
+			return scene.get();
+	return nullptr;
+}
 
 
 //--------------------------------------------------

@@ -20,9 +20,9 @@ GameObject& Scene::Add(std::unique_ptr<GameObject> object)
 	m_vObjects.emplace_back(std::move(object));
 	return *m_vObjects.back();
 }
-GameObject& Scene::AddEmpty()
+GameObject& Scene::AddEmpty(const std::string& name)
 {
-	m_vObjects.emplace_back(std::make_unique<GameObject>());
+	m_vObjects.emplace_back(std::make_unique<GameObject>(name));
 	return *m_vObjects.back();
 }
 void Scene::Remove(const std::unique_ptr<GameObject>& object)
@@ -93,4 +93,22 @@ void Scene::ImGuiRenderUpdate() const
 	{
 		object->ImGuiRenderUpdate();
 	}
+}
+
+//--------------------------------------------------
+//    Accessors
+//--------------------------------------------------
+const std::string& Scene::GetName() const
+{
+	return m_Name;
+}
+std::vector<GameObject*> Scene::GetObjectsByName(const std::string& name) const
+{
+	std::vector<GameObject*> result;
+	for (auto& go : m_vObjects)
+	{
+		if (go->GetName() == name)
+			result.push_back(go.get());
+	}
+	return result;
 }
