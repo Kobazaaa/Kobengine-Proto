@@ -46,10 +46,16 @@ void kob::Animator::Update()
 //--------------------------------------------------
 void kob::Animator::Play(const std::string& anim, bool loop)
 {
+	m_IsPlaying = true;
 	if (m_pActiveAnim == &m_pSpriteSheet->GetAnimation(anim))
 		return;
-	m_IsPlaying = true;
 	m_FrameTime = 0;
 	m_DoLoop = loop;
 	m_pActiveAnim = &m_pSpriteSheet->GetAnimation(anim);
+}
+void kob::Animator::Stop(uint32_t freezeFrame)
+{
+	m_IsPlaying = false;
+	m_FrameTime = 0;
+	m_CurrFrame = freezeFrame;
 }

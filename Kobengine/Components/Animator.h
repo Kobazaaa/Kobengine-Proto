@@ -24,6 +24,7 @@ namespace kob
 		//    Setters
 		//--------------------------------------------------
 		void Play(const std::string& anim, bool loop);
+		void Stop(uint32_t freezeFrame = 0);
 
 	private:
 		ImageRendererComponent* m_pRenderComponent;
