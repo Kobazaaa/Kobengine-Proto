@@ -9,19 +9,24 @@
 //--------------------------------------------------
 //    Constructors and Destructors
 //--------------------------------------------------
-kob::ImageRendererComponent::ImageRendererComponent(GameObject& parent, const std::string& fileName)
+kob::ImageRendererComponent::ImageRendererComponent(GameObject& parent, const std::string& fileName, const glm::ivec4& srcRect)
 	: Component(parent)
 	, m_pImageTexture{ ResourceManager::GetInstance().LoadTexture(fileName) }
 {
-	m_SrcRect = { 0, 0, m_pImageTexture->GetSize().x, m_pImageTexture->GetSize().y };
+	if (srcRect == glm::ivec4{ -1,-1,-1,-1 })
+		m_SrcRect = { 0, 0, m_pImageTexture->GetSize().x, m_pImageTexture->GetSize().y };
+	else
+		m_SrcRect = srcRect;
 }
-kob::ImageRendererComponent::ImageRendererComponent(GameObject& parent, Texture2D* tex)
+kob::ImageRendererComponent::ImageRendererComponent(GameObject& parent, Texture2D* tex, const glm::ivec4& srcRect)
 	: Component(parent)
 	, m_pImageTexture{ tex }
 {
-	m_SrcRect = { 0, 0, m_pImageTexture->GetSize().x, m_pImageTexture->GetSize().y };
+	if (srcRect == glm::ivec4{ -1,-1,-1,-1 })
+		m_SrcRect = { 0, 0, m_pImageTexture->GetSize().x, m_pImageTexture->GetSize().y };
+	else
+		m_SrcRect = srcRect;
 }
-
 
 //--------------------------------------------------
 //    Loop
