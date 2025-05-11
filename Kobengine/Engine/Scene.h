@@ -45,11 +45,13 @@ namespace kob
 
 	private:
 		void CleanupDeletedObjects();
+		void AddPendingObjects();
 
 		inline static unsigned int m_IdCounter = 0;
 
 		std::string m_Name;
 		std::vector<std::unique_ptr<GameObject>> m_vObjects{};
+		std::vector<std::unique_ptr<GameObject>> m_vPendingObjects{};
 	};
 
 }

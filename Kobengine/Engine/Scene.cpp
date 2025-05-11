@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include <algorithm>
+#include <ranges>
 
 using namespace kob;
 
@@ -17,14 +18,14 @@ Scene::Scene(const std::string& name)
 //--------------------------------------------------
 GameObject& Scene::MoveGameObject(std::unique_ptr<GameObject> object)
 {
-	m_vObjects.emplace_back(std::move(object));
-	m_vObjects.back()->OnSceneTransfer(*this);
-	return *m_vObjects.back();
+	m_vPendingObjects.emplace_back(std::move(object));
+	m_vPendingObjects.back()->OnSceneTransfer(*this);
+	return *m_vPendingObjects.back();
 }
 GameObject& Scene::AddEmpty(const std::string& name)
 {
-	m_vObjects.emplace_back(std::make_unique<GameObject>(*this, name));
-	return *m_vObjects.back();
+	m_vPendingObjects.emplace_back(std::make_unique<GameObject>(*this, name));
+	return *m_vPendingObjects.back();
 }
 void Scene::Remove(const std::unique_ptr<GameObject>& object)
 {
@@ -63,6 +64,15 @@ void Scene::CleanupDeletedObjects()
 			}),
 		m_vObjects.end());
 }
+void Scene::AddPendingObjects()
+{
+	for (auto& object : m_vPendingObjects)
+	{
+		object->Start();
+		m_vObjects.push_back(std::move(object));
+	}
+	m_vPendingObjects.clear();
+}
 
 
 //--------------------------------------------------
@@ -93,6 +103,7 @@ void Scene::LateUpdate()
 		object->LateUpdate();
 	}
 	CleanupDeletedObjects();
+	AddPendingObjects();
 }
 void Scene::FixedUpdate() const
 {
