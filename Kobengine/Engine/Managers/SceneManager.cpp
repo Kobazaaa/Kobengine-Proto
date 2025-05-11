@@ -6,8 +6,13 @@
 //--------------------------------------------------
 kob::Scene& kob::SceneManager::CreateScene(const std::string& name)
 {
-	m_vScenes.push_back(std::make_unique<Scene>(name));
-	return *m_vScenes.back();
+	auto it = std::ranges::find_if(m_vScenes, [name](const std::unique_ptr<Scene>& pScene) { return pScene->GetName() == name; });
+	if (it == m_vScenes.end())
+	{
+		m_vScenes.push_back(std::make_unique<Scene>(name));
+		return *m_vScenes.back();
+	}
+	return **it;
 }
 
 
