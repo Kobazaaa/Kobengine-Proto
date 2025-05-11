@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <unordered_map>
+#include <SDL.h>
 
 #include "Command.h"
 #include "Gamepad.h"
