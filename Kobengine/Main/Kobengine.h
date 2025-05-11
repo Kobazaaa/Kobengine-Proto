@@ -1,6 +1,6 @@
 #pragma once
-#include <functional>
 #include <filesystem>
+#include "vec2.hpp"
 
 namespace kob
 {
@@ -29,6 +29,7 @@ namespace kob
 		//--------------------------------------------------
 		//    Window
 		//--------------------------------------------------
+		glm::ivec2 GetWindowSize() const;
 		void SetWindowSize(int width, int height) const;
 		void SetWindowTitle(const std::string& title) const;
 

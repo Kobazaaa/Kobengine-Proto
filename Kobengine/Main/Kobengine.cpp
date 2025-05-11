@@ -123,6 +123,7 @@ void kob::Kobengine::RunOneFrame()
 //--------------------------------------------------
 //    Loop
 //--------------------------------------------------
+glm::ivec2 kob::Kobengine::GetWindowSize()						const	{ glm::ivec2 size; SDL_GetWindowSize(m_pWindow, &size.x, &size.y); return size; }
 void kob::Kobengine::SetWindowSize(int width, int height)		const	{ SDL_SetWindowSize(m_pWindow, width, height); }
 void kob::Kobengine::SetWindowTitle(const std::string& title)	const	{ SDL_SetWindowTitle(m_pWindow, title.c_str()); }
 
