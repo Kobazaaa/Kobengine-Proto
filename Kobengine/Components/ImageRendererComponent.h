@@ -36,7 +36,7 @@ namespace kob
 		//    Accessors & Mutators
 		//--------------------------------------------------
 		void SetSourceRect(const glm::ivec4& rect);
-		glm::ivec2 GetSize();
+		glm::ivec2 GetSize() const;
 
 	private:
 		Texture2D* m_pImageTexture;
