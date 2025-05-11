@@ -197,6 +197,9 @@ void kob::GameObject::SetTransformDirty()
 		child->SetTransformDirty();
 }
 
+bool kob::GameObject::IsActive()				const	{ return m_IsActive; }
+void kob::GameObject::SetActive(bool active)			{ m_IsActive = active; }
+
 void kob::GameObject::OnSceneTransfer(Scene& scene) { m_pScene = &scene; }
 
 void kob::GameObject::CleanupDeletedComponents()

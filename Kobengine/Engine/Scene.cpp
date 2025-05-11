@@ -79,6 +79,8 @@ void Scene::Update() const
 {
 	for(auto& object : m_vObjects)
 	{
+		if (!object->IsActive())
+			continue;
 		object->Update();
 	}
 }
@@ -86,6 +88,8 @@ void Scene::LateUpdate()
 {
 	for(auto& object : m_vObjects)
 	{
+		if (!object->IsActive())
+			continue;
 		object->LateUpdate();
 	}
 	CleanupDeletedObjects();
@@ -94,6 +98,8 @@ void Scene::FixedUpdate() const
 {
 	for(auto& object : m_vObjects)
 	{
+		if (!object->IsActive())
+			continue;
 		object->FixedUpdate();
 	}
 }
@@ -101,6 +107,8 @@ void Scene::Render() const
 {
 	for (const auto& object : m_vObjects)
 	{
+		if (!object->IsActive())
+			continue;
 		object->Render();
 	}
 }
@@ -108,6 +116,8 @@ void Scene::ImGuiRenderUpdate() const
 {
 	for (const auto& object : m_vObjects)
 	{
+		if (!object->IsActive())
+			continue;
 		object->ImGuiRenderUpdate();
 	}
 }

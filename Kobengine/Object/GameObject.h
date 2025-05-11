@@ -93,7 +93,7 @@ namespace kob
 		//    Parent-Child
 		//--------------------------------------------------
 		GameObject* GetParent()								const;
-		void		SetParent(GameObject* parent, bool keepWorldPosition);
+		void		SetParent(GameObject* parent, bool keepWorldPosition = false);
 		bool		IsChild(const GameObject* child)		const;
 		int			GetChildCount()							const;
 		GameObject* GetChildAt(int index)					const;
@@ -122,6 +122,9 @@ namespace kob
 		bool IsSceneIndependent() const;
 		void SetTransformDirty();
 
+		bool IsActive() const;
+		void SetActive(bool active);
+
 		void OnSceneTransfer(Scene& scene);
 
 	private:
@@ -140,6 +143,7 @@ namespace kob
 		Transform m_LocalTransform{};
 		Transform m_WorldTransform{};
 
+		bool m_IsActive{ true };
 		bool m_DeletionFlag{ false };
 		bool m_SceneIndependent{ false };
 		bool m_DirtyTransformFlag{ false };
