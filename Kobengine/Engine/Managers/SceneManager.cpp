@@ -39,7 +39,7 @@ kob::Scene* kob::SceneManager::GetScene(const std::string& name) const
 
 void kob::SceneManager::SetActiveScene(Scene& scene)
 {
-	auto v = std::ranges::all_of(m_pActiveScene.)
+	m_pActiveScene->TransferIndependent(&scene);
 	m_pActiveScene = &scene;
 
 }
