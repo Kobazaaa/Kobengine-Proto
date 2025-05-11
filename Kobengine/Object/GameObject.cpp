@@ -2,13 +2,15 @@
 #include "GameObject.h"
 #include "ResourceManager.h"
 #include "Renderer.h"
+#include "Scene.h"
 
 
 //--------------------------------------------------
 //    Constructors and Destructors
 //--------------------------------------------------
-kob::GameObject::GameObject(const std::string& name)
-	: m_Name(name)
+kob::GameObject::GameObject(Scene& scene, const std::string& name)
+	: m_pScene(&scene)
+	, m_Name(name)
 {}
 
 //--------------------------------------------------
@@ -162,6 +164,7 @@ void kob::GameObject::UpdateWorldPosition()
 }
 void kob::GameObject::SetName(const std::string& name)	{ m_Name = name; }
 const std::string& kob::GameObject::GetName()	const	{ return m_Name; }
+kob::Scene& kob::GameObject::GetScene()			const	{ return *m_pScene; }
 
 
 //--------------------------------------------------
@@ -194,6 +197,7 @@ void kob::GameObject::SetTransformDirty()
 		child->SetTransformDirty();
 }
 
+void kob::GameObject::OnSceneTransfer(Scene& scene) { m_pScene = &scene; }
 
 void kob::GameObject::CleanupDeletedComponents()
 {
@@ -215,7 +219,7 @@ void kob::GameObject::AddChild(GameObject* child)
 
 	m_vChildren.push_back(child);
 }
-void kob::GameObject::RemoveChild(GameObject* child)
+void kob::GameObject::RemoveChild(const GameObject* child)
 {
 	std::erase_if(m_vChildren, [&](const GameObject* pChild)
 								    {

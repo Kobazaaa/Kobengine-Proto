@@ -21,7 +21,7 @@ namespace kob
 		//--------------------------------------------------
 		//    Adding & Removing GameObjects
 		//--------------------------------------------------
-		GameObject& Add(std::unique_ptr<GameObject> object);
+		GameObject& MoveGameObject(std::unique_ptr<GameObject> object);
 		[[nodiscard]] GameObject& AddEmpty(const std::string& name = "GameObject");
 		void Remove(const std::unique_ptr<GameObject>& object);
 		void RemoveAll();

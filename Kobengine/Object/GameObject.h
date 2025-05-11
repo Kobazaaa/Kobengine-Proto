@@ -8,15 +8,15 @@
 
 namespace kob
 {
+	class Scene;
 	class Texture2D;
-
 	class GameObject final
 	{
 	public:
 		//--------------------------------------------------
 		//    Constructors and Destructors
 		//--------------------------------------------------
-		explicit GameObject(const std::string& name ="GameObject");
+		explicit GameObject(Scene& scene, const std::string& name = "GameObject");
 		~GameObject() = default;
 
 		GameObject(const GameObject& other) = delete;
@@ -109,7 +109,9 @@ namespace kob
 		void			   SetLocalRotation(const glm::vec3& eulerAngles);
 		void			   UpdateWorldPosition();
 		void			   SetName(const std::string& name);
+
 		const std::string& GetName() const;
+		Scene& GetScene() const;
 
 		//--------------------------------------------------
 		//    Flags
@@ -120,15 +122,19 @@ namespace kob
 		bool IsSceneIndependent() const;
 		void SetTransformDirty();
 
+		void OnSceneTransfer(Scene& scene);
+
 	private:
+
 		void CleanupDeletedComponents();
 		std::vector<std::unique_ptr<Component>> m_vComponents;
 
 		void AddChild(GameObject* child);
-		void RemoveChild(GameObject* child);
+		void RemoveChild(const GameObject* child);
 		GameObject* m_pParent{};
 		std::vector<GameObject*> m_vChildren{};
 
+		Scene* m_pScene{};
 		std::string m_Name{"GameObject"};
 
 		Transform m_LocalTransform{};

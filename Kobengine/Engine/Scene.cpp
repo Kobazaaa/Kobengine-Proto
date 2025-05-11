@@ -15,14 +15,15 @@ Scene::Scene(const std::string& name)
 //--------------------------------------------------
 //    Adding & Removing GameObjects
 //--------------------------------------------------
-GameObject& Scene::Add(std::unique_ptr<GameObject> object)
+GameObject& Scene::MoveGameObject(std::unique_ptr<GameObject> object)
 {
 	m_vObjects.emplace_back(std::move(object));
+	m_vObjects.back()->OnSceneTransfer(*this);
 	return *m_vObjects.back();
 }
 GameObject& Scene::AddEmpty(const std::string& name)
 {
-	m_vObjects.emplace_back(std::make_unique<GameObject>(name));
+	m_vObjects.emplace_back(std::make_unique<GameObject>(*this, name));
 	return *m_vObjects.back();
 }
 void Scene::Remove(const std::unique_ptr<GameObject>& object)
@@ -44,7 +45,10 @@ void Scene::TransferIndependent(Scene* dst)
 
 	for (auto& go : m_vObjects)
 		if (go->IsSceneIndependent())
-			dst->Add(std::move(go));
+		{
+			go->OnSceneTransfer(*dst);
+			dst->MoveGameObject(std::move(go));
+		}
 
 	std::erase(m_vObjects, std::unique_ptr<GameObject>{});
 }
