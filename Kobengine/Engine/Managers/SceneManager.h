@@ -22,7 +22,8 @@ namespace kob
 		//--------------------------------------------------
 		Scene* GetScene(int index) const;
 		Scene* GetScene(const std::string& name) const;
-
+		void SetActiveScene(Scene& scene);
+		void SetActiveScene(const std::string& name);
 
 		//--------------------------------------------------
 		//    Loop
@@ -37,5 +38,6 @@ namespace kob
 	private:
 		friend class Singleton<SceneManager>;
 		std::vector<std::unique_ptr<Scene>> m_vScenes;
+		Scene* m_pActiveScene{};
 	};
 }

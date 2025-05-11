@@ -178,6 +178,15 @@ void kob::GameObject::FlagForDeletion()
 		child->FlagForDeletion();
 
 }
+
+void kob::GameObject::FlagSceneIndependent()
+{
+	m_SceneIndependent = true;
+	for (auto& child : m_vChildren)
+		child->FlagSceneIndependent();
+}
+bool kob::GameObject::IsSceneIndependent() const { return m_SceneIndependent; }
+
 void kob::GameObject::SetTransformDirty()
 {
 	m_DirtyTransformFlag = true;

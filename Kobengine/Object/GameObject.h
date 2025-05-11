@@ -116,6 +116,8 @@ namespace kob
 		//--------------------------------------------------
 		bool IsFlaggedForDeletion() const;
 		void FlagForDeletion();
+		void FlagSceneIndependent();
+		bool IsSceneIndependent() const;
 		void SetTransformDirty();
 
 	private:
@@ -133,6 +135,7 @@ namespace kob
 		Transform m_WorldTransform{};
 
 		bool m_DeletionFlag{ false };
+		bool m_SceneIndependent{ false };
 		bool m_DirtyTransformFlag{ false };
 	};
 }

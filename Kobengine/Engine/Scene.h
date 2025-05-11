@@ -25,6 +25,7 @@ namespace kob
 		[[nodiscard]] GameObject& AddEmpty(const std::string& name = "GameObject");
 		void Remove(const std::unique_ptr<GameObject>& object);
 		void RemoveAll();
+		void TransferIndependent(Scene* dst);
 
 		//--------------------------------------------------
 		//    Loop

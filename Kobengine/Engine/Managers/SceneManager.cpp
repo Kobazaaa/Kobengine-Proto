@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include <algorithm>
 
 
 //--------------------------------------------------
@@ -6,10 +7,13 @@
 //--------------------------------------------------
 kob::Scene& kob::SceneManager::CreateScene(const std::string& name)
 {
+
 	auto it = std::ranges::find_if(m_vScenes, [name](const std::unique_ptr<Scene>& pScene) { return pScene->GetName() == name; });
 	if (it == m_vScenes.end())
 	{
 		m_vScenes.push_back(std::make_unique<Scene>(name));
+		if (m_vScenes.size() == 1)
+			m_pActiveScene = m_vScenes[0].get();
 		return *m_vScenes.back();
 	}
 	return **it;
@@ -33,49 +37,21 @@ kob::Scene* kob::SceneManager::GetScene(const std::string& name) const
 	return nullptr;
 }
 
+void kob::SceneManager::SetActiveScene(Scene& scene)
+{
+	auto v = std::ranges::all_of(m_pActiveScene.)
+	m_pActiveScene = &scene;
+
+}
+void kob::SceneManager::SetActiveScene(const std::string& name) { if (const auto pScene = GetScene(name)) SetActiveScene(*pScene); }
+
 
 //--------------------------------------------------
 //    Loop
 //--------------------------------------------------
-void kob::SceneManager::Start() const
-{
-	for(auto& scene : m_vScenes)
-	{
-		scene->Start();
-	}
-}
-void kob::SceneManager::Update() const
-{
-	for(auto& scene : m_vScenes)
-	{
-		scene->Update();
-	}
-}
-void kob::SceneManager::LateUpdate() const
-{
-	for(auto& scene : m_vScenes)
-	{
-		scene->LateUpdate();
-	}
-}
-void kob::SceneManager::FixedUpdate() const
-{
-	for(auto& scene : m_vScenes)
-	{
-		scene->FixedUpdate();
-	}
-}
-void kob::SceneManager::Render() const
-{
-	for (const auto& scene : m_vScenes)
-	{
-		scene->Render();
-	}
-}
-void kob::SceneManager::ImGuiRenderUpdate() const
-{
-	for (const auto& scene : m_vScenes)
-	{
-		scene->ImGuiRenderUpdate();
-	}
-}
+void kob::SceneManager::Start()				const { m_pActiveScene->Start(); }
+void kob::SceneManager::Update()			const { m_pActiveScene->Update(); }
+void kob::SceneManager::LateUpdate()		const { m_pActiveScene->LateUpdate(); }
+void kob::SceneManager::FixedUpdate()		const { m_pActiveScene->FixedUpdate(); }
+void kob::SceneManager::Render()			const { m_pActiveScene->Render(); }
+void kob::SceneManager::ImGuiRenderUpdate() const { m_pActiveScene->ImGuiRenderUpdate(); }

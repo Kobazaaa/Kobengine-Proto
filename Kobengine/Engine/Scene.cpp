@@ -36,6 +36,19 @@ void Scene::RemoveAll()
 		object->FlagForDeletion();
 	}
 }
+
+void Scene::TransferIndependent(Scene* dst)
+{
+	if (!dst || this == dst)
+		return;
+
+	for (auto& go : m_vObjects)
+		if (go->IsSceneIndependent())
+			dst->Add(std::move(go));
+
+	std::erase(m_vObjects, std::unique_ptr<GameObject>{});
+}
+
 void Scene::CleanupDeletedObjects()
 {
 	m_vObjects.erase(
