@@ -14,7 +14,8 @@ namespace kob
 	public:
 		virtual ~EventListener()
 		{
-			for (Event<Args...>* pEvent : m_vEvents)
+			auto events = m_vEvents;
+			for (Event<Args...>* pEvent : events)
 				(*pEvent) -= this;
 		}
 		virtual void Notify(Args... args) = 0;
