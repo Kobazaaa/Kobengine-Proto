@@ -198,9 +198,19 @@ void kob::GameObject::SetTransformDirty()
 }
 
 bool kob::GameObject::IsActive()				const	{ return m_IsActive; }
-void kob::GameObject::SetActive(bool active)			{ m_IsActive = active; }
+void kob::GameObject::SetActive(bool active)
+{
+	m_IsActive = active;
+	for (auto& child : m_vChildren)
+		child->SetActive(active);
+}
 
-void kob::GameObject::OnSceneTransfer(Scene& scene) { m_pScene = &scene; }
+void kob::GameObject::OnSceneTransfer(Scene& scene)
+{
+	m_pScene = &scene;
+	for (auto& child : m_vChildren)
+		child->OnSceneTransfer(scene);
+}
 
 void kob::GameObject::CleanupDeletedComponents()
 {
