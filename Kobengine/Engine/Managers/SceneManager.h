@@ -22,6 +22,7 @@ namespace kob
 		//--------------------------------------------------
 		Scene* GetScene(int index) const;
 		Scene* GetScene(const std::string& name) const;
+		Scene& GetActiveScene() const;
 		void SetActiveScene(Scene& scene);
 		void SetActiveScene(const std::string& name);
 

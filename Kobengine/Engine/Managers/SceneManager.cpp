@@ -37,6 +37,7 @@ kob::Scene* kob::SceneManager::GetScene(const std::string& name) const
 	return nullptr;
 }
 
+kob::Scene& kob::SceneManager::GetActiveScene() const { return *m_pActiveScene; }
 void kob::SceneManager::SetActiveScene(Scene& scene)
 {
 	m_pActiveScene->TransferIndependent(&scene);
