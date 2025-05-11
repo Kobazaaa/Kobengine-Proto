@@ -48,6 +48,7 @@ void kob::ImageRendererComponent::Render() const
 
 
 //--------------------------------------------------
-//    Setters
+//    Accessors & Mutators
 //--------------------------------------------------
 void kob::ImageRendererComponent::SetSourceRect(const glm::ivec4& rect) { m_SrcRect = rect; }
+glm::ivec2 kob::ImageRendererComponent::GetSize() const { return m_pImageTexture->GetSize(); }

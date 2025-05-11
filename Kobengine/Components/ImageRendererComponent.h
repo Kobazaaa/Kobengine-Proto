@@ -33,9 +33,10 @@ namespace kob
 		void Render() const override;
 
 		//--------------------------------------------------
-		//    Setter
+		//    Accessors & Mutators
 		//--------------------------------------------------
 		void SetSourceRect(const glm::ivec4& rect);
+		glm::ivec2 GetSize();
 
 	private:
 		Texture2D* m_pImageTexture;
