@@ -26,6 +26,7 @@
 #include "Timer.h"
 #include "ServiceLocator.h"
 #include "SDLSoundSystem.h"
+#include "DefaultCollisionSystem.h"
 
 //--------------------------------------------------
 //    Constructor & Destructor
@@ -59,6 +60,7 @@ kob::Kobengine::Kobengine()
 	ResourceManager::GetInstance().Init(assetPath);
 
 	// Setup Service Locators
+	ServiceLocator::RegisterCollisionService(std::make_unique<DefaultCollisionSystem>());
 #if _DEBUG
 	ServiceLocator::RegisterSoundService(std::make_unique<LoggerSoundSystem>(std::make_unique<SDLSoundSystem>(assetPath)));
 #else
@@ -115,6 +117,7 @@ void kob::Kobengine::RunOneFrame()
 
 	SceneManager::GetInstance().Update();
 	SceneManager::GetInstance().LateUpdate();
+	ServiceLocator::GetCollisionService().EvaluateCollisions();
 	Renderer::GetInstance().Render();
 
 	std::this_thread::sleep_for(Timer::SleepDurationNanoSeconds());

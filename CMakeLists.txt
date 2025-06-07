@@ -51,6 +51,8 @@ add_library(${ENGINE_NAME} STATIC
   "${SOURCE_DIR}/Engine/Audio/NullSoundSystem.h"
     # Engine/Collision/
   "${SOURCE_DIR}/Engine/Collision/ICollisionSystem.h"
+  "${SOURCE_DIR}/Engine/Collision/DefaultCollisionSystem.h"
+  "${SOURCE_DIR}/Engine/Collision/DefaultCollisionSystem.cpp"
   "${SOURCE_DIR}/Engine/Collision/NullCollisionSystem.h"
 
   #../ Object/
