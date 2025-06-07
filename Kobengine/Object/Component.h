@@ -37,7 +37,7 @@ namespace kob
 		//--------------------------------------------------
 		void FlagForDeletion();
 		[[nodiscard]] bool IsFlaggedForDeletion()			const;
-		[[nodiscard]] GameObject* GetParent() const;
+		[[nodiscard]] GameObject* GetGameObject() const;
 
 	private:
 		GameObject* m_pParent{};

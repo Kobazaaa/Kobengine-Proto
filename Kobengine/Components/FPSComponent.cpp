@@ -20,7 +20,7 @@ kob::FPSComponent::FPSComponent(GameObject& parent)
 //--------------------------------------------------
 void kob::FPSComponent::Start()
 {
-	m_TextRenderer = GetParent()->GetComponent<TextRendererComponent>();
+	m_TextRenderer = GetGameObject()->GetComponent<TextRendererComponent>();
 }
 void kob::FPSComponent::Update()
 {

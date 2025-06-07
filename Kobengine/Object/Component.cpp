@@ -32,7 +32,7 @@ bool kob::Component::IsFlaggedForDeletion() const
 	return m_DeletionFlag;
 }
 
-kob::GameObject* kob::Component::GetParent() const
+kob::GameObject* kob::Component::GetGameObject() const
 {
 	return m_pParent;
 }

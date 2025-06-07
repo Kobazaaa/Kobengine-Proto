@@ -34,13 +34,13 @@ kob::ImageRendererComponent::ImageRendererComponent(GameObject& parent, Texture2
 void kob::ImageRendererComponent::Update() {}
 void kob::ImageRendererComponent::Render() const
 {
-	const auto& pos = GetParent()->GetWorldTransform().GetPosition();
+	const auto& pos = GetGameObject()->GetWorldTransform().GetPosition();
 
-	const auto& scale = GetParent()->GetWorldTransform().GetScale();
+	const auto& scale = GetGameObject()->GetWorldTransform().GetScale();
 	const auto& size = glm::vec2(m_SrcRect.z, m_SrcRect.w);
 	const auto& dstSize = glm::vec3(static_cast<float>(size.x) * scale.x, static_cast<float>(size.y) * scale.y, 0);
 
-	const auto& eulerAngles = GetParent()->GetWorldTransform().GetEulerRotation();
+	const auto& eulerAngles = GetGameObject()->GetWorldTransform().GetEulerRotation();
 
 	SDL_Rect srcRect = { m_SrcRect.x, m_SrcRect.y, m_SrcRect.z, m_SrcRect.w };
 	Renderer::GetInstance().RenderTexture(*m_pImageTexture, pos, dstSize, eulerAngles, &srcRect);
