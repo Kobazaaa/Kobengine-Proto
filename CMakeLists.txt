@@ -64,6 +64,8 @@ add_library(${ENGINE_NAME} STATIC
   "${SOURCE_DIR}/Events/Event.h"
 
   #../ Components/
+  "${SOURCE_DIR}/Components/ColliderComponent.h"
+  "${SOURCE_DIR}/Components/ColliderComponent.cpp"
   "${SOURCE_DIR}/Components/GridRendererComponent.h"
   "${SOURCE_DIR}/Components/GridRendererComponent.cpp"
   "${SOURCE_DIR}/Components/TextRendererComponent.h"
