@@ -19,6 +19,10 @@ void kob::Component::FixedUpdate() {}
 void kob::Component::Render() const {}
 void kob::Component::ImGuiRenderUpdate() {}
 
+void kob::Component::OnCollisionEnter(GameObject&) { }
+void kob::Component::OnCollisionExit(GameObject&) { }
+void kob::Component::OnCollisionStay(GameObject&) { }
+
 
 //--------------------------------------------------
 //    Accessors and Mutators

@@ -1,8 +1,4 @@
 #pragma once
-
-#include "imgui.h"
-#include "implot.h"
-
 namespace kob
 {
 	class GameObject;
@@ -31,6 +27,9 @@ namespace kob
 		virtual void Render()				const;
 		virtual void ImGuiRenderUpdate();
 
+		virtual void OnCollisionEnter(GameObject& other);
+		virtual void OnCollisionExit(GameObject& other);
+		virtual void OnCollisionStay(GameObject& other);
 
 		//--------------------------------------------------
 		//    Accessors & Mutators

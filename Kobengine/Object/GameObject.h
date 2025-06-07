@@ -35,6 +35,9 @@ namespace kob
 		void Render() const;
 		void ImGuiRenderUpdate();
 
+		void OnCollisionEnter(GameObject& other);
+		void OnCollisionExit(GameObject& other);
+		void OnCollisionStay(GameObject& other);
 
 		//--------------------------------------------------
 		//    Components

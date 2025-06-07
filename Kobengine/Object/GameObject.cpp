@@ -48,6 +48,20 @@ void kob::GameObject::ImGuiRenderUpdate()
 		component->ImGuiRenderUpdate();
 }
 
+void kob::GameObject::OnCollisionEnter(GameObject& other)
+{
+	for (const auto& component : m_vComponents)
+		component->OnCollisionEnter(other);
+}
+void kob::GameObject::OnCollisionExit(GameObject& other)
+{
+	for (const auto& component : m_vComponents)
+		component->OnCollisionExit(other);
+}
+void kob::GameObject::OnCollisionStay(GameObject& other)
+{
+	for (const auto& component : m_vComponents)
+		component->OnCollisionStay(other);
 }
 
 
