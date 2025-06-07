@@ -49,6 +49,9 @@ add_library(${ENGINE_NAME} STATIC
   "${SOURCE_DIR}/Engine/Audio/LoggerSoundSystem.h"
   "${SOURCE_DIR}/Engine/Audio/LoggerSoundSystem.cpp"
   "${SOURCE_DIR}/Engine/Audio/NullSoundSystem.h"
+    # Engine/Collision/
+  "${SOURCE_DIR}/Engine/Collision/ICollisionSystem.h"
+  "${SOURCE_DIR}/Engine/Collision/NullCollisionSystem.h"
 
   #../ Object/
   "${SOURCE_DIR}/Object/GameObject.cpp"
@@ -292,6 +295,7 @@ target_include_directories(${ENGINE_NAME} PUBLIC
   ${SOURCE_DIR}/Engine/Managers
   ${SOURCE_DIR}/Engine/Input
   ${SOURCE_DIR}/Engine/Audio
+  ${SOURCE_DIR}/Engine/Collision
   ${SOURCE_DIR}/Main
   ${SOURCE_DIR}/Object
   ${SOURCE_DIR}/Events
