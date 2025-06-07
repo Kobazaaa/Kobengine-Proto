@@ -39,6 +39,8 @@ namespace kob
 
 		const SDL_Color& GetBackgroundColor() const;
 		void SetBackgroundColor(const SDL_Color& color);
+		void SetLogicalSize(int w, int h);
+		void SetGlobalScale(float s);
 
 	private:
 		SDL_Renderer* m_pRenderer{};

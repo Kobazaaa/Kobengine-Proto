@@ -126,6 +126,14 @@ void kob::Renderer::SetBackgroundColor(const SDL_Color& color)
 {
 	m_ClearColor = color;
 }
+void kob::Renderer::SetLogicalSize(int w, int h)
+{
+	SDL_RenderSetLogicalSize(m_pRenderer, w, h);
+}
+void kob::Renderer::SetGlobalScale(float s)
+{
+	SDL_RenderSetScale(m_pRenderer, s, s);
+}
 
 int kob::Renderer::GetOpenGLDriverIndex()
 {
