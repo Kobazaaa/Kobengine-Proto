@@ -1,9 +1,9 @@
 #pragma once
+#include "NullSoundSystem.h"
 #include "ISoundSystem.h"
 
 namespace kob
 {
-	template<typename ServiceType>
 	class ServiceLocator final
 	{
 	public:
@@ -19,12 +19,12 @@ namespace kob
 		ServiceLocator& operator=(ServiceLocator&& other) = delete;
 
 		//--------------------------------------------------
-		//    Accessors & Mutators
+		//    Services
 		//--------------------------------------------------
-		static ServiceType& GetService() { return *m_pService; }
-		static void RegisterService(std::unique_ptr<ServiceType>&& service) { m_pService = std::move(service); }
+		static ISoundSystem& GetSoundService() { return *m_pSoundService; }
+		static void RegisterSoundService(std::unique_ptr<ISoundSystem>&& service) { m_pSoundService = std::move(service); }
 
 	private:
-		inline static std::unique_ptr<ServiceType> m_pService { nullptr };
+		inline static std::unique_ptr<ISoundSystem> m_pSoundService { std::make_unique<NullSoundSystem>() };
 	};
 }
