@@ -44,10 +44,8 @@ namespace kob
 		[[nodiscard]] bool HasComponent() const
 		{
 			for (const auto& component : m_vComponents)
-			{
-				auto castedComponent = dynamic_cast<ComponentType>(component.get());
-				if (castedComponent) return true;
-			}
+				if (dynamic_cast<ComponentType>(component.get()))
+					return true;
 			return false;
 		}
 		template <typename ComponentType>
@@ -57,8 +55,7 @@ namespace kob
 			int componentCount = 0;
 			for (const auto& component : m_vComponents)
 			{
-				auto castedComponent = dynamic_cast<ComponentType*>(component.get());
-				if (castedComponent)
+				if (auto castedComponent = dynamic_cast<ComponentType*>(component.get()))
 				{
 					if (componentCount == index) return castedComponent;
 					++componentCount;
@@ -92,12 +89,12 @@ namespace kob
 		//--------------------------------------------------
 		//    Parent-Child
 		//--------------------------------------------------
-		GameObject* GetParent()								const;
+		GameObject* GetParent()												const;
 		void		SetParent(GameObject* parent, bool keepWorldPosition = false);
-		bool		IsChild(const GameObject* child)		const;
-		int			GetChildCount()							const;
-		GameObject* GetChildAt(int index)					const;
-		const std::vector<GameObject*>& GetAllChildren()	const;
+		bool		IsChild(const GameObject* child)						const;
+		int			GetChildCount()											const;
+		GameObject* GetChildAt(int index)									const;
+		const std::vector<GameObject*>& GetAllChildren()					const;
 
 		//--------------------------------------------------
 		//    Transform

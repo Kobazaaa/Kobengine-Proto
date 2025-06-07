@@ -18,50 +18,36 @@ kob::GameObject::GameObject(Scene& scene, const std::string& name)
 //--------------------------------------------------
 void kob::GameObject::Start()
 {
-	for (auto& component : m_vComponents)
-	{
+	for (const auto& component : m_vComponents)
 		component->Start();
-	}
 }
-
 void kob::GameObject::Update()
 {
-	for (auto& component : m_vComponents)
-	{
+	for (const auto& component : m_vComponents)
 		component->Update();
-	}
 }
-
 void kob::GameObject::LateUpdate()
 {
-	for (auto& component : m_vComponents)
-	{
+	for (const auto& component : m_vComponents)
 		component->LateUpdate();
-	}
-
 	CleanupDeletedComponents();
 }
-
 void kob::GameObject::FixedUpdate()
 {
-	for (auto& component : m_vComponents)
-	{
+	for (const auto& component : m_vComponents)
 		component->FixedUpdate();
-	}
 }
 void kob::GameObject::Render() const
 {
-	for (auto& component : m_vComponents)
-	{
+	for (const auto& component : m_vComponents)
 		component->Render();
-	}
 }
 void kob::GameObject::ImGuiRenderUpdate()
 {
-	for (auto& component : m_vComponents)
-	{
+	for (const auto& component : m_vComponents)
 		component->ImGuiRenderUpdate();
-	}
+}
+
 }
 
 
@@ -177,15 +163,14 @@ bool kob::GameObject::IsFlaggedForDeletion() const
 void kob::GameObject::FlagForDeletion()
 {
 	m_DeletionFlag = true;
-	for (auto& child : m_vChildren)
+	for (const auto& child : m_vChildren)
 		child->FlagForDeletion();
-
 }
 
 void kob::GameObject::FlagSceneIndependent()
 {
 	m_SceneIndependent = true;
-	for (auto& child : m_vChildren)
+	for (const auto& child : m_vChildren)
 		child->FlagSceneIndependent();
 }
 bool kob::GameObject::IsSceneIndependent() const { return m_SceneIndependent; }
@@ -193,7 +178,7 @@ bool kob::GameObject::IsSceneIndependent() const { return m_SceneIndependent; }
 void kob::GameObject::SetTransformDirty()
 {
 	m_DirtyTransformFlag = true;
-	for (auto& child : m_vChildren)
+	for (const auto& child : m_vChildren)
 		child->SetTransformDirty();
 }
 
