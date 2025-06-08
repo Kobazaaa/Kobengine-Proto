@@ -42,9 +42,11 @@ namespace kob
 		//--------------------------------------------------
 		const std::string& GetName() const;
 		std::vector<GameObject*> GetObjectsByName(const std::string& name) const;
+		void MarkRenderOrderDirty();
 
 	private:
 		void CleanupDeletedObjects();
+		void SortOnRenderPriority();
 		void AddPendingObjects();
 
 		inline static unsigned int m_IdCounter = 0;
@@ -52,6 +54,7 @@ namespace kob
 		std::string m_Name;
 		std::vector<std::unique_ptr<GameObject>> m_vObjects{};
 		std::vector<std::unique_ptr<GameObject>> m_vPendingObjects{};
+		bool m_DirtyRenderOrder = true;
 	};
 
 }

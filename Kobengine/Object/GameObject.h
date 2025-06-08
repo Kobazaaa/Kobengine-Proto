@@ -111,10 +111,12 @@ namespace kob
 		void			   UpdateWorldPosition();
 
 		//--------------------------------------------------
-		//    Strings
+		//    Data
 		//--------------------------------------------------
 		std::string name{ "GameObject" };
 		std::string tag{ "Untagged" };
+		void SetRenderPriority(int newPriority);
+		int GetRenderPriority() const;
 		bool CompareTag(const std::string& oTag) const;
 		Scene& GetScene() const;
 
@@ -143,6 +145,7 @@ namespace kob
 		std::vector<GameObject*> m_vChildren{};
 
 		Scene* m_pScene{};
+		int m_RenderPriority = 50;
 
 		Transform m_LocalTransform{};
 		Transform m_WorldTransform{};

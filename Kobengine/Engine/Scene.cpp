@@ -56,13 +56,24 @@ void Scene::TransferIndependent(Scene* dst)
 
 void Scene::CleanupDeletedObjects()
 {
-	m_vObjects.erase(
-		std::remove_if(m_vObjects.begin(), m_vObjects.end(),
-			[](const std::unique_ptr<GameObject>& object)
-			{
-				return object->IsFlaggedForDeletion();
-			}),
-		m_vObjects.end());
+	const auto count = std::erase_if(m_vObjects,
+	              [](const std::unique_ptr<GameObject>& object)
+	              {
+		              return object->IsFlaggedForDeletion();
+	              });
+
+	if (count > 0)
+		m_DirtyRenderOrder = true;
+}
+void Scene::SortOnRenderPriority()
+{
+	if (!m_DirtyRenderOrder)
+		return;
+	std::ranges::sort(m_vObjects, [](const auto& go1, const auto& go2)
+		{
+			return go1->GetRenderPriority() > go2->GetRenderPriority();
+		});
+	m_DirtyRenderOrder = false;
 }
 void Scene::AddPendingObjects()
 {
@@ -71,6 +82,8 @@ void Scene::AddPendingObjects()
 		object->Start();
 		m_vObjects.push_back(std::move(object));
 	}
+	if (m_vPendingObjects.size() > 0)
+		m_DirtyRenderOrder = true;
 	m_vPendingObjects.clear();
 }
 
@@ -104,6 +117,7 @@ void Scene::LateUpdate()
 	}
 	CleanupDeletedObjects();
 	AddPendingObjects();
+	SortOnRenderPriority();
 }
 void Scene::FixedUpdate() const
 {
@@ -149,4 +163,8 @@ std::vector<GameObject*> Scene::GetObjectsByName(const std::string& name) const
 			result.push_back(go.get());
 	}
 	return result;
+}
+void Scene::MarkRenderOrderDirty()
+{
+	m_DirtyRenderOrder = true;;
 }

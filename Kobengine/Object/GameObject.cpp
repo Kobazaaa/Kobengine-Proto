@@ -165,8 +165,17 @@ void kob::GameObject::UpdateWorldPosition()
 
 
 //--------------------------------------------------
-//    Strings
+//    Data
 //--------------------------------------------------
+void kob::GameObject::SetRenderPriority(int newPriority)
+{
+	if (newPriority != m_RenderPriority)
+	{
+		m_RenderPriority = newPriority;
+		m_pScene->MarkRenderOrderDirty();
+	}
+}
+int kob::GameObject::GetRenderPriority() const { return m_RenderPriority; }
 bool kob::GameObject::CompareTag(const std::string& oTag) const
 {
 	// todo ew, what is this? No string comparison please :D

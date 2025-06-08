@@ -11,7 +11,7 @@ kob::GridRendererComponent::GridRendererComponent(GameObject& parent, const glm:
 	, m_Size(size)
 	, m_RowCol(rows, cols)
 	, m_Color(color)
-{}
+{ GetGameObject()->SetRenderPriority(0); }
 
 
 //--------------------------------------------------

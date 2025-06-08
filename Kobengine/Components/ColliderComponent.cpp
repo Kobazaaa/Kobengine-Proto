@@ -47,4 +47,4 @@ bool kob::ColliderComponent::Overlaps(const ColliderComponent& coll) const
 //    Accessors & Mutators
 //--------------------------------------------------
 glm::vec3 kob::ColliderComponent::GetSize() const { return m_Size * GetGameObject()->GetWorldTransform().GetScale(); }
-void kob::ColliderComponent::SetSize(const glm::vec3& size) { m_Size.x = abs(size.x); m_Size.y = abs(size.y); }
+void kob::ColliderComponent::SetSize(const glm::vec3& size) { m_Size.x = abs(size.x); m_Size.y = abs(size.y); m_Size.z = abs(size.z); }
