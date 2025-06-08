@@ -31,6 +31,7 @@ add_library(${ENGINE_NAME} STATIC
   "${SOURCE_DIR}/Engine/Texture2D.h"
   "${SOURCE_DIR}/Engine/Timer.h"
   "${SOURCE_DIR}/Engine/Timer.cpp"
+  "${SOURCE_DIR}/Engine/HashUtils.h"
   "${SOURCE_DIR}/Engine/ServiceLocator.h"
     # Engine/Managers/
   "${SOURCE_DIR}/Engine/Managers/InputManager.cpp"

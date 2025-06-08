@@ -145,7 +145,7 @@ std::vector<GameObject*> Scene::GetObjectsByName(const std::string& name) const
 	std::vector<GameObject*> result;
 	for (auto& go : m_vObjects)
 	{
-		if (go->GetName() == name)
+		if (go->name == name) //todo booo, string comparison, boooo!!!
 			result.push_back(go.get());
 	}
 	return result;

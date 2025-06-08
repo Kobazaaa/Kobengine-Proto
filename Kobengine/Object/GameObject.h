@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Component.h"
+#include "HashUtils.h"
 #include "Transform.h"
 
 namespace kob
@@ -108,9 +109,13 @@ namespace kob
 		void			   SetLocalScale(const glm::vec3& scale);
 		void			   SetLocalRotation(const glm::vec3& eulerAngles);
 		void			   UpdateWorldPosition();
-		void			   SetName(const std::string& name);
 
-		const std::string& GetName() const;
+		//--------------------------------------------------
+		//    Strings
+		//--------------------------------------------------
+		std::string name{ "GameObject" };
+		std::string tag{ "Untagged" };
+		bool CompareTag(const std::string& oTag) const;
 		Scene& GetScene() const;
 
 		//--------------------------------------------------
@@ -138,7 +143,6 @@ namespace kob
 		std::vector<GameObject*> m_vChildren{};
 
 		Scene* m_pScene{};
-		std::string m_Name{"GameObject"};
 
 		Transform m_LocalTransform{};
 		Transform m_WorldTransform{};

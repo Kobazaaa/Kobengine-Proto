@@ -10,6 +10,10 @@ kob::ColliderComponent::ColliderComponent(GameObject& parent)
 {
 	ServiceLocator::GetCollisionService().RegisterCollider(*this);
 }
+kob::ColliderComponent::~ColliderComponent()
+{
+    ServiceLocator::GetCollisionService().UnregisterCollider(*this);
+}
 
 
 //--------------------------------------------------

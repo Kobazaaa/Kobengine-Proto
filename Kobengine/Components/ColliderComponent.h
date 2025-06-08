@@ -9,11 +9,17 @@ namespace kob
 	class ColliderComponent : public Component
 	{
 	public:
+		
 
 		//--------------------------------------------------
 		//    Constructor
 		//--------------------------------------------------
 		explicit ColliderComponent(GameObject& parent);
+		virtual ~ColliderComponent() override;
+		ColliderComponent(const ColliderComponent& other) = delete;
+		ColliderComponent(ColliderComponent&& other) noexcept = delete;
+		ColliderComponent& operator=(const ColliderComponent& other) = delete;
+		ColliderComponent& operator=(ColliderComponent&& other) noexcept = delete;
 
 		//--------------------------------------------------
 		//    Helpers

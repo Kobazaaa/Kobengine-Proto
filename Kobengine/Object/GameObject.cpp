@@ -10,7 +10,7 @@
 //--------------------------------------------------
 kob::GameObject::GameObject(Scene& scene, const std::string& name)
 	: m_pScene(&scene)
-	, m_Name(name)
+	, name(name)
 {}
 
 //--------------------------------------------------
@@ -162,9 +162,17 @@ void kob::GameObject::UpdateWorldPosition()
 	}
 	m_DirtyTransformFlag = false;
 }
-void kob::GameObject::SetName(const std::string& name)	{ m_Name = name; }
-const std::string& kob::GameObject::GetName()	const	{ return m_Name; }
-kob::Scene& kob::GameObject::GetScene()			const	{ return *m_pScene; }
+
+
+//--------------------------------------------------
+//    Strings
+//--------------------------------------------------
+bool kob::GameObject::CompareTag(const std::string& oTag) const
+{
+	// todo ew, what is this? No string comparison please :D
+	return oTag == tag;
+}
+kob::Scene& kob::GameObject::GetScene()	const	{ return *m_pScene; }
 
 
 //--------------------------------------------------
