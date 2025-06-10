@@ -32,7 +32,7 @@ namespace kob
 		//    Accessors & Mutators
 		//--------------------------------------------------
 		glm::vec3 GetSize() const;
-		void SetSize(const glm::vec3& size);
+		void SetHalfSize(const glm::vec3& size);
 		glm::vec3 offset{0.f, 0.f, 0.f};
 
 	private:
