@@ -77,11 +77,12 @@ void Scene::SortOnRenderPriority()
 }
 void Scene::AddPendingObjects()
 {
+	// separate for loops to ensure that all objects in m_vPendingObjects are in a valid state, since it's possible to query
+	// m_vPendingObjects in the start function of GameObjects (e.g. asking for all GO with tag or name).
 	for (auto& object : m_vPendingObjects)
-	{
 		object->Start();
+	for (auto& object : m_vPendingObjects)
 		m_vObjects.push_back(std::move(object));
-	}
 	if (!m_vPendingObjects.empty())
 		m_DirtyRenderOrder = true;
 	m_vPendingObjects.clear();
@@ -177,10 +178,10 @@ std::vector<GameObject*> Scene::GetObjectsByTag(const std::string& tag) const
 		if (!go->IsFlaggedForDeletion() && go->tag == tag) //todo booo, string comparison, boooo!!!
 			result.push_back(go.get());
 	}
-	for (auto& go : m_vPendingObjects)
+	for (auto& pgo : m_vPendingObjects)
 	{
-		if (!go->IsFlaggedForDeletion() && go->tag == tag) //todo booo, string comparison, boooo!!!
-			result.push_back(go.get());
+		if (!pgo->IsFlaggedForDeletion() && pgo->tag == tag) //todo booo, string comparison, boooo!!!
+			result.push_back(pgo.get());
 	}
 	return result;
 }
