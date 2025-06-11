@@ -82,7 +82,7 @@ void Scene::AddPendingObjects()
 		object->Start();
 		m_vObjects.push_back(std::move(object));
 	}
-	if (m_vPendingObjects.size() > 0)
+	if (!m_vPendingObjects.empty())
 		m_DirtyRenderOrder = true;
 	m_vPendingObjects.clear();
 }
@@ -162,9 +162,29 @@ std::vector<GameObject*> Scene::GetObjectsByName(const std::string& name) const
 		if (go->name == name) //todo booo, string comparison, boooo!!!
 			result.push_back(go.get());
 	}
+	for (auto& go : m_vPendingObjects)
+	{
+		if (go->name == name) //todo booo, string comparison, boooo!!!
+			result.push_back(go.get());
+	}
+	return result;
+}
+std::vector<GameObject*> Scene::GetObjectsByTag(const std::string& tag) const
+{
+	std::vector<GameObject*> result;
+	for (auto& go : m_vObjects)
+	{
+		if (!go->IsFlaggedForDeletion() && go->tag == tag) //todo booo, string comparison, boooo!!!
+			result.push_back(go.get());
+	}
+	for (auto& go : m_vPendingObjects)
+	{
+		if (!go->IsFlaggedForDeletion() && go->tag == tag) //todo booo, string comparison, boooo!!!
+			result.push_back(go.get());
+	}
 	return result;
 }
 void Scene::MarkRenderOrderDirty()
 {
-	m_DirtyRenderOrder = true;;
+	m_DirtyRenderOrder = true;
 }

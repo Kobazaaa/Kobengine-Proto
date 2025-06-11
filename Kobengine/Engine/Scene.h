@@ -42,6 +42,7 @@ namespace kob
 		//--------------------------------------------------
 		const std::string& GetName() const;
 		std::vector<GameObject*> GetObjectsByName(const std::string& name) const;
+		std::vector<GameObject*> GetObjectsByTag(const std::string& tag) const;
 		void MarkRenderOrderDirty();
 
 	private:
