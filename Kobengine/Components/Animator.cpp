@@ -35,7 +35,10 @@ void kob::Animator::Update()
 		if (m_DoLoop)
 			m_CurrFrame %= static_cast<uint32_t>(m_pActiveAnim->animRects.size());
 		else if (m_CurrFrame >= static_cast<uint32_t>(m_pActiveAnim->animRects.size()-1))
+		{
 			m_IsPlaying = false;
+			m_CurrFrame = static_cast<uint32_t>(m_pActiveAnim->animRects.size() - 1);
+		}
 	}
 	m_pRenderComponent->SetSourceRect(m_pActiveAnim->animRects[m_CurrFrame]);
 }
