@@ -19,33 +19,39 @@ kob::GameObject::GameObject(Scene& scene, const std::string& name)
 void kob::GameObject::Start()
 {
 	for (const auto& component : m_vComponents)
-		component->Start();
+		if (component->isActive)
+			component->Start();
 }
 void kob::GameObject::Update()
 {
 	for (const auto& component : m_vComponents)
-		component->Update();
+		if (component->isActive)
+			component->Update();
 }
 void kob::GameObject::LateUpdate()
 {
 	for (const auto& component : m_vComponents)
-		component->LateUpdate();
+		if (component->isActive)
+			component->LateUpdate();
 	CleanupDeletedComponents();
 }
 void kob::GameObject::FixedUpdate()
 {
 	for (const auto& component : m_vComponents)
-		component->FixedUpdate();
+		if (component->isActive)
+			component->FixedUpdate();
 }
 void kob::GameObject::Render() const
 {
 	for (const auto& component : m_vComponents)
-		component->Render();
+		if (component->isActive)
+			component->Render();
 }
 void kob::GameObject::ImGuiRenderUpdate()
 {
 	for (const auto& component : m_vComponents)
-		component->ImGuiRenderUpdate();
+		if (component->isActive)
+			component->ImGuiRenderUpdate();
 }
 
 void kob::GameObject::OnCollisionEnter(GameObject& other)
@@ -53,21 +59,24 @@ void kob::GameObject::OnCollisionEnter(GameObject& other)
 	if (m_DeletionFlag)
 		return;
 	for (const auto& component : m_vComponents)
-		component->OnCollisionEnter(other);
+		if (component->isActive)
+			component->OnCollisionEnter(other);
 }
 void kob::GameObject::OnCollisionExit(GameObject& other)
 {
 	if (m_DeletionFlag)
 		return;
 	for (const auto& component : m_vComponents)
-		component->OnCollisionExit(other);
+		if (component->isActive)
+			component->OnCollisionExit(other);
 }
 void kob::GameObject::OnCollisionStay(GameObject& other)
 {
 	if (m_DeletionFlag)
 		return;
 	for (const auto& component : m_vComponents)
-		component->OnCollisionStay(other);
+		if (component->isActive)
+			component->OnCollisionStay(other);
 }
 
 

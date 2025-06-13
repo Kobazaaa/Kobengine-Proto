@@ -81,10 +81,10 @@ namespace kob
 			int componentCount = 0;
 			for (const auto& component : m_vComponents)
 			{
-				auto castedComponent = std::dynamic_pointer_cast<ComponentType>(component);
-				if (castedComponent)
+				if (auto castedComponent = dynamic_cast<ComponentType*>(component.get()))
 				{
-					if (componentCount == index) castedComponent->MarkForDeletion();
+					if (componentCount == index)
+						castedComponent->isActive = false;
 					++componentCount;
 				}
 			}

@@ -39,6 +39,7 @@ namespace kob
 		void RegisterKeyboardCmd(SDL_KeyCode key, TriggerState state, std::unique_ptr<Command> upCommand);
 		void UnregisterGamepadBtn(Gamepad::Button button, int gamepadID);
 		void UnregisterKeyboardKey(SDL_KeyCode key);
+		void UnregisterAll(bool keyboard = true, bool gamepad = true);
 
 		void RegisterGamepad();
 		const Gamepad* GetGamepad(int gamepadID) const;

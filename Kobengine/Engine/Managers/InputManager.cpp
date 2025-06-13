@@ -104,6 +104,13 @@ void kob::InputManager::UnregisterKeyboardKey(SDL_KeyCode key)
 {
 	m_KeyboardMappings.erase(key);
 }
+void kob::InputManager::UnregisterAll(bool keyboard, bool gamepad)
+{
+	if (keyboard)
+		m_KeyboardMappings.clear();
+	if (gamepad)
+		m_vGamepadMappings.clear();
+}
 
 void kob::InputManager::RegisterGamepad()
 {
@@ -112,5 +119,7 @@ void kob::InputManager::RegisterGamepad()
 }
 const kob::Gamepad* kob::InputManager::GetGamepad(int gamepadID) const
 {
+	if (std::ranges::find_if(m_vGamepads, [gamepadID](const std::unique_ptr<Gamepad>& pad) { return pad->GetGamepadID() == gamepadID; }) == m_vGamepads.end())
+		return nullptr;
 	return m_vGamepads.at(gamepadID).get();
 }
