@@ -12,6 +12,7 @@ kob::Animator::Animator(GameObject& parent, ImageRendererComponent* renderCompon
 	  , m_pSpriteSheet(spriteSheet)
 	  , m_pActiveAnim(nullptr), m_IsPlaying(false), m_DoLoop(false), m_FrameTime(0), m_CurrFrame(0)
 {
+	m_pRenderComponent->SetSourceRect({0,0,0,0});
 }
 
 
