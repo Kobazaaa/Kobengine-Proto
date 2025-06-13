@@ -23,6 +23,7 @@ namespace kob
 		void ResumeAll() override;
 		void Stop(const std::filesystem::path& file) override;
 		void StopAll() override;
+		void SetGlobalVolumeScale(float scale) override;
 
 	private:
 		std::unique_ptr<ISoundSystem> m_pRealSoundSystem;

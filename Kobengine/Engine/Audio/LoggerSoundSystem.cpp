@@ -58,3 +58,8 @@ void kob::LoggerSoundSystem::StopAll()
 	std::cout << "Stopping all sound!\n";
 	m_pRealSoundSystem->StopAll();
 }
+void kob::LoggerSoundSystem::SetGlobalVolumeScale(float scale)
+{
+	std::cout << "New global volume scale: " << scale << "\n";
+	m_pRealSoundSystem->SetGlobalVolumeScale(scale);
+}

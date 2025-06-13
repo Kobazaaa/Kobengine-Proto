@@ -33,5 +33,6 @@ namespace kob
 		virtual void ResumeAll() = 0;
 		virtual void Stop(const std::filesystem::path& file) = 0;
 		virtual void StopAll() = 0;
+		virtual void SetGlobalVolumeScale(float scale) = 0;
 	};
 }

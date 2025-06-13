@@ -104,7 +104,7 @@ public:
 			{
 				// Loads if not yet loaded, otherwise returns existing clip
 				auto& clip = Load(file);
-				clip.Play(volume, loops);
+				clip.Play(volume * m_Scale, loops);
 			});
 		// Notify thread that the queue has been updated!
 		m_ConditionVar.notify_one();
@@ -200,6 +200,8 @@ public:
 		m_ConditionVar.notify_one();
 	}
 
+	void SetGlobalVolumeScale(float scale) { m_Scale = scale; }
+
 private:
 	struct SDLSound final : public AudioClip
 	{
@@ -254,6 +256,7 @@ private:
 
 	std::jthread m_SoundThread;
 	bool m_IsThreadActive;
+	float m_Scale{1.f};
 
 	std::mutex m_QueueMutex;
 	std::condition_variable m_ConditionVar;
@@ -287,3 +290,4 @@ void kob::SDLSoundSystem::ResumeAll()														{ m_pImpl->PauseAll(); }
 
 void kob::SDLSoundSystem::Stop(const std::filesystem::path& file)							{ m_pImpl->Stop(file); }
 void kob::SDLSoundSystem::StopAll()															{ m_pImpl->StopAll(); }
+void kob::SDLSoundSystem::SetGlobalVolumeScale(float scale)									{ m_pImpl->SetGlobalVolumeScale(scale); }
