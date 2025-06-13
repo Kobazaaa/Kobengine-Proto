@@ -17,7 +17,9 @@ kob::Texture2D* kob::SpriteSheet::GetTexture() const
 	return pTexture;
 }
 
-kob::SpriteSheetAnimation& kob::SpriteSheet::GetAnimation(const std::string& animName)
+kob::SpriteSheetAnimation* kob::SpriteSheet::GetAnimation(const std::string& animName)
 {
-	return animations.at(animName);
+	if (animations.contains(animName))
+		return nullptr;
+	return &animations.at(animName);
 }

@@ -18,7 +18,7 @@ namespace kob
 	{
 		SpriteSheet(Texture2D* texturePtr, const std::unordered_map<std::string, SpriteSheetAnimation>& anims = {});
 		Texture2D* GetTexture() const;
-		SpriteSheetAnimation& GetAnimation(const std::string& animName);
+		SpriteSheetAnimation* GetAnimation(const std::string& animName);
 		Texture2D* pTexture;
 		std::unordered_map<std::string, SpriteSheetAnimation> animations;
 	};

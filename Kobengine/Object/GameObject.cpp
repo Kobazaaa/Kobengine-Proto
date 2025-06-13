@@ -50,16 +50,22 @@ void kob::GameObject::ImGuiRenderUpdate()
 
 void kob::GameObject::OnCollisionEnter(GameObject& other)
 {
+	if (m_DeletionFlag)
+		return;
 	for (const auto& component : m_vComponents)
 		component->OnCollisionEnter(other);
 }
 void kob::GameObject::OnCollisionExit(GameObject& other)
 {
+	if (m_DeletionFlag)
+		return;
 	for (const auto& component : m_vComponents)
 		component->OnCollisionExit(other);
 }
 void kob::GameObject::OnCollisionStay(GameObject& other)
 {
+	if (m_DeletionFlag)
+		return;
 	for (const auto& component : m_vComponents)
 		component->OnCollisionStay(other);
 }

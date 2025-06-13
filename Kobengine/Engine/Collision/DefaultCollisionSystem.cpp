@@ -49,14 +49,14 @@ void kob::DefaultCollisionSystem::EvaluateCollisions()
 				if (!m_vPreviousCollisions.contains(pair))
 				{
 					// trigger new collision
-					obj1->OnCollisionEnter(*obj2);
-					obj2->OnCollisionEnter(*obj1);
+					if (!obj1->IsFlaggedForDeletion()) obj1->OnCollisionEnter(*obj2);
+					if (!obj2->IsFlaggedForDeletion()) obj2->OnCollisionEnter(*obj1);
 				}
 				else
 				{
 					// trigger existing collision
-					obj1->OnCollisionStay(*obj2);
-					obj2->OnCollisionStay(*obj1);
+					if (!obj1->IsFlaggedForDeletion()) obj1->OnCollisionStay(*obj2);
+					if (!obj2->IsFlaggedForDeletion()) obj2->OnCollisionStay(*obj1);
 				}
 			}
 		}
@@ -67,8 +67,8 @@ void kob::DefaultCollisionSystem::EvaluateCollisions()
 	{
 		if (!m_vCurrentCollisions.contains(pair))
 		{
-			pair.first->OnCollisionExit(*pair.second);
-			pair.second->OnCollisionExit(*pair.first);
+			if (!pair.first->IsFlaggedForDeletion()) pair.first->OnCollisionExit(*pair.second);
+			if (!pair.second->IsFlaggedForDeletion()) pair.second->OnCollisionExit(*pair.first);
 		}
 	}
 
