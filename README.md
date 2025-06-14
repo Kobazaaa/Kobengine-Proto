@@ -15,7 +15,7 @@ Game: [Burger Time Repository](https://github.com/Kobazaaa/BurgerTime)
 ### Update Loop
 
 The game loop separates update phases for a clear logic flow. It includes Input Processing, Updates, Rendering, and Collision.
-![Update Loop](assets/UpdateLoop.png)
+![Update Loop](UpdateLoop.png)
 
 ### Component
 The engine uses a component-based architecture. Game objects are composed of reusable components, some provided by the engine, others made by the user.
