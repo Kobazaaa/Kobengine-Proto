@@ -80,6 +80,7 @@ kob::Kobengine::~Kobengine()
 //--------------------------------------------------
 //    Loop
 //--------------------------------------------------
+//thank you to Mat in the Programming4 Discord Server of DAE for this nice function to find the assets folder :)
 std::filesystem::path kob::Kobengine::FindAssetsFolder()
 {
 	constexpr uint32_t MAX_TRAVERSAL{ 5 };
