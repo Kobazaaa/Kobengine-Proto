@@ -10,6 +10,7 @@
 #include <thread>
 
 // SDL
+#include "Kobengine.h"
 #include "SDL.h"
 #include "SDL_mixer.h"
 
@@ -201,6 +202,7 @@ public:
 	}
 
 	void SetGlobalVolumeScale(float scale) { m_Scale = scale; }
+	float GetGlobalVolumeScale() const { return m_Scale; }
 
 private:
 	struct SDLSound final : public AudioClip
@@ -271,8 +273,8 @@ private:
 //--------------------------------------------------
 //    Constructor & Destructor
 //--------------------------------------------------
-kob::SDLSoundSystem::SDLSoundSystem(const std::filesystem::path& assetPath)	{ m_pImpl = new SoundSystemImpl(assetPath); }
-kob::SDLSoundSystem::~SDLSoundSystem()										{ delete m_pImpl; m_pImpl = nullptr; }
+kob::SDLSoundSystem::SDLSoundSystem()	{ m_pImpl = new SoundSystemImpl(kob::Kobengine::FindAssetsFolder()); }
+kob::SDLSoundSystem::~SDLSoundSystem()	{ delete m_pImpl; m_pImpl = nullptr; }
 
 
 
@@ -291,3 +293,4 @@ void kob::SDLSoundSystem::ResumeAll()														{ m_pImpl->PauseAll(); }
 void kob::SDLSoundSystem::Stop(const std::filesystem::path& file)							{ m_pImpl->Stop(file); }
 void kob::SDLSoundSystem::StopAll()															{ m_pImpl->StopAll(); }
 void kob::SDLSoundSystem::SetGlobalVolumeScale(float scale)									{ m_pImpl->SetGlobalVolumeScale(scale); }
+float kob::SDLSoundSystem::GetGlobalVolumeScale()											{ return m_pImpl->GetGlobalVolumeScale(); }

@@ -53,7 +53,7 @@ kob::Kobengine::Kobengine()
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
 
-	auto assetPath = FindAssetsFolder("assets");
+	auto assetPath = FindAssetsFolder();
 
 	// Initial Setup
 	Renderer::GetInstance().Init(m_pWindow);
@@ -62,9 +62,9 @@ kob::Kobengine::Kobengine()
 	// Setup Service Locators
 	ServiceLocator::RegisterCollisionService(std::make_unique<DefaultCollisionSystem>());
 #if _DEBUG
-	ServiceLocator::RegisterSoundService(std::make_unique<LoggerSoundSystem>(std::make_unique<SDLSoundSystem>(assetPath)));
+	ServiceLocator::RegisterSoundService(std::make_unique<LoggerSoundSystem>(std::make_unique<SDLSoundSystem>()));
 #else
-	ServiceLocator::RegisterSoundService(std::make_unique<SDLSoundSystem>(assetPath));
+	ServiceLocator::RegisterSoundService(std::make_unique<SDLSoundSystem>());
 #endif
 
 }
@@ -80,14 +80,14 @@ kob::Kobengine::~Kobengine()
 //--------------------------------------------------
 //    Loop
 //--------------------------------------------------
-std::filesystem::path kob::Kobengine::FindAssetsFolder(const std::string& name)
+std::filesystem::path kob::Kobengine::FindAssetsFolder()
 {
 	constexpr uint32_t MAX_TRAVERSAL{ 5 };
 	std::filesystem::path current = std::filesystem::current_path();
 
 	for (uint32_t level{}; level < MAX_TRAVERSAL; ++level)
 	{
-		std::filesystem::path target = current / name;
+		std::filesystem::path target = current / "assets";
 		if (std::filesystem::exists(target))
 			return target;
 

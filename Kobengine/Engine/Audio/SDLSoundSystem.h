@@ -10,7 +10,7 @@ namespace kob
 		//--------------------------------------------------
 		//    Constructor & Destructor
 		//--------------------------------------------------
-		SDLSoundSystem(const std::filesystem::path& assetPath);
+		SDLSoundSystem();
 		~SDLSoundSystem() override;
 
 		SDLSoundSystem(const SDLSoundSystem& other) = delete;
@@ -30,6 +30,7 @@ namespace kob
 		void Stop(const std::filesystem::path& file) override;
 		void StopAll() override;
 		void SetGlobalVolumeScale(float scale) override;
+		float GetGlobalVolumeScale() override;
 
 	private:
 		class SoundSystemImpl;

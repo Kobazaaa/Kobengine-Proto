@@ -63,3 +63,4 @@ void kob::LoggerSoundSystem::SetGlobalVolumeScale(float scale)
 	std::cout << "New global volume scale: " << scale << "\n";
 	m_pRealSoundSystem->SetGlobalVolumeScale(scale);
 }
+float kob::LoggerSoundSystem::GetGlobalVolumeScale() { return m_pRealSoundSystem->GetGlobalVolumeScale(); }

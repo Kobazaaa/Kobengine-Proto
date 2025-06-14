@@ -24,6 +24,7 @@ namespace kob
 		void Stop(const std::filesystem::path&) override {};
 		void StopAll() override {};
 		void SetGlobalVolumeScale(float) override {};
+		float GetGlobalVolumeScale() override { return 0.f; };
 
 		//--------------------------------------------------
 		//    NullAudioClip
