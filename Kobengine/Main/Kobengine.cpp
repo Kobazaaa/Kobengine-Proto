@@ -6,7 +6,7 @@
 
 // WIN32
 #if WIN32
-#define WIN32_LEAN_AND_MEAN 
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 
@@ -34,8 +34,8 @@
 kob::Kobengine::Kobengine()
 {
 	PrintSDLVersion();
-	
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
+
+	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
@@ -117,8 +117,8 @@ void kob::Kobengine::RunOneFrame()
 	}
 
 	SceneManager::GetInstance().Update();
-	SceneManager::GetInstance().LateUpdate();
 	ServiceLocator::GetCollisionService().EvaluateCollisions();
+	SceneManager::GetInstance().LateUpdate();
 	Renderer::GetInstance().Render();
 
 	std::this_thread::sleep_for(Timer::SleepDurationNanoSeconds());
