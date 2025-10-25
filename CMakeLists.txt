@@ -1,10 +1,10 @@
 #--------------------------------------------------
-#    Kobengine CMake
+#    Kobengine-Proto CMake
 #--------------------------------------------------
 cmake_minimum_required(VERSION 3.26)
-project(Kobengine)
+project(Kobengine-Proto)
 
-set(ENGINE_NAME kobengine)
+set(ENGINE_NAME kobengine-proto)
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Kobengine)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR})
